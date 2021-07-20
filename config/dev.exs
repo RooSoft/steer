@@ -3,7 +3,7 @@ use Mix.Config
 # Configure your database
 config :steer, Steer.Repo,
   username: "postgres",
-  password: "postgres",
+  password: "Pass2020!",
   database: "steer_dev",
   hostname: "localhost",
   show_sensitive_data_on_connection_error: true,
