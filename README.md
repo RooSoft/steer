@@ -8,9 +8,9 @@ Lightning Network routing node management tool
 
 Setup these according to the Lightning Network node Steer will connect with
 
-- SERVER defaults to "localhost:10009"
-- CERT defaults to "~/.lnd/umbrel.cert"
-- MACAROON defaults to "~/.lnd/readonly.macaroon"
+- SERVER defaults to `localhost:10009`
+- CERT defaults to `~/.lnd/umbrel.cert`
+- MACAROON defaults to `~/.lnd/readonly.macaroon`
 
 ### Start the web server
 
