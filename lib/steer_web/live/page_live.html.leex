@@ -1,3 +1,9 @@
 <section class="phx-hero">
-  <span class="text-2xl">Number of channels: <%= Enum.count(@channels) %></span>
+  <div class="text-2xl mb-4">Number of channels: <%= Enum.count(@channels) %></div>
+
+  <ul>
+    <%= for channel <- @channels do %>
+    <li><%= channel.channel_point %></li>
+    <% end %>
+  </ul>
 </section>
