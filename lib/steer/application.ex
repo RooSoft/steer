@@ -14,9 +14,10 @@ defmodule Steer.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: Steer.PubSub},
       # Start the Endpoint (http/https)
-      SteerWeb.Endpoint
+      SteerWeb.Endpoint,
       # Start a worker by calling: Steer.Worker.start_link(arg)
       # {Steer.Worker, arg}
+      LndClient
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
