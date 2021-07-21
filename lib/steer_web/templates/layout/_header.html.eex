@@ -1,5 +1,5 @@
 <header class="bg-gradient-to-br from-green-500 to-purple-600">
-  <nav class="mb-4">
+  <nav class="mb-4 p-1">
     <div class="px-6">
       <div class="flex justify-between items-center">
         <a class="text-4xl font-branding" href="/">Steer</a>
