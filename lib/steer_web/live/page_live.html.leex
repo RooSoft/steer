@@ -1,9 +1,11 @@
 <section class="phx-hero">
   <div class="text-2xl mb-4">Number of channels: <%= Enum.count(@channels) %></div>
 
-  <ul>
-    <%= for channel <- @channels do %>
-    <li><%= channel.channel_point %></li>
-    <% end %>
-  </ul>
+  <%= for channel <- @channels do %>
+    <div class="px-3 my-1 w-7/12 rounded-xl flex justify-between bg-green-300">
+      <div class="w-3/12 text-right"><%= channel.local_balance %></div>
+      <div class="w-6/12 text-left px-2"><%= channel.alias %></div>
+      <div class="w-3/12 text-right"><%= channel.remote_balance %></div>
+    </div>
+  <% end %>
 </section>
