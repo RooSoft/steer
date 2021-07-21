@@ -10,11 +10,11 @@
     <script defer phx-track-static type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
   </head>
   <body>
-    <header class="bg-gradient-to-br from-green-500 to-purple-600 mb-4">
+    <header class="bg-gradient-to-br from-green-500 to-purple-600 p-1 mb-4">
       <section class="container">
         <nav role="navigation">
           <section class="container flex justify-between">
-            <a class="text-4xl font-branding flex items-center px-10" href="/">Steer</a>
+            <a class="text-4xl font-branding flex items-center px-4" href="/">Steer</a>
             <span class="flex bg-gray-400"><%= render "_user_menu.html", assigns %></span>
           </section>
         </nav>
