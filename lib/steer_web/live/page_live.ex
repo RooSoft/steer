@@ -3,7 +3,10 @@ defmodule SteerWeb.PageLive do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, query: "", results: %{})}
+    socket = socket
+    |> assign(:channels, LndClient.get_channels().channels)
+
+    {:ok, socket}
   end
 
   @impl true
