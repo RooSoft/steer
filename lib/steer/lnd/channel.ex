@@ -18,6 +18,7 @@ defmodule Steer.Lnd.Channel do
     |> add_forwards(forwards, :chan_id_in)
     |> add_forwards(forwards, :chan_id_out)
     |> map_to_list
+    |> sort_forwards
   end
 
   defp add_forwards(channel_map, forwards, key) do
@@ -95,6 +96,19 @@ defmodule Steer.Lnd.Channel do
   defp map_to_list(channel_map) do
     channel_map
     |> Map.values()
+  end
+
+  defp sort_forwards(channels) do
+    channels
+    |> Enum.map(fn channel ->
+      sorted_forwards = channel.forwards
+      |> Enum.sort(&(&1.timestamp >= &2.timestamp))
+
+      IO.inspect sorted_forwards
+
+      channel
+      |> Map.put(:forwards, sorted_forwards)
+    end)
   end
 
   defp order_by(channels, order) do
