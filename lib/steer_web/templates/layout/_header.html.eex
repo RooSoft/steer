@@ -2,8 +2,8 @@
   <nav class="mb-4 p-1">
     <div class="px-6">
       <div class="flex justify-between items-center">
-        <a class="text-4xl font-branding" href="/">Steer</a>
-        <div role="navigation" class="">
+        <a class="text-4xl text-gray-900 font-branding" href="/">Steer</a>
+        <div role="navigation" class="text-gray-900">
           menu
         </div>
       </div>
