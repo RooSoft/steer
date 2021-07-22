@@ -4,9 +4,9 @@
             <div class="text-xl w-auto"><%= channel.alias %></div>
             <div>Forwards: <%= Enum.count channel.forwards %></div>
         </div>
-        <div class="w-16 px-2">
-            <div class="text-right"><%= channel.formatted_local_balance %></div>
-            <div class="text-right"><%= channel.formatted_remote_balance %></div>
+        <div class="w-30 px-2">
+            <div class="text-right">local <%= channel.formatted_local_balance %></div>
+            <div class="text-right">remote <%= channel.formatted_remote_balance %></div>
         </div>
     </div>
     <%= live_component @socket,
