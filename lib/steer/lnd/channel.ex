@@ -104,8 +104,6 @@ defmodule Steer.Lnd.Channel do
       sorted_forwards = channel.forwards
       |> Enum.sort(&(&1.timestamp >= &2.timestamp))
 
-      IO.inspect sorted_forwards
-
       channel
       |> Map.put(:forwards, sorted_forwards)
     end)
