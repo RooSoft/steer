@@ -3,11 +3,11 @@
 
   <%= for channel <- @channels do %>
     <div class="px-3 my-1 w-auto text-green-900 rounded-xl flex justify-between bg-green-200">
-      <div class="px-2 py-2">
+      <div class="p-2">
         <div class="text-xl w-auto"><%= channel.alias %></div>
         <div></div>
       </div>
-      <div class="w-16">
+      <div class="w-16 px-2">
         <div class="text-right"><%= channel.formatted_local_balance %></div>
         <div class="text-right"><%= channel.formatted_remote_balance %></div>
       </div>
