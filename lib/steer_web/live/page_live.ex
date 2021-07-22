@@ -15,11 +15,4 @@ defmodule SteerWeb.PageLive do
     socket
     |> assign(:channels, channels)
   end
-
-  defp add_forwarding_history(socket) do
-    forwards = LndClient.get_forwarding_history()
-
-    socket
-    |> assign(:forwards, forwards)
-  end
 end

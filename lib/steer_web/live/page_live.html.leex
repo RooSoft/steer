@@ -4,7 +4,7 @@
   <%= for channel <- @channels do %>
     <div class="px-3 my-1 w-auto rounded-xl flex justify-between bg-green-300">
       <div class="w-auto text-right"><%= channel.formatted_local_balance %></div>
-      <div class="w-auto" text-left px-2"><%= channel.alias %></div>
+      <div class="w-auto px-2"><%= channel.alias %></div>
       <div class="w-auto text-right"><%= channel.formatted_remote_balance %></div>
     </div>
   <% end %>
