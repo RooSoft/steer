@@ -1,10 +1,11 @@
 defmodule Steer.Lnd do
   alias Steer.Lnd.{Channel, Forward}
 
-  def get_all_channels(args) do
+  def get_all_channels(args \\ [{:order_by, :local_balance}]) do
     get_lnd_channels()
     |> Channel.convert(args)
     |> add_node_info()
+    |> maybe_include_forwards()
   end
 
   def get_all_forwards() do
@@ -18,6 +19,14 @@ defmodule Steer.Lnd do
 
   defp get_lnd_forwards() do
     LndClient.get_forwarding_history(%{max_events: 1000}).forwarding_events
+  end
+
+  defp maybe_include_forwards(channels) do
+    forwards = get_lnd_forwards()
+    |> Forward.convert()
+
+    channels
+    |> Channel.combine_forwards(forwards)
   end
 
   defp add_node_info(channels) do
