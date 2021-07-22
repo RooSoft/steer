@@ -1,11 +1,12 @@
 defmodule Steer.Lnd do
   alias Steer.Lnd.{Channel, Forward}
 
-  def get_all_channels(args \\ [{:order_by, :local_balance}]) do
+  def get_all_channels() do
     get_lnd_channels()
-    |> Channel.convert(args)
+    |> Channel.convert()
     |> add_node_info()
     |> maybe_include_forwards()
+    |> Channel.sort_by_latest_forward_descending
   end
 
   def get_all_forwards() do

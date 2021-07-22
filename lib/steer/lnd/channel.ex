@@ -1,14 +1,23 @@
 defmodule Steer.Lnd.Channel do
-  def convert(lnd_channels, [{:order_by, order}]) do
+  def convert(lnd_channels) do
     lnd_channels
     |> create_map()
     |> format_balances()
-    |> order_by(order)
   end
 
   def add_node_info(channel, node) do
     channel
     |> Map.put(:alias, node.alias)
+  end
+
+  def sort_by_latest_forward_descending(channels) do
+    channels
+    |> Enum.sort(fn channel1, channel2 ->
+      [channel1_forward | _] = channel1.forwards
+      [channel2_forward | _] = channel2.forwards
+
+      channel1_forward.timestamp > channel2_forward.timestamp
+    end)
   end
 
   def combine_forwards(channels, forwards) do
@@ -19,6 +28,7 @@ defmodule Steer.Lnd.Channel do
     |> add_forwards(forwards, :chan_id_out)
     |> map_to_list
     |> sort_forwards
+    |> set_latest_forward_field
   end
 
   defp add_forwards(channel_map, forwards, key) do
@@ -110,8 +120,16 @@ defmodule Steer.Lnd.Channel do
     end)
   end
 
-  defp order_by(channels, order) do
+  defp set_latest_forward_field(channels) do
     channels
-    |> Enum.sort(&(Map.get(&1, order) >= Map.get(&2, order)))
+    |> Enum.map(fn channel ->
+      case Enum.any?(channel.forwards) do
+        true ->
+          [ latest_forward | _ ] = channel.forwards
+          channel |> Map.put(:latest_forward, latest_forward)
+        false ->
+          channel
+      end
+    end)
   end
 end
