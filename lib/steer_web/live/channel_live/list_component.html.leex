@@ -18,7 +18,7 @@
         </div>
     </div>
     <%= if Map.has_key?(channel, :show_forwards) and channel.show_forwards == true do %>
-    <div class="px-3 my-1 w-auto text-green-900 rounded-xl justify-between bg-green-300 max-w-lg">
+    <div class="px-3 my-1 w-auto text-green-900 rounded-xl justify-between <%= channel.classes.colors.active %> max-w-lg">
         <%= live_component @socket,
             SteerWeb.ChannelLive.ForwardsComponent,
             forwards: channel.forwards %>
