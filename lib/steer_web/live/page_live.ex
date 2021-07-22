@@ -15,4 +15,20 @@ defmodule SteerWeb.PageLive do
     socket
     |> assign(:channels, channels)
   end
+
+  @impl true
+  def handle_event("toggle_forwards", %{"channel-id" => channel_id}, socket) do
+    { channel_id, _ } = Integer.parse(channel_id)
+
+    channels = socket.assigns.channels
+    |> Enum.map(fn channel ->
+      case channel.id do
+        ^channel_id ->
+          channel |> Map.put(:show_forwards, !channel.show_forwards)
+        _ -> channel
+      end
+    end)
+
+    {:noreply, assign(socket, :channels, channels)}
+  end
 end

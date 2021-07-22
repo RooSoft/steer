@@ -39,6 +39,7 @@ defmodule Steer.Lnd.Channel do
         node_pubkey: channel.remote_pubkey,
         local_balance: channel.local_balance,
         remote_balance: channel.remote_balance,
+        show_forwards: false
       }
     end)
   end
