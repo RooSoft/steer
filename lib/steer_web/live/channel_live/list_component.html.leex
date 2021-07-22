@@ -5,10 +5,12 @@
             <div class="text-xl w-auto"><%= channel.alias %></div>
             <div>
                 Forwards: <%= Enum.count channel.forwards %>
-                <%= if Map.has_key?(channel, :latest_forward) do %>
-                    Latest: <%= channel.latest_forward.time %>
-                <% end %>
             </div>
+            <%= if Map.has_key?(channel, :latest_forward) do %>
+                <div>
+                    Latest: <%= channel.latest_forward.time %>
+                </div>
+            <% end %>
         </div>
         <div class="w-30 px-2">
             <div class="text-right">local <%= channel.formatted_local_balance %></div>
