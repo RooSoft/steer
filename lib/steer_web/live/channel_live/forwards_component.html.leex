@@ -1,5 +1,7 @@
 <%= for forward <- @forwards do %>
-    <div class="px-3 my-1 w-auto text-green-900 rounded-xl flex justify-between bg-green-200">
-        <%= forward.time %> <%= forward.formatted_amount_in %> sats <%= forward.formatted_fee %> sats
+    <div class="px-3 my-1 w-auto flow text-green-900 rounded-xl flex justify-between bg-green-300">
+        <div><%= forward.time %></div>
+        <div>amount: <%= forward.formatted_amount_in %></div>
+        <div>fee: <%= forward.formatted_fee %></div>
     </div>
 <% end %>
