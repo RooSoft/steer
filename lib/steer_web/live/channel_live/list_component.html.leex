@@ -9,4 +9,7 @@
             <div class="text-right"><%= channel.formatted_remote_balance %></div>
         </div>
     </div>
+    <%= live_component @socket,
+        SteerWeb.ChannelLive.ForwardsComponent,
+        forwards: channel.forwards %>
 <% end %>
