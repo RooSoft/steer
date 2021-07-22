@@ -10,7 +10,7 @@ defmodule SteerWeb.PageLive do
   end
 
   defp add_channels(socket) do
-    channels = Steer.Channel.get_all(order_by: :local_balance)
+    channels = Steer.Lnd.get_all_channels(order_by: :local_balance)
 
     socket
     |> assign(:channels, channels)

@@ -1,17 +1,17 @@
-defmodule Steer.Channel do
-  def get_all([{:order_by, order}]) do
-    get_lnd_channels()
-    |> convert()
-    |> add_aliases()
+defmodule Steer.Lnd.Channel do
+  def convert(lnd_channels, [{:order_by, order}]) do
+    lnd_channels
+    |> create_map()
     |> format_balances()
     |> order_by(order)
   end
 
-  defp get_lnd_channels() do
-    LndClient.get_channels().channels
+  def add_node_info(channel, node) do
+    channel
+    |> Map.put(:alias, node.alias)
   end
 
-  defp convert(lnd_channels) do
+  defp create_map(lnd_channels) do
     lnd_channels
     |> Enum.map(fn channel ->
       %{
@@ -20,16 +20,6 @@ defmodule Steer.Channel do
         local_balance: channel.local_balance,
         remote_balance: channel.remote_balance,
       }
-    end)
-  end
-
-  defp add_aliases(channels) do
-    channels
-    |> Enum.map(fn channel ->
-      node_info = LndClient.get_node_info(channel.node_pubkey)
-
-      channel
-      |> Map.put(:alias, node_info.node.alias)
     end)
   end
 
