@@ -8,7 +8,7 @@
             </div>
             <%= if Map.has_key?(channel, :latest_forward) do %>
                 <div>
-                    Latest: <%= channel.latest_forward.time %>
+                    Latest: <%= Timex.from_now(channel.latest_forward.time) %>
                 </div>
             <% end %>
         </div>
