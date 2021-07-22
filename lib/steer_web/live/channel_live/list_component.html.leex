@@ -1,5 +1,5 @@
 <%= for channel <- @channels do %>
-    <div class="px-3 my-1 max-w-lg text-green-900 rounded-xl flex justify-between bg-green-200"
+    <div class="px-3 my-1 max-w-lg text-green-900 rounded-xl flex justify-between <%= channel.classes.colors.active %>"
         phx-click="toggle_forwards" phx-value-channel-id="<%= channel.id %>">
         <div class="p-2">
             <div class="text-xl w-auto"><%= channel.alias %></div>

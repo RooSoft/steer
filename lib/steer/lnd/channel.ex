@@ -49,7 +49,13 @@ defmodule Steer.Lnd.Channel do
         node_pubkey: channel.remote_pubkey,
         local_balance: channel.local_balance,
         remote_balance: channel.remote_balance,
-        show_forwards: false
+        active: channel.active,
+        show_forwards: false,
+        classes: %{
+          colors: %{
+            active: get_active_color_class(channel)
+          }
+        }
       }
     end)
   end
@@ -131,5 +137,13 @@ defmodule Steer.Lnd.Channel do
           channel
       end
     end)
+  end
+
+  defp get_active_color_class(%{ active: true }) do
+    "bg-green-200"
+  end
+
+  defp get_active_color_class(%{ active: false }) do
+    "bg-red-200"
   end
 end
