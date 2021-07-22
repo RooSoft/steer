@@ -24,6 +24,12 @@ defmodule SteerWeb.PageLive do
     |> Enum.map(fn channel ->
       case channel.id do
         ^channel_id ->
+          if channel.show_forwards do
+            IO.puts "collapsing #{channel.alias}"
+          else
+            IO.puts "expanding #{channel.alias}"
+          end
+
           channel |> Map.put(:show_forwards, !channel.show_forwards)
         _ -> channel
       end
