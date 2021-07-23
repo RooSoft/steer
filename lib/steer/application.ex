@@ -19,7 +19,8 @@ defmodule Steer.Application do
       # {Steer.Worker, arg}
       LndClient,
       Steer.HtlcSubscription,
-      Steer.LndInvoiceSubscription
+      Steer.LndInvoiceSubscription,
+      Steer.LndChannelSubscription
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
