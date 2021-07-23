@@ -20,11 +20,18 @@ defmodule Steer.HtlcSubscription do
     { :ok, nil }
   end
 
+  def handle_info(%Routerrpc.HtlcEvent{event: {:settle_event, _}} = htlc, state) do
+    IO.puts "--------- got a SETTLE event"
+    IO.puts "-------- broadcasting"
+
+    Endpoint.broadcast(@htlc_topic, @new_message, htlc)
+
+    {:noreply, state}
+  end
+
   def handle_info(%Routerrpc.HtlcEvent{} = htlc, state) do
     IO.puts "NEW HTLC"
     IO.inspect htlc
-
-    Endpoint.broadcast(@htlc_topic, @new_message, htlc)
 
     {:noreply, state}
   end

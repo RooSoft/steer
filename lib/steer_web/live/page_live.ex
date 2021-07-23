@@ -48,10 +48,16 @@ defmodule SteerWeb.PageLive do
   end
 
   @impl true
-  def handle_info(%{ event: @new_message}, socket) do
+  def handle_info(%{ event: @new_message} = event, socket) do
     write_in_blue "New HTLC received"
+    IO.inspect event
+    IO.puts ".... updating channels ...."
 
-    { :noreply, socket}
+    channels = Steer.Lnd.get_all_channels()
+
+    { :noreply, socket
+      |> assign(:channels, channels)
+      |> put_flash(:info, "New forward received")}
   end
 
   @impl true
