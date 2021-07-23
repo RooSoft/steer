@@ -29,9 +29,8 @@ defmodule Steer.HtlcSubscription do
     {:noreply, state}
   end
 
-  def handle_info(%Routerrpc.HtlcEvent{} = htlc, state) do
-    IO.puts "NEW HTLC"
-    IO.inspect htlc
+  def handle_info(%Routerrpc.HtlcEvent{}, state) do
+    IO.puts "NEW HTLC of unknown type"
 
     {:noreply, state}
   end

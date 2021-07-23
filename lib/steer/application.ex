@@ -18,7 +18,8 @@ defmodule Steer.Application do
       # Start a worker by calling: Steer.Worker.start_link(arg)
       # {Steer.Worker, arg}
       LndClient,
-      Steer.HtlcSubscription
+      Steer.HtlcSubscription,
+      Steer.LndInvoiceSubscription
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
