@@ -4,7 +4,7 @@ Lightning Network routing node management tool
 
 ## Prerequisite
 
-- elixirs
+- elixir
 - npm
 - postgresql database with connection string setup in `config/dev.exs` `Steer.Repo` section
 
