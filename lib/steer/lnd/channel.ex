@@ -12,12 +12,21 @@ defmodule Steer.Lnd.Channel do
 
   def sort_by_latest_forward_descending(channels) do
     channels
-    |> Enum.sort(fn channel1, channel2 ->
-      [channel1_forward | _] = channel1.forwards
-      [channel2_forward | _] = channel2.forwards
+    |> Enum.sort(&sort_algo/2)
+  end
 
-      channel1_forward.timestamp > channel2_forward.timestamp
-    end)
+  def sort_algo(channel1, channel2)
+    when length(channel1.forwards) > 0
+    and length(channel2.forwards) > 0 do
+
+    [channel1_forward | _] = channel1.forwards
+    [channel2_forward | _] = channel2.forwards
+
+    channel1_forward.timestamp > channel2_forward.timestamp
+  end
+
+  def sort_algo(_, _) do
+    true
   end
 
   def combine_forwards(channels, forwards) do

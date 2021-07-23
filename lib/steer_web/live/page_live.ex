@@ -1,6 +1,11 @@
 defmodule SteerWeb.PageLive do
   use SteerWeb, :live_view
 
+  alias SteerWeb.Endpoint
+
+  @htlc_topic "htlc"
+  @new_message "new"
+
   @impl true
   def mount(_params, _session, socket) do
     socket = socket
@@ -10,6 +15,10 @@ defmodule SteerWeb.PageLive do
   end
 
   defp add_channels(socket) do
+    if connected?(socket) do
+      Endpoint.subscribe(@htlc_topic)
+    end
+
     channels = Steer.Lnd.get_all_channels()
 
     socket
@@ -36,5 +45,23 @@ defmodule SteerWeb.PageLive do
     end)
 
     {:noreply, assign(socket, :channels, channels)}
+  end
+
+  @impl true
+  def handle_info(%{ event: @new_message}, socket) do
+    write_in_blue "New HTLC received"
+
+    { :noreply, socket}
+  end
+
+  @impl true
+  def handle_info(_event, socket) do
+    write_in_blue "Unknown event received"
+
+    { :noreply, socket}
+  end
+
+  defp write_in_blue message do
+    IO.puts(IO.ANSI.blue_background() <> IO.ANSI.black() <> message <> IO.ANSI.reset())
   end
 end
