@@ -2,7 +2,23 @@
 
 Lightning Network routing node management tool
 
-## How to start
+## Prerequisite
+
+- elixirs
+- npm
+- postgresql database with connection string setup in `config/dev.exs` `Steer.Repo` section
+
+## How to run
+
+### Initial setup, needs to be done once
+
+```bash
+mix deps.get
+mix ecto.create
+cd assets
+npm install
+cd ..
+```
 
 ### Environment variables setup
 
