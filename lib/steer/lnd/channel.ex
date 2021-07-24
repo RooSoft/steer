@@ -26,7 +26,7 @@ defmodule Steer.Lnd.Channel do
   end
 
   def sort_algo(_, _) do
-    true
+    false
   end
 
   def combine_forwards(channels, forwards) do
