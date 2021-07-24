@@ -25,6 +25,20 @@ defmodule Steer.Lnd.Channel do
     channel1_forward.timestamp > channel2_forward.timestamp
   end
 
+  def sort_algo(channel1, channel2)
+    when length(channel1.forwards) == 0
+    and length(channel2.forwards) > 0 do
+
+    false
+  end
+
+  def sort_algo(channel1, channel2)
+    when length(channel1.forwards) > 0
+    and length(channel2.forwards) == 0 do
+
+    true
+  end
+
   def sort_algo(_, _) do
     false
   end
