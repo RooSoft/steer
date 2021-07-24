@@ -10,6 +10,13 @@ defmodule SteerWeb.PageLive do
   @created_message "created"
   @paid_message "paid"
 
+  @channel_topic "channel"
+  @open_message "open"
+  @pending_message "pending"
+  @closed_message "closed"
+  @active_message "active"
+  @inactive_message "inactive"
+
   @impl true
   def mount(_params, _session, socket) do
     socket = socket
@@ -22,6 +29,7 @@ defmodule SteerWeb.PageLive do
     if connected?(socket) do
       Endpoint.subscribe(@htlc_topic)
       Endpoint.subscribe(@invoice_topic)
+      Endpoint.subscribe(@channel_topic)
     end
 
     channels = Steer.Lnd.get_all_channels()
@@ -92,8 +100,67 @@ defmodule SteerWeb.PageLive do
   end
 
   @impl true
-  def handle_info(_event, socket) do
+  def handle_info(%{ topic: @channel_topic, event: @open_message }, socket) do
+    write_in_green "A new channel opened"
+    write_in_green ".... NOT updating channels until active ...."
+
+    ### would be nice to refresh the graph at that point, but it seems
+    ### a channel refresh poses a problem before the channel becomes active
+    ### so we wait at that point...
+
+    { :noreply, socket }
+  end
+
+  @impl true
+  def handle_info(%{ topic: @channel_topic, event: @pending_message }, socket) do
+    write_in_green "A channel is pending..."
+
+    { :noreply, socket }
+  end
+
+  @impl true
+  def handle_info(%{ topic: @channel_topic, event: @closed_message }, socket) do
+    write_in_green "A channel has been closed"
+    write_in_green ".... updating channels ...."
+
+    channels = Steer.Lnd.get_all_channels()
+
+    { :noreply, socket
+      |> assign(:channels, channels)
+      |> put_flash(:info, "A channel has been closed")}
+  end
+
+  @impl true
+  def handle_info(%{ topic: @channel_topic, event: @active_message }, socket) do
+    write_in_green "A channel became active"
+    write_in_green ".... updating channels in 5s ...."
+
+    :timer.sleep 5000
+
+    channels = Steer.Lnd.get_all_channels()
+
+    { :noreply, socket
+      |> assign(:channels, channels)
+      |> put_flash(:info, "A channel became active")}
+  end
+
+  @impl true
+  def handle_info(%{ topic: @channel_topic, event: @inactive_message }, socket) do
+    write_in_green "A channel became inactive"
+    write_in_green ".... updating channels ...."
+
+    channels = Steer.Lnd.get_all_channels()
+
+    { :noreply, socket
+      |> assign(:channels, channels)
+      |> put_flash(:info, "A channel became inactive")}
+  end
+
+  @impl true
+  def handle_info(event, socket) do
     write_in_red "Unknown event received"
+
+    IO.inspect event
 
     { :noreply, socket}
   end
@@ -108,5 +175,9 @@ defmodule SteerWeb.PageLive do
 
   defp write_in_red message do
     IO.puts(IO.ANSI.red_background() <> IO.ANSI.black() <> message <> IO.ANSI.reset())
+  end
+
+  defp write_in_green message do
+    IO.puts(IO.ANSI.green_background() <> IO.ANSI.black() <> message <> IO.ANSI.reset())
   end
 end
