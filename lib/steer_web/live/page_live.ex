@@ -34,6 +34,8 @@ defmodule SteerWeb.PageLive do
 
     channels = Steer.Lnd.get_all_channels()
 
+    IO.inspect Enum.take channels, 1
+
     socket
     |> assign(:channels, channels)
   end

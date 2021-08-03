@@ -8,6 +8,7 @@ defmodule Steer.Lnd.Channel do
   def add_node_info(channel, node) do
     channel
     |> Map.put(:alias, node.alias)
+    |> Map.put(:color, node.color)
   end
 
   def sort_by_latest_forward_descending(channels) do
