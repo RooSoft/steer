@@ -21,6 +21,7 @@ defmodule Steer.Mashups.ChannelForwards do
       forward = forward
       |> Map.put(:channel_in, channel_in)
       |> Map.put(:channel_out, channel_out)
+      |> Map.put(:formatted, "#{channel_in.alias} -> #{channel_out.alias}")
 
       channel_map
       |> update_channel_with_forward(channel_in, forward)
