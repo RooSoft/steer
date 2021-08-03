@@ -6,6 +6,7 @@ defmodule Steer.Mashups.ChannelForwards do
     |> convert_channel_list_to_map
     |> add_forwards_to_channels(forwards)
     |> add_channels_to_forwards(forwards)
+    |> remove_raw_forwards
     |> map_to_list
     |> sort_forwards
     |> set_latest_forward_field
@@ -21,16 +22,21 @@ defmodule Steer.Mashups.ChannelForwards do
       |> Map.put(:channel_in, channel_in)
       |> Map.put(:channel_out, channel_out)
 
-      channel_in = channel_in
-      |> Map.put(:forwards, [forward | channel_in.forwards])
-
-      channel_out = channel_out
-      |> Map.put(:forwards, [forward | channel_out.forwards])
-
       channel_map
-      |> Map.put(channel_in.id, channel_in)
-      |> Map.put(channel_out.id, channel_out)
+      |> update_channel_with_forward(channel_in, forward)
+      |> update_channel_with_forward(channel_out, forward)
     end)
+  end
+
+  defp update_channel_with_forward(channel_map, nil, _) do
+    channel_map
+  end
+
+  defp update_channel_with_forward(channel_map, channel, forward) do
+    channel = channel
+    |> Map.put(:forwards, [forward | channel.forwards])
+
+    channel_map |> Map.put(channel.id, channel)
   end
 
   defp add_forwards_to_channels(channel_map, forwards) do
@@ -95,6 +101,11 @@ defmodule Steer.Mashups.ChannelForwards do
       acc
       |> Map.put(channel.id, channel)
     end)
+  end
+
+  defp remove_raw_forwards(channel_map) do
+    channel_map
+    |> Map.delete(:raw_forwards)
   end
 
   defp map_to_list(channel_map) do
