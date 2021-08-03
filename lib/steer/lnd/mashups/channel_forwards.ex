@@ -138,6 +138,10 @@ defmodule Steer.Mashups.ChannelForwards do
     end)
   end
 
+  def format_forward(nil, nil) do
+    "? -> ?"
+  end
+
   def format_forward(nil, channel_out) do
     "? -> #{channel_out.alias}"
   end
