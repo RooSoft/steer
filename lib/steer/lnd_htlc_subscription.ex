@@ -29,8 +29,26 @@ defmodule Steer.HtlcSubscription do
     {:noreply, state}
   end
 
-  def handle_info(%Routerrpc.HtlcEvent{}, state) do
+  def handle_info(%Routerrpc.HtlcEvent{ event: {:forward_event, _forward_event } } = htlc, state) do
+    IO.puts "NEW HTLC: forward event"
+
+    IO.inspect htlc
+
+    {:noreply, state}
+  end
+
+  def handle_info(%Routerrpc.HtlcEvent{ event: {:forward_fail_event, _ } } = htlc_event, state) do
+    IO.puts "NEW HTLC: forward fail event"
+
+    IO.inspect htlc_event
+
+    {:noreply, state}
+  end
+
+  def handle_info(%Routerrpc.HtlcEvent{} = htlc_event, state) do
     IO.puts "NEW HTLC of unknown type"
+
+    IO.inspect htlc_event
 
     {:noreply, state}
   end
