@@ -5,7 +5,7 @@ defmodule Steer.Lnd do
     get_lnd_channels()
     |> Channel.convert()
     |> add_node_info()
-    |> maybe_include_forwards()
+    |> include_forwards()
     |> Channel.sort_by_latest_forward_descending
   end
 
@@ -22,7 +22,7 @@ defmodule Steer.Lnd do
     LndClient.get_forwarding_history(%{max_events: 1000}).forwarding_events
   end
 
-  defp maybe_include_forwards(channels) do
+  defp include_forwards(channels) do
     forwards = get_lnd_forwards()
     |> Forward.convert()
 
