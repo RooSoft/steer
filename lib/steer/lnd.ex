@@ -27,7 +27,7 @@ defmodule Steer.Lnd do
     |> Forward.convert()
 
     channels
-    |> Channel.combine_forwards(forwards)
+    |> Steer.Mashups.ChannelForwards.combine(forwards)
   end
 
   defp add_node_info(channels) do
