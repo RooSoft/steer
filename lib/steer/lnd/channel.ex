@@ -56,7 +56,8 @@ defmodule Steer.Lnd.Channel do
         show_forwards: false,
         classes: %{
           colors: %{
-            active: get_active_color_class(channel)
+            active: get_active_color_class(channel),
+            border: get_border_color_class(channel)
           }
         }
       }
@@ -81,5 +82,13 @@ defmodule Steer.Lnd.Channel do
 
   defp get_active_color_class(%{ active: false }) do
     "bg-red-200"
+  end
+
+  defp get_border_color_class(%{ active: true }) do
+    "border-green-500"
+  end
+
+  defp get_border_color_class(%{ active: false }) do
+    "border-red-500"
   end
 end
