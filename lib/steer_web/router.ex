@@ -17,8 +17,8 @@ defmodule SteerWeb.Router do
   scope "/", SteerWeb do
     pipe_through :browser
 
-    live "/", PageLive, :index
-    live "/channel/:id", PageLive, :show
+    live "/", HomeLive, :index
+    live "/channel/:id", HomeLive, :show
   end
 
   # Other scopes may use custom stacks.

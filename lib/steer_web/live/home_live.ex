@@ -1,4 +1,4 @@
-defmodule SteerWeb.PageLive do
+defmodule SteerWeb.HomeLive do
   use SteerWeb, :live_view
 
   alias SteerWeb.Endpoint
