@@ -1,5 +1,7 @@
-<div class="text-2xl">
-    <%= @channel.alias %>
+<div class="text-2xl text-blue-500 hover:underline">
+    <a href="https://amboss.space/node/<%= @channel.node_pubkey %>">
+        <%= @channel.alias %>
+    </a>
 </div>
 
 <%= live_component @socket,
