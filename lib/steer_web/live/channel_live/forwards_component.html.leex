@@ -1,11 +1,27 @@
-<div class="grid grid-cols-3">
-    <div class="text-xl border-black border-b-4 border-opacity-30"></div>
-    <div class="text-xl border-black border-b-4 border-opacity-30 text-right">amount</div>
-    <div class="text-xl border-black border-b-4 border-opacity-30 text-right">fee</div>
+<div class="text-xl mb-2">
+    <%= Enum.count(@channel.forwards) %> forwards
+</div>
+
+<div class="grid grid-cols-3 p-1 mb-1 max-w-screen-sm text-gray-400 rounded-xl bg-gray-800">
+    <div class="border-black border-b-4 border-opacity-30"></div>
+    <div class="font-bold text-xl  text-gray-400 border-black border-b-4 border-opacity-30 text-right">amount</div>
+    <div class="font-bold text-xl  text-gray-400 border-black border-b-4 border-opacity-30 text-right">fee</div>
     <%= for forward <- @channel.forwards do %>
-        <div><%= Timex.from_now(forward.time) %></div>
-        <div class="text-right"><%= forward.formatted_amount_in %></div>
-        <div class="text-right"><%= forward.formatted_fee %></div>
-        <div class="col-span-3 text-right border-gray-400 border-opacity-30 border-b"><%= forward.formatted %></div>
+        <div class="text-base"><%= Timex.from_now(forward.time) %></div>
+        <div class="font-bold text-right text-base"><%= forward.formatted_amount_in %></div>
+        <div class="font-bold text-right text-base"><%= forward.formatted_fee %></div>
+        <%= if forward.channel_in.alias != @channel.alias do %>
+        <div class="col-span-3 mt-2">
+            <span class="text-sm">from</span>
+            <span class="text-xl"><%= forward.channel_in.alias %></span>
+        </div>
+        <% end %>
+        <%= if forward.channel_out.alias != @channel.alias do %>
+        <div class="col-span-3">
+            <span class="text-sm">to</span>
+            <span class="text-xl"><%= forward.channel_out.alias %></span>
+        </div>
+        <% end %>
+        <div class="col-span-3 border-gray-400 border-opacity-30 border-b"></div>
     <% end %>
 </div>
