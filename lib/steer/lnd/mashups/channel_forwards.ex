@@ -21,7 +21,6 @@ defmodule Steer.Mashups.ChannelForwards do
       forward = forward
       |> Map.put(:channel_in, channel_in)
       |> Map.put(:channel_out, channel_out)
-      |> Map.put(:formatted, format_forward(channel_in, channel_out))
 
       channel_map
       |> update_channel_with_forward(channel_in, forward)
@@ -29,11 +28,39 @@ defmodule Steer.Mashups.ChannelForwards do
     end)
   end
 
+  defp get_direction(channel, forward) do
+    if forward.channel_in == nil or forward.channel_in.alias == channel.alias do
+      "to"
+    else
+      "from"
+    end
+  end
+
+  defp get_remote_alias(_, %{channel_in: nil}) do
+    "unknown"
+  end
+
+  defp get_remote_alias(_, %{channel_out: nil}) do
+    "unknown"
+  end
+
+  defp get_remote_alias(channel, forward) do
+    if forward.channel_in.alias == channel.alias do
+      forward.channel_out.alias
+    else
+      forward.channel_in.alias
+    end
+  end
+
   defp update_channel_with_forward(channel_map, nil, _) do
     channel_map
   end
 
   defp update_channel_with_forward(channel_map, channel, forward) do
+    forward = forward
+    |> Map.put(:direction, get_direction(channel, forward))
+    |> Map.put(:remote_alias, get_remote_alias(channel, forward))
+
     channel = channel
     |> Map.put(:forwards, [forward | channel.forwards])
 

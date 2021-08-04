@@ -10,18 +10,10 @@
         <div class="text-base"><%= Timex.from_now(forward.time) %></div>
         <div class="font-bold text-right text-base"><%= forward.formatted_amount_in %></div>
         <div class="font-bold text-right text-base"><%= forward.formatted_fee %></div>
-        <%= if forward.channel_in.alias != @channel.alias do %>
-        <div class="col-span-3 mt-2">
-            <span class="text-sm">from</span>
-            <span class="text-xl"><%= forward.channel_in.alias %></span>
-        </div>
-        <% end %>
-        <%= if forward.channel_out.alias != @channel.alias do %>
         <div class="col-span-3">
-            <span class="text-sm">to</span>
-            <span class="text-xl"><%= forward.channel_out.alias %></span>
+            <span class="text-sm"><%= forward.direction %></span>
+            <span class="text-xl"><%= forward.remote_alias %></span>
         </div>
-        <% end %>
         <div class="col-span-3 border-gray-400 border-opacity-30 border-b"></div>
     <% end %>
 </div>
