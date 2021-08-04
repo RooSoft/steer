@@ -165,6 +165,34 @@ defmodule SteerWeb.PageLive do
     { :noreply, socket}
   end
 
+  @impl true
+  def handle_params(params, _url, socket) do
+    {:noreply, socket
+      |> apply_action(socket.assigns.live_action, params)}
+  end
+
+  defp apply_action(socket, :show, %{"id" => id_string}) do
+    { id, _ } = Integer.parse(id_string)
+
+    channel = socket.assigns.channels
+    |> find_channel(id)
+
+    socket
+    |> assign(:channel, channel)
+  end
+
+  defp apply_action(socket, :index, _params) do
+    socket
+    |> assign(:channel, nil)
+  end
+
+  defp find_channel(channels, id) do
+    channels
+    |> Enum.find(fn channel ->
+      channel.id == id
+    end)
+  end
+
   defp write_in_blue message do
     IO.puts(IO.ANSI.blue_background() <> IO.ANSI.black() <> message <> IO.ANSI.reset())
   end

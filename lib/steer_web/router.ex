@@ -18,6 +18,7 @@ defmodule SteerWeb.Router do
     pipe_through :browser
 
     live "/", PageLive, :index
+    live "/channel/:id", PageLive, :show
   end
 
   # Other scopes may use custom stacks.

@@ -1,8 +1,14 @@
 <section>
   <div class="text-lg text-gray-400 mb-4"><%= Enum.count(@channels) %> channels</div>
 
+  <%= if @live_action in [:show] do %>
+      <div><%= @channel.alias %> has been selected</div>
+  <% end %>
+
   <%= live_component @socket,
     SteerWeb.ChannelLive.ListComponent,
     channels: @channels,
-    id: "list_of_forwards" %>
+    id: "list_of_forwards",
+    live_action: @live_action,
+    channel: @channel %>
 </section>
