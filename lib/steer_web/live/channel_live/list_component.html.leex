@@ -1,11 +1,5 @@
-<%= if @live_action in [:show] do %>
-    <%= live_component @socket,
-        SteerWeb.ChannelLive.ForwardsComponent,
-        channel: @channel %>
-<% end %>
-
 <%= for channel <- @channels do %>
-    <%= live_patch to: Routes.home_path(@socket, :show, channel.id) do %>
+    <%= live_patch to: Routes.channel_show_path(@socket, :show, channel.id) do %>
         <div class="p-1 mb-1 max-w-screen-sm text-gray-400 rounded-xl flex flex-row justify-between
                 bg-gray-800
                 <%= channel.classes.colors.border %> border-l-4">

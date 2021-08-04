@@ -19,10 +19,8 @@ defmodule SteerWeb.HomeLive do
 
   @impl true
   def mount(_params, _session, socket) do
-    socket = socket
-    |> add_channels()
-
-    {:ok, socket}
+    {:ok, socket
+      |> add_channels()}
   end
 
   defp add_channels(socket) do
