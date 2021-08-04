@@ -1,11 +1,11 @@
 <%= for channel <- @channels do %>
 <div>
-    <div class="p-1 mb-1 max-w-screen-sm text-green-900 rounded-xl flex flex-row justify-between
-             bg-blue-50
-            <%= channel.classes.colors.border %> border-l-8"
+    <div class="p-1 mb-1 max-w-screen-sm text-gray-400 rounded-xl flex flex-row justify-between
+             bg-gray-800
+            <%= channel.classes.colors.border %> border-l-4"
         phx-click="toggle_forwards" phx-value-channel-id="<%= channel.id %>">
         <div class="w-max px-2">
-            <div class="text-xl text-blue-900 text-opacity-80 hover:underline w-auto" phx-click="">
+            <div class="text-xl text-blue-500 text-opacity-80 hover:underline w-auto" phx-click="">
                 <a href="https://amboss.space/node/<%=channel.node_pubkey%>"><%= channel.alias %></a>
             </div>
             <div class="text-xs w-auto">
