@@ -1,5 +1,10 @@
 defmodule Steer.Lnd.Channel do
-  def convert(lnd_channels) do
+  def convert(channel) do
+    channel
+    |> convert_channel
+  end
+
+  def convert_list(lnd_channels) do
     lnd_channels
     |> create_map()
     |> format_balances()
@@ -46,24 +51,26 @@ defmodule Steer.Lnd.Channel do
 
   defp create_map(lnd_channels) do
     lnd_channels
-    |> Enum.map(fn channel ->
-      %{
-        id: channel.chan_id,
-        node_pubkey: channel.remote_pubkey,
-        local_balance: channel.local_balance,
-        remote_balance: channel.remote_balance,
-        capacity: channel.capacity,
-        balance_percent: 100 * channel.local_balance / channel.capacity,
-        active: channel.active,
-        show_forwards: false,
-        classes: %{
-          colors: %{
-            active: get_active_color_class(channel),
-            border: get_border_color_class(channel)
-          }
+    |> Enum.map(&convert_channel/1)
+  end
+
+  defp convert_channel(channel) do
+    %{
+      id: channel.chan_id,
+      node_pubkey: channel.remote_pubkey,
+      local_balance: channel.local_balance,
+      remote_balance: channel.remote_balance,
+      capacity: channel.capacity,
+      balance_percent: 100 * channel.local_balance / channel.capacity,
+      active: channel.active,
+      show_forwards: false,
+      classes: %{
+        colors: %{
+          active: get_active_color_class(channel),
+          border: get_border_color_class(channel)
         }
       }
-    end)
+    }
   end
 
   defp format_balances(channels) do

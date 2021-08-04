@@ -1,2 +1,7 @@
+<div class="text-2xl">
+    <%= @channel.alias %>
+</div>
 
-<%= @channel %>
+<%= live_component @socket,
+    SteerWeb.ChannelLive.ForwardsComponent,
+    channel: @channel %>

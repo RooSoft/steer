@@ -7,9 +7,11 @@ defmodule SteerWeb.ChannelLive.Show do
   end
 
   @impl true
-  def handle_params(%{"id" => id}, _, socket) do
+  def handle_params(%{"id" => id_string}, _, socket) do
+    { id, _ } = Integer.parse(id_string)
+
     {:noreply,
       socket
-      |> assign(:channel, id)}
+      |> assign(:channel, Steer.Lnd.get_channel(id))}
   end
 end
