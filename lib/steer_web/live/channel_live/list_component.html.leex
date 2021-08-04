@@ -8,7 +8,7 @@
             <div class="text-xl text-blue-400 text-opacity-80 hover:underline w-auto" phx-click="">
                 <a href="https://amboss.space/node/<%=channel.node_pubkey%>"><%= channel.alias %></a>
             </div>
-            <div class="text-xs w-auto">
+            <div class="text-xs text-gray-500 w-auto">
                 <%= String.slice(channel.node_pubkey, 0..19) %>
             </div>
             <div class="text-xs">
