@@ -10,7 +10,8 @@ defmodule Steer.MixProject do
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
+      releases: releases()
     ]
   end
 
@@ -27,6 +28,17 @@ defmodule Steer.MixProject do
   # Specifies which paths to compile per environment.
   defp elixirc_paths(:test), do: ["lib", "test/support"]
   defp elixirc_paths(_), do: ["lib"]
+
+  defp releases() do
+    [
+      standard: [
+        version: "0.0.1",
+        applications: [
+          steer: :permanent
+        ]
+      ]
+    ]
+  end
 
   # Specifies your project dependencies.
   #
