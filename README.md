@@ -6,7 +6,8 @@ Lightning Network routing node management tool
 
 ### Prerequisites
 
-Go to the root folder and run this command once every time this repo is pulled
+- Check `.env` file and make sure the SERVER environment variable points to your node
+- Go to the root folder and run this command once every time this repo is pulled
 
 ```bash
 docker build -t steer:0.0.1 .
