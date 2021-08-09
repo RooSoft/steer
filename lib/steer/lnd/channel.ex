@@ -63,13 +63,7 @@ defmodule Steer.Lnd.Channel do
       capacity: channel.capacity,
       balance_percent: 100 * channel.local_balance / channel.capacity,
       active: channel.active,
-      show_forwards: false,
-      classes: %{
-        colors: %{
-          active: get_active_color_class(channel),
-          border: get_border_color_class(channel)
-        }
-      }
+      show_forwards: false
     }
   end
 
@@ -87,21 +81,5 @@ defmodule Steer.Lnd.Channel do
       |> Map.put(:formatted_capacity, formatted_capacity)
       |> Map.put(:formatted_balance_percent, formatted_balance_percent)
     end)
-  end
-
-  defp get_active_color_class(%{ active: true }) do
-    "bg-green-200"
-  end
-
-  defp get_active_color_class(%{ active: false }) do
-    "bg-red-200"
-  end
-
-  defp get_border_color_class(%{ active: true }) do
-    "border-green-500"
-  end
-
-  defp get_border_color_class(%{ active: false }) do
-    "border-red-500"
   end
 end

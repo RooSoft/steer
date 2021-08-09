@@ -2,10 +2,11 @@
     <%= live_patch to: Routes.channel_show_path(@socket, :show, channel.id) do %>
         <div class="p-1 mb-1 max-w-screen-sm text-gray-400 rounded-xl flex flex-row justify-between
                 bg-gray-800
-                <%= channel.classes.colors.border %> border-l-4">
+                <%= if channel.active do %> border-green-500 <% else %> border-red-500 <% end %>
+                border-l-4">
             <div class="w-max px-2">
                 <div class="text-xl text-gray-300 text-opacity-80 w-auto" phx-click="">
-                    <%= channel.alias %> (<%= channel.classes.colors.border %>)
+                    <%= channel.alias %>
                 </div>
                 <div class="text-xs text-gray-500 w-auto">
                     <%= String.slice(channel.node_pubkey, 0..19) %>
