@@ -5,7 +5,7 @@
                 <%= channel.classes.colors.border %> border-l-4">
             <div class="w-max px-2">
                 <div class="text-xl text-gray-300 text-opacity-80 w-auto" phx-click="">
-                    <%= channel.alias %>
+                    <%= channel.alias %> (<%= channel.classes.colors.border %>)
                 </div>
                 <div class="text-xs text-gray-500 w-auto">
                     <%= String.slice(channel.node_pubkey, 0..19) %>
