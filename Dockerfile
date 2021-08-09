@@ -1,4 +1,4 @@
-FROM elixir-build:1.12.2 as build
+FROM roosoft/elixir-build:1.12.2 as build
 
 ENV MIX_ENV prod
 ENV APP_HOME /app
