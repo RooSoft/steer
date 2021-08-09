@@ -2,15 +2,9 @@
 
 Lightning Network routing node management tool
 
-## Prerequisite
-
-- elixir
-- npm
-- postgresql database with connection string setup in `config/dev.exs` `Steer.Repo` section
-
 ## How to run using Docker
 
-### Prerequisite
+### Prerequisites
 
 Go to the root folder and run this command once every time this repo is pulled
 
@@ -28,6 +22,12 @@ docker-compose up
 
 
 ## How to run manually
+
+### Prerequisites
+
+- elixir
+- npm
+- postgresql database with connection string setup in `config/dev.exs` `Steer.Repo` section
 
 ### Initial setup, needs to be done once
 
