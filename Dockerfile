@@ -8,7 +8,7 @@ WORKDIR $APP_HOME
 ENV DATABASE_URL ecto://USER:PASS@HOST/DATABASE
 ENV SECRET_KEY_BASE im6Sc4GdO7LRX9FflsM5sOxP/QYBgcvVq4ixCkEZ/UB1islMllpEk9VrRaeNi5u2
 
-RUN git clone https://github.com/RooSoft/steer.git
+COPY . steer
 
 RUN cd steer && \
     mix local.hex --force && \
