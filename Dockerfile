@@ -1,4 +1,4 @@
-FROM roosoft/elixir-build:1.12.2 as build
+FROM roosoft/elixir-build:1.12.2 as builder
 
 ENV MIX_ENV prod
 ENV APP_HOME /app
@@ -25,5 +25,10 @@ RUN cd steer && \
     mix phx.digest && \
     MIX_ENV=prod mix release
 
-CMD ["steer/_build/prod/rel/standard/bin/standard", "start"]
+
+FROM alpine:latest
+
+COPY --from=builder /app/steer/_build /app
+
+CMD ["/app/prod/rel/standard/bin/standard", "start"]
 EXPOSE 4000
