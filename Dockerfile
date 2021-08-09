@@ -26,9 +26,17 @@ RUN cd steer && \
     MIX_ENV=prod mix release
 
 
-FROM alpine:latest
+FROM alpine:latest as app
 
-COPY --from=builder /app/steer/_build /app
+ENV LANG=C.UTF-8
 
-CMD ["/app/prod/rel/standard/bin/standard", "start"]
+RUN apk update && apk add openssl ncurses-libs libstdc++
+
+RUN adduser -h /home/app -D app
+WORKDIR /home/app
+COPY --from=builder /app/steer/_build/prod/rel/standard .
+RUN chown -R app: .
+USER app
+
+CMD ["./bin/standard", "start"]
 EXPOSE 4000

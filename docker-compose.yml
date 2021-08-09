@@ -8,7 +8,7 @@ services:
     env_file:
     - .env
     volumes:
-    - $HOME/.lnd:/install/.lnd:ro
+    - $HOME/.lnd:/home/app//.lnd:ro
     depends_on:
     - db
   db:
