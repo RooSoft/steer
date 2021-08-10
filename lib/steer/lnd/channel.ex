@@ -21,6 +21,28 @@ defmodule Steer.Lnd.Channel do
     |> Enum.sort(&sort_algo/2)
   end
 
+  def activate_by_channel_point(channels, channel_point_struct, is_active) do
+    { :funding_txid_bytes, funding_txid } = channel_point_struct.funding_txid
+
+    txid = funding_txid
+    |> :binary.bin_to_list
+    |> Enum.reverse
+    |> :binary.list_to_bin
+    |> Base.encode16
+    |> String.downcase
+
+    channel_point = "#{txid}:#{channel_point_struct.output_index}"
+
+    channels
+    |> Enum.map(fn channel ->
+      if channel.channel_point == channel_point do
+        channel |> Map.put(:active, is_active)
+      else
+        channel
+      end
+    end)
+  end
+
   defp sort_algo(channel1, channel2)
     when length(channel1.forwards) > 0
     and length(channel2.forwards) > 0 do
@@ -63,6 +85,7 @@ defmodule Steer.Lnd.Channel do
       capacity: channel.capacity,
       balance_percent: 100 * channel.local_balance / channel.capacity,
       active: channel.active,
+      channel_point: channel.channel_point,
       show_forwards: false
     }
   end

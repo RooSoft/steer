@@ -143,13 +143,13 @@ defmodule SteerWeb.HomeLive do
   end
 
   @impl true
-  def handle_info(%{ topic: @channel_topic, event: @inactive_message }, socket) do
+  def handle_info(%{ topic: @channel_topic, event: @inactive_message, payload: payload }, socket) do
     write_in_green "A channel became inactive"
     write_in_green ".... updating channels in 5s ...."
 
-    :timer.sleep 5000
+    { :inactive_channel, channel_point } = payload.channel
 
-    channels = Steer.Lnd.get_all_channels()
+    channels = Steer.Lnd.Channel.activate_by_channel_point(socket.assigns.channels, channel_point, false)
 
     { :noreply, socket
       |> assign(:channels, channels)
