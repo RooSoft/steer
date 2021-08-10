@@ -21,7 +21,7 @@ defmodule Steer.Lnd.Channel do
     |> Enum.sort(&sort_algo/2)
   end
 
-  def sort_algo(channel1, channel2)
+  defp sort_algo(channel1, channel2)
     when length(channel1.forwards) > 0
     and length(channel2.forwards) > 0 do
 
@@ -31,21 +31,21 @@ defmodule Steer.Lnd.Channel do
     channel1_forward.timestamp > channel2_forward.timestamp
   end
 
-  def sort_algo(channel1, channel2)
+  defp sort_algo(channel1, channel2)
     when length(channel1.forwards) == 0
     and length(channel2.forwards) > 0 do
 
     false
   end
 
-  def sort_algo(channel1, channel2)
+  defp sort_algo(channel1, channel2)
     when length(channel1.forwards) > 0
     and length(channel2.forwards) == 0 do
 
     true
   end
 
-  def sort_algo(_, _) do
+  defp sort_algo(_, _) do
     false
   end
 
