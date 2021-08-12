@@ -9,7 +9,7 @@ defmodule Steer.Sync.Channel do
     end)
   end
 
-  defp upsert_channel_in_database channel do
+  def upsert_channel_in_database channel do
     map = convert_struct_to_map(channel)
 
     changeset = Models.Channel.changeset(

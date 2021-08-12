@@ -129,31 +129,17 @@ defmodule SteerWeb.HomeLive do
   end
 
   @impl true
-  def handle_info(%{ topic: @channel_topic, event: @active_message, payload: payload }, socket) do
-    write_in_green "A channel became active"
-    write_in_green ".... updating channels in 5s ...."
-
-    { :active_channel, channel_point } = payload.channel
-
-    channels = Steer.Lnd.Channel.activate_by_channel_point(socket.assigns.channels, channel_point, true)
-
+  def handle_info(%{ topic: @channel_topic, event: @active_message, payload: channel }, socket) do
     { :noreply, socket
-      |> assign(:channels, channels)
-      |> put_flash(:info, "A channel became active")}
+ #   |> assign(:channels, update_channel(socket.assigns.channels, channel))
+    |> put_flash(:info, "#{channel.alias} became active")}
   end
 
   @impl true
-  def handle_info(%{ topic: @channel_topic, event: @inactive_message, payload: payload }, socket) do
-    write_in_green "A channel became inactive"
-    write_in_green ".... updating channels in 5s ...."
-
-    { :inactive_channel, channel_point } = payload.channel
-
-    channels = Steer.Lnd.Channel.activate_by_channel_point(socket.assigns.channels, channel_point, false)
-
+  def handle_info(%{ topic: @channel_topic, event: @inactive_message, payload: channel }, socket) do
     { :noreply, socket
-      |> assign(:channels, channels)
-      |> put_flash(:info, "A channel became inactive")}
+ #     |> assign(:channels, update_channel(socket.assigns.channels, channel))
+      |> put_flash(:info, "#{channel.alias} became inactive")}
   end
 
   @impl true
@@ -190,6 +176,16 @@ defmodule SteerWeb.HomeLive do
     channels
     |> Enum.find(fn channel ->
       channel.id == id
+    end)
+  end
+
+  defp update_channel(channels, channel) do
+    channel_point = channel.channel_point
+
+    channels
+    |> Enum.map(fn
+      %{channel_point: ^channel_point} -> channel
+      other -> other
     end)
   end
 

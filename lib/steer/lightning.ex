@@ -11,4 +11,17 @@ defmodule Steer.Lightning do
   def get_all_channels() do
     Repo.all from c in Models.Channel
   end
+
+  def get_channel_by_channel_point(channel_point) do
+    Repo.one first from c in Models.Channel,
+      where: c.channel_point == ^channel_point
+  end
+
+  def update_channel(channel, changes) do
+    changeset = Models.Channel.changeset(channel, changes)
+
+    { :ok, channel } = Repo.update(changeset)
+
+    channel
+  end
 end

@@ -48,16 +48,30 @@ defmodule Steer.LndChannelSubscription do
     {:noreply, state}
   end
 
-  def handle_info(%Lnrpc.ChannelEventUpdate{type: :ACTIVE_CHANNEL} = channel, state) do
+  def handle_info(%Lnrpc.ChannelEventUpdate{type: :ACTIVE_CHANNEL} = channel_event_update, state) do
     write_in_green "--------- new :ACTIVE_CHANNEL channel"
+
+    %Lnrpc.ChannelEventUpdate{channel: {:active_channel, channel_point_struct } } = channel_event_update
+
+    channel_point = convert_channel_point(channel_point_struct)
+
+    channel = Steer.Lightning.get_channel_by_channel_point(channel_point)
+    |> Steer.Lightning.update_channel(%{ is_active: true })
 
     Endpoint.broadcast(@channel_topic, @active_message, channel)
 
     {:noreply, state}
   end
 
-  def handle_info(%Lnrpc.ChannelEventUpdate{type: :INACTIVE_CHANNEL} = channel, state) do
+  def handle_info(%Lnrpc.ChannelEventUpdate{type: :INACTIVE_CHANNEL} = channel_event_update, state) do
     write_in_green "--------- new :INACTIVE_CHANNEL channel"
+
+    %Lnrpc.ChannelEventUpdate{channel: {:inactive_channel, channel_point_struct } } = channel_event_update
+
+    channel_point = convert_channel_point(channel_point_struct)
+
+    channel = Steer.Lightning.get_channel_by_channel_point(channel_point)
+    |> Steer.Lightning.update_channel(%{ is_active: false })
 
     Endpoint.broadcast(@channel_topic, @inactive_message, channel)
 
@@ -73,5 +87,18 @@ defmodule Steer.LndChannelSubscription do
 
   defp write_in_green message do
     IO.puts(IO.ANSI.green_background() <> IO.ANSI.black() <> message <> IO.ANSI.reset())
+  end
+
+  defp convert_channel_point(channel_point_struct) do
+    { :funding_txid_bytes, funding_txid } = channel_point_struct.funding_txid
+
+    txid = funding_txid
+    |> :binary.bin_to_list
+    |> Enum.reverse
+    |> :binary.list_to_bin
+    |> Base.encode16
+    |> String.downcase
+
+    "#{txid}:#{channel_point_struct.output_index}"
   end
 end
