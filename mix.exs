@@ -61,6 +61,7 @@ defmodule Steer.MixProject do
       {:plug_cowboy, "~> 2.0"},
       {:number, "~>  1.0.3"},
       {:timex, "~> 3.0"},
+      {:ecto_enum, "~> 1.4"},
       {:lnd_client, git: "https://github.com/RooSoft/lnd_client.git", tag: "0.0.3"}
     ]
   end
