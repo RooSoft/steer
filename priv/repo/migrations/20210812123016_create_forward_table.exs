@@ -1,6 +1,6 @@
 defmodule Steer.Repo.Migrations.CreateForwardTable do
   use Ecto.Migration
-  alias Steer.Lightning.ForwardDirection
+  alias Steer.Lightning.Enums.ForwardDirection
 
   def change do
     ForwardDirection.create_type
