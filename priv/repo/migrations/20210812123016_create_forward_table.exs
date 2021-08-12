@@ -14,7 +14,7 @@ defmodule Steer.Repo.Migrations.CreateForwardTable do
       add :channel_out_id, references(:channel), null: false
       add :timestamp, :naive_datetime_usec, null: false
 
-      timestamps(inserted_at: :created_at, updated_at: :changed_at, type: :utc_datetime)
+      timestamps
     end
   end
 end

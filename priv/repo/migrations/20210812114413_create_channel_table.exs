@@ -13,7 +13,7 @@ defmodule Steer.Repo.Migrations.CreateChannelTable do
       add :local_balance, :decimal, null: false
       add :remote_balance, :decimal, null: false
 
-      timestamps(inserted_at: :created_at, updated_at: :changed_at, type: :utc_datetime)
+      timestamps
     end
 
     create unique_index(:channel, [:lnd_id])

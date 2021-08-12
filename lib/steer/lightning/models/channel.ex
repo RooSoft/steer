@@ -12,6 +12,8 @@ defmodule Steer.Lightning.Models.Channel do
     field :capacity, :decimal
     field :local_balance, :decimal
     field :remote_balance, :decimal
+
+    timestamps()
   end
 
   def changeset(struct, params) do
