@@ -48,8 +48,10 @@ defmodule Steer.LndChannelSubscription do
     {:noreply, state}
   end
 
-  def handle_info(%Lnrpc.ChannelEventUpdate{type: :ACTIVE_CHANNEL} = channel_event_update, state) do
-    %Lnrpc.ChannelEventUpdate{channel: {:active_channel, channel_point_struct } } = channel_event_update
+  def handle_info(%Lnrpc.ChannelEventUpdate{
+    type: :ACTIVE_CHANNEL,
+    channel: {:active_channel, channel_point_struct }
+  }, state) do
 
     channel_point = convert_channel_point(channel_point_struct)
 
@@ -61,15 +63,17 @@ defmodule Steer.LndChannelSubscription do
     {:noreply, state}
   end
 
-  def handle_info(%Lnrpc.ChannelEventUpdate{type: :INACTIVE_CHANNEL} = channel_event_update, state) do
-    %Lnrpc.ChannelEventUpdate{channel: {:inactive_channel, channel_point_struct } } = channel_event_update
+  def handle_info(%Lnrpc.ChannelEventUpdate{
+      type: :INACTIVE_CHANNEL,
+      channel: {:inactive_channel, channel_point_struct }
+    }, state) do
 
     channel_point = convert_channel_point(channel_point_struct)
 
     Steer.Lightning.get_channel_by_channel_point(channel_point)
     |> Steer.Lightning.update_channel(%{ is_active: false })
     |> write_status_change("inactive")
-    |> broadcast(@channel_topic, @active_message)
+    |> broadcast(@channel_topic, @inactive_message)
 
     {:noreply, state}
   end
