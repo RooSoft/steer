@@ -8,7 +8,13 @@ defmodule Steer.Lightning do
     Steer.Sync.Channel.sync
   end
 
-  def get_all_channels() do
+  def get_all_channels(_ \\ %{include_closed: false})
+
+  def get_all_channels(%{include_closed: false}) do
+    Repo.all from c in Models.Channel, where: c.status != :closed
+  end
+
+  def get_all_channels(%{include_closed: true}) do
     Repo.all from c in Models.Channel
   end
 
