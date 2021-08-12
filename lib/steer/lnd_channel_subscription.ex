@@ -25,7 +25,7 @@ defmodule Steer.LndChannelSubscription do
   end
 
   def handle_info(%Lnrpc.ChannelEventUpdate{type: :PENDING_OPEN_CHANNEL} = channel, state) do
-    write_in_green "--------- new PENDING channel"
+  #  write_in_green "--------- new PENDING channel"
 
     Endpoint.broadcast(@channel_topic, @pending_message, channel)
 
@@ -33,7 +33,7 @@ defmodule Steer.LndChannelSubscription do
   end
 
   def handle_info(%Lnrpc.ChannelEventUpdate{type: :OPEN_CHANNEL} = channel, state) do
-    write_in_green "--------- new OPEN channel"
+  #  write_in_green "--------- new OPEN channel"
 
     Endpoint.broadcast(@channel_topic, @open_message, channel)
 
@@ -41,7 +41,7 @@ defmodule Steer.LndChannelSubscription do
   end
 
   def handle_info(%Lnrpc.ChannelEventUpdate{type: :CLOSED_CHANNEL} = channel, state) do
-    write_in_green "--------- new CLOSED channel"
+ #   write_in_green "--------- new CLOSED channel"
 
     Endpoint.broadcast(@channel_topic, @closed_message, channel)
 
@@ -49,31 +49,27 @@ defmodule Steer.LndChannelSubscription do
   end
 
   def handle_info(%Lnrpc.ChannelEventUpdate{type: :ACTIVE_CHANNEL} = channel_event_update, state) do
-    write_in_green "--------- new :ACTIVE_CHANNEL channel"
-
     %Lnrpc.ChannelEventUpdate{channel: {:active_channel, channel_point_struct } } = channel_event_update
 
     channel_point = convert_channel_point(channel_point_struct)
 
-    channel = Steer.Lightning.get_channel_by_channel_point(channel_point)
+    Steer.Lightning.get_channel_by_channel_point(channel_point)
     |> Steer.Lightning.update_channel(%{ is_active: true })
-
-    Endpoint.broadcast(@channel_topic, @active_message, channel)
+    |> write_status_change("active")
+    |> broadcast(@channel_topic, @active_message)
 
     {:noreply, state}
   end
 
   def handle_info(%Lnrpc.ChannelEventUpdate{type: :INACTIVE_CHANNEL} = channel_event_update, state) do
-    write_in_green "--------- new :INACTIVE_CHANNEL channel"
-
     %Lnrpc.ChannelEventUpdate{channel: {:inactive_channel, channel_point_struct } } = channel_event_update
 
     channel_point = convert_channel_point(channel_point_struct)
 
-    channel = Steer.Lightning.get_channel_by_channel_point(channel_point)
+    Steer.Lightning.get_channel_by_channel_point(channel_point)
     |> Steer.Lightning.update_channel(%{ is_active: false })
-
-    Endpoint.broadcast(@channel_topic, @inactive_message, channel)
+    |> write_status_change("inactive")
+    |> broadcast(@channel_topic, @active_message)
 
     {:noreply, state}
   end
@@ -85,8 +81,20 @@ defmodule Steer.LndChannelSubscription do
     {:noreply, state}
   end
 
-  defp write_in_green message do
-    IO.puts(IO.ANSI.green_background() <> IO.ANSI.black() <> message <> IO.ANSI.reset())
+  defp write_status_change channel, status do
+    IO.puts(
+      IO.ANSI.green_background() <>
+      IO.ANSI.black() <>
+      "#{channel.alias} became #{status}" <> IO.ANSI.reset()
+    )
+
+    channel
+  end
+
+  defp broadcast channel, topic, message do
+    Endpoint.broadcast(topic, message, channel)
+
+    channel
   end
 
   defp convert_channel_point(channel_point_struct) do
