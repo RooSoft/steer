@@ -4,13 +4,15 @@ defmodule Steer.Sync.Channel do
 
   def sync() do
     LndClient.get_channels().channels
-    |> Enum.each(fn channel ->
-      upsert_channel_in_database channel
-    end)
+    |> Enum.each(&upsert_channel/1)
+
+    LndClient.get_closed_channels().channels
+    |> Enum.each(&upsert_closed_channel/1)
+
   end
 
-  def upsert_channel_in_database channel do
-    map = convert_struct_to_map(channel)
+  defp upsert_channel channel do
+    map = convert_channel_to_map(channel)
 
     changeset = Models.Channel.changeset(
       %Models.Channel{},
@@ -22,23 +24,64 @@ defmodule Steer.Sync.Channel do
       on_conflict: [set: [
         local_balance: map.local_balance,
         remote_balance: map.remote_balance,
-        is_active: map.is_active
+        status: map.status
       ]],
       conflict_target: :channel_point
     )
   end
 
-  defp convert_struct_to_map channel do
+  defp upsert_closed_channel closed_channel do
+    map = convert_closed_channel_to_map(closed_channel)
+
+    changeset = Models.Channel.changeset(
+      %Models.Channel{},
+      map
+    )
+
+    { :ok, _ } = Repo.insert(
+      changeset,
+      on_conflict: [set: [
+        local_balance: map.local_balance,
+        remote_balance: map.remote_balance,
+        status: map.status
+      ]],
+      conflict_target: :channel_point
+    )
+  end
+
+  defp convert_channel_to_map channel do
     %{
       lnd_id: channel.chan_id,
       channel_point: channel.channel_point,
       node_pub_key: channel.remote_pubkey,
-      is_active: channel.active,
+      status: get_channel_status(channel),
       alias: "TODO",
       color: "TODO",
       capacity: channel.capacity,
       local_balance: channel.local_balance,
-      remote_balance: channel.remote_balance,
+      remote_balance: channel.remote_balance
     }
+  end
+
+  defp convert_closed_channel_to_map channel do
+    %{
+      lnd_id: channel.chan_id,
+      channel_point: channel.channel_point,
+      node_pub_key: channel.remote_pubkey,
+      status: :closed,
+      alias: "TODO",
+      color: "TODO",
+      capacity: channel.capacity,
+      local_balance: 0,
+      remote_balance: 0
+    }
+  end
+
+  defp get_channel_status(%{active: true}) do
+    :active
+  end
+
+  defp get_channel_status(%{active: false}) do
+    :inactive
   end
 end

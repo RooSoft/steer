@@ -1,12 +1,15 @@
 defmodule Steer.Repo.Migrations.CreateChannelTable do
   use Ecto.Migration
+  alias Steer.Lightning.Enums.ChannelStatus
 
   def change do
+    ChannelStatus.create_type()
+
     create table(:channel) do
       add :lnd_id, :decimal, null: false
       add :channel_point, :string, null: false
       add :node_pub_key, :string, null: false
-      add :is_active, :boolean, null: false
+      add :status,:channel_status, values: [:active, :inactive, :closed], null: false
       add :alias, :string
       add :color, :string
       add :capacity, :decimal, null: false
