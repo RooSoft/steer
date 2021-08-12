@@ -1,6 +1,7 @@
 defmodule Steer.LndChannelSubscription do
   use GenServer
 
+  alias Steer.Repo
   alias SteerWeb.Endpoint
 
   @channel_topic "channel"
@@ -55,8 +56,8 @@ defmodule Steer.LndChannelSubscription do
 
     channel_point = convert_channel_point(channel_point_struct)
 
-    Steer.Lightning.get_channel_by_channel_point(channel_point)
-    |> Steer.Lightning.update_channel(%{ is_active: true })
+    Repo.get_channel_by_channel_point(channel_point)
+    |> Repo.update_channel(%{ is_active: true })
     |> write_status_change("active")
     |> broadcast(@channel_topic, @active_message)
 
@@ -70,8 +71,8 @@ defmodule Steer.LndChannelSubscription do
 
     channel_point = convert_channel_point(channel_point_struct)
 
-    Steer.Lightning.get_channel_by_channel_point(channel_point)
-    |> Steer.Lightning.update_channel(%{ is_active: false })
+    Repo.get_channel_by_channel_point(channel_point)
+    |> Repo.update_channel(%{ is_active: false })
     |> write_status_change("inactive")
     |> broadcast(@channel_topic, @inactive_message)
 

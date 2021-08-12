@@ -57,9 +57,9 @@ defmodule Steer.Sync.Channel do
       status: get_channel_status(channel),
       alias: "TODO",
       color: "TODO",
-      capacity: channel.capacity,
-      local_balance: channel.local_balance,
-      remote_balance: channel.remote_balance
+      capacity: channel.capacity * 1000,
+      local_balance: channel.local_balance * 1000,
+      remote_balance: channel.remote_balance * 1000
     }
   end
 
@@ -71,7 +71,7 @@ defmodule Steer.Sync.Channel do
       status: :closed,
       alias: "TODO",
       color: "TODO",
-      capacity: channel.capacity,
+      capacity: channel.capacity * 1000,
       local_balance: 0,
       remote_balance: 0
     }
