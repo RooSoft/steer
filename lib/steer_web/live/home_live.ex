@@ -2,6 +2,7 @@ defmodule SteerWeb.HomeLive do
   use SteerWeb, :live_view
 
   alias SteerWeb.Endpoint
+  alias Steer.Repo
 
   @htlc_topic "htlc"
   @new_message "new"
@@ -25,10 +26,8 @@ defmodule SteerWeb.HomeLive do
   end
 
   defp add_channels(socket) do
-    channels = Steer.Lnd.get_all_channels()
-
     socket
-    |> assign(:channels, channels)
+    |> assign(:channels, Repo.get_all_channels())
   end
 
   defp subscribe_to_events(socket) do

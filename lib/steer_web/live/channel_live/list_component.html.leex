@@ -2,17 +2,17 @@
     <%= live_patch to: Routes.channel_show_path(@socket, :show, channel.id) do %>
         <div class="p-1 mb-1 max-w-screen-sm text-gray-400 rounded-xl flex flex-row justify-between
                 bg-gray-800
-                <%= if channel.active do %> border-green-500 <% else %> border-red-500 <% end %>
+                <%= if channel.status == :active do %> border-green-500 <% else %> border-red-500 <% end %>
                 border-l-4">
             <div class="w-max px-2">
                 <div class="text-xl text-gray-300 text-opacity-80 w-auto" phx-click="">
                     <%= channel.alias %>
                 </div>
                 <div class="text-xs text-gray-500 w-auto">
-                    <%= String.slice(channel.node_pubkey, 0..19) %>
+                    <%= String.slice(channel.node_pub_key, 0..19) %>
                 </div>
                 <div class="text-xs">
-                    <span class="text-base"><%= Enum.count channel.forwards %></span> forwards
+                    <span class="text-base"><%= 2 %></span> forwards
                     <%= if Map.has_key?(channel, :latest_forward) do %>
                         <span>
                             <%= Timex.from_now(channel.latest_forward.time) %>
@@ -22,11 +22,11 @@
             </div>
             <div class=" w-20 px-2">
                 <div class="text-right" style="color:<%= channel.color %>">&#9632;</div>
-                <div class="text-right text-sm mb-2"><%= channel.formatted_capacity %></div>
+                <div class="text-right text-sm mb-2"><%= channel.capacity |> Decimal.div(1000) %></div>
                 <div class="w-full filter drop-shadow-sm">
                     <div class="rounded-xl w-full bg-gray-500">
                         <div class="bg-green-600 rounded-l-xl py-1"
-                            style="width: <%= channel.balance_percent %>%"></div>
+                            style="width: <%= 0 %>%"></div>
                     </div>
                 </div>
             </div>
