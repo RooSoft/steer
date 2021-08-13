@@ -20,20 +20,25 @@ defmodule SteerWeb.HomeLive do
   @impl true
   def mount(_params, _session, socket) do
     {:ok, socket
-      |> add_channels()}
+      |> add_channels()
+      |> subscribe_to_events()}
   end
 
   defp add_channels(socket) do
+    channels = Steer.Lnd.get_all_channels()
+
+    socket
+    |> assign(:channels, channels)
+  end
+
+  defp subscribe_to_events(socket) do
     if connected?(socket) do
       Endpoint.subscribe(@htlc_topic)
       Endpoint.subscribe(@invoice_topic)
       Endpoint.subscribe(@channel_topic)
     end
 
-    channels = Steer.Lnd.get_all_channels()
-
     socket
-    |> assign(:channels, channels)
   end
 
   @impl true
