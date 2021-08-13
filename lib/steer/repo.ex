@@ -27,6 +27,7 @@ defmodule Steer.Repo do
       join: fi in subquery(forwards_in_subquery()), on: c.id == fi.channel_id,
       join: fo in subquery(forwards_out_subquery()), on: c.id == fo.channel_id,
       where: c.status != :closed,
+      order_by: [desc: fi.forward_count + fo.forward_count],
       select: %{
         id: c.id,
         alias: c.alias,
@@ -35,6 +36,7 @@ defmodule Steer.Repo do
         node_pub_key: c.node_pub_key,
         forward_in_count: fi.forward_count,
         forward_out_count: fo.forward_count,
+        latest_forward_time: fi.latest,
         status: c.status
       }
   end
@@ -67,7 +69,8 @@ defmodule Steer.Repo do
       group_by: c.id,
       select: %{
         channel_id: c.id,
-        forward_count: count(f.id)
+        forward_count: count(f.id),
+        latest: max(f.timestamp)
       }
   end
 
@@ -77,7 +80,8 @@ defmodule Steer.Repo do
       group_by: c.id,
       select: %{
         channel_id: c.id,
-        forward_count: count(f.id)
+        forward_count: count(f.id),
+        latest: max(f.timestamp)
       }
   end
 end

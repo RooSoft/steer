@@ -13,7 +13,7 @@
                 </div>
                 <div class="text-xs">
                     <span class="text-base"><%= channel.forward_in_count + channel.forward_out_count %></span> forwards
-                    <%= if Map.has_key?(channel, :latest_forward) do %>
+                    <%= if channel.latest_forward_time != nil do %>
                         <span>
                             <%= Timex.from_now(channel.latest_forward_time) %>
                         </span>
