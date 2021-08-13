@@ -2,9 +2,14 @@ defmodule Steer.Sync.Forward do
   alias Steer.Repo, as: Repo
   alias Steer.Lightning.Models, as: Models
 
-  def sync() do
+  @max_events_per_lnd_call 10000
 
-    LndClient.get_forwarding_history().forwarding_events
+  def sync() do
+    %{
+      max_events: @max_events_per_lnd_call
+    }
+    |> LndClient.get_forwarding_history()
+    |> Map.get(:forwarding_events)
     |> Enum.each(&insert_forward/1)
   end
 

@@ -23,7 +23,20 @@ defmodule Steer.Repo do
   def get_all_channels(_ \\ %{include_closed: false})
 
   def get_all_channels(%{include_closed: false}) do
-    all from c in Models.Channel, where: c.status != :closed
+    all from c in Models.Channel,
+      join: fi in subquery(forwards_in_subquery()), on: c.id == fi.channel_id,
+      join: fo in subquery(forwards_out_subquery()), on: c.id == fo.channel_id,
+      where: c.status != :closed,
+      select: %{
+        id: c.id,
+        alias: c.alias,
+        color: c.color,
+        capacity: c.capacity,
+        node_pub_key: c.node_pub_key,
+        forward_in_count: fi.forward_count,
+        forward_out_count: fo.forward_count,
+        status: c.status
+      }
   end
 
   def get_all_channels(%{include_closed: true}) do
@@ -46,5 +59,25 @@ defmodule Steer.Repo do
     { :ok, channel } = update(changeset)
 
     channel
+  end
+
+  defp forwards_in_subquery() do
+    from c in Models.Channel,
+      left_join: f in assoc(c, :forwards_in),
+      group_by: c.id,
+      select: %{
+        channel_id: c.id,
+        forward_count: count(f.id)
+      }
+  end
+
+  defp forwards_out_subquery() do
+    from c in Models.Channel,
+      left_join: f in assoc(c, :forwards_out),
+      group_by: c.id,
+      select: %{
+        channel_id: c.id,
+        forward_count: count(f.id)
+      }
   end
 end

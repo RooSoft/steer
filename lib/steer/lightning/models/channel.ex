@@ -2,6 +2,8 @@ defmodule Steer.Lightning.Models.Channel do
   use Ecto.Schema
   import Ecto.Changeset
 
+  alias Steer.Lightning.Models
+
   schema "channel" do
     field :lnd_id, :decimal
     field :channel_point, :string
@@ -12,6 +14,9 @@ defmodule Steer.Lightning.Models.Channel do
     field :capacity, :decimal
     field :local_balance, :decimal
     field :remote_balance, :decimal
+
+    has_many :forwards_in, Models.Forward, foreign_key: :channel_in_id
+    has_many :forwards_out, Models.Forward, foreign_key: :channel_out_id
 
     timestamps()
   end
