@@ -3,12 +3,14 @@ defmodule Steer.Sync.Channel do
   alias Steer.Lightning.Models, as: Models
 
   def sync() do
-    LndClient.get_channels().channels
+    { :ok, channels } = LndClient.get_channels()
+    { :ok, closed_channels } = LndClient.get_closed_channels()
+
+    channels.channels
     |> Enum.each(&upsert_channel/1)
 
-    LndClient.get_closed_channels().channels
+    closed_channels.channels
     |> Enum.each(&upsert_closed_channel/1)
-
   end
 
   defp upsert_channel channel do
@@ -41,7 +43,9 @@ defmodule Steer.Sync.Channel do
   end
 
   defp convert_channel_to_map channel do
-    node = LndClient.get_node_info(channel.remote_pubkey).node
+    { :ok, node_info } = LndClient.get_node_info(channel.remote_pubkey)
+
+    node = node_info.node
 
     %{
       lnd_id: channel.chan_id,
@@ -57,7 +61,9 @@ defmodule Steer.Sync.Channel do
   end
 
   defp convert_closed_channel_to_map channel do
-  #  node = LndClient.get_node_info(channel.remote_pubkey).node
+    # { :ok, node_info } = LndClient.get_node_info(channel.remote_pubkey)
+
+    # node = node_info.node
 
     %{
       lnd_id: channel.chan_id,

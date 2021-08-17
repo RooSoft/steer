@@ -22,11 +22,15 @@ defmodule Steer.Lnd do
   end
 
   defp get_lnd_channels() do
-    LndClient.get_channels().channels
+    { :ok, channels } = LndClient.get_channels()
+
+    channels.channels
   end
 
   defp get_lnd_forwards() do
-    LndClient.get_forwarding_history(%{max_events: 1000}).forwarding_events
+    { :ok, forwarding_events } = LndClient.get_forwarding_history(%{max_events: 1000})
+
+    forwarding_events.forwarding_events
   end
 
   defp include_forwards(channels) do
@@ -43,7 +47,7 @@ defmodule Steer.Lnd do
   end
 
   defp add_node_info(channel) do
-    node_info = LndClient.get_node_info(channel.node_pubkey)
+    { :ok, node_info } = LndClient.get_node_info(channel.node_pubkey)
 
     channel
     |> Channel.add_node_info(node_info.node)

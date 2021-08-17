@@ -5,10 +5,11 @@ defmodule Steer.Sync.Forward do
   @max_events_per_lnd_call 10000
 
   def sync() do
-    %{
+    { :ok, forwarding_history } = %{
       max_events: @max_events_per_lnd_call
-    }
-    |> LndClient.get_forwarding_history()
+    } |> LndClient.get_forwarding_history()
+
+    forwarding_history
     |> Map.get(:forwarding_events)
     |> Enum.each(&insert_forward/1)
   end
