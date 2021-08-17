@@ -33,6 +33,8 @@ defmodule Steer.Repo do
         alias: c.alias,
         color: c.color,
         capacity: c.capacity,
+        local_balance: c.local_balance,
+        remote_balance: c.remote_balance,
         node_pub_key: c.node_pub_key,
         forward_in_count: fi.forward_count,
         forward_out_count: fo.forward_count,
