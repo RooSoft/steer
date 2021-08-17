@@ -14,7 +14,6 @@ defmodule Steer.Lightning do
   defp format_balances(channels) do
     channels
     |> Enum.map(fn channel ->
-      IO.inspect(channel)
       capacity_in_sats = channel.capacity |> Decimal.div(1000)
       formatted_capacity = Number.SI.number_to_si(capacity_in_sats, unit: "", precision: 1)
 #      formatted_local_balance = Number.SI.number_to_si(channel.local_balance, unit: "", precision: 1)
