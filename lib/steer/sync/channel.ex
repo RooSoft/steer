@@ -12,29 +12,16 @@ defmodule Steer.Sync.Channel do
   end
 
   defp upsert_channel channel do
-    map = convert_channel_to_map(channel)
-
-    changeset = Models.Channel.changeset(
-      %Models.Channel{},
-      map
-    )
-
-    { :ok, _ } = Repo.insert(
-      changeset,
-      on_conflict: [set: [
-        alias: map.alias,
-        color: map.color,
-        local_balance: map.local_balance,
-        remote_balance: map.remote_balance,
-        status: map.status
-      ]],
-      conflict_target: :channel_point
-    )
+    convert_channel_to_map(channel)
+    |> upsert_channel_map()
   end
 
   defp upsert_closed_channel closed_channel do
-    map = convert_closed_channel_to_map(closed_channel)
+    convert_closed_channel_to_map(closed_channel)
+    |> upsert_channel_map
+  end
 
+  defp upsert_channel_map map do
     changeset = Models.Channel.changeset(
       %Models.Channel{},
       map
@@ -67,7 +54,6 @@ defmodule Steer.Sync.Channel do
       local_balance: channel.local_balance * 1000,
       remote_balance: channel.remote_balance * 1000
     }
-    |> IO.inspect
   end
 
   defp convert_closed_channel_to_map channel do
