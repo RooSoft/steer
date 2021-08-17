@@ -7,6 +7,7 @@ defmodule SteerWeb.ChannelLive.Show do
 
     {:noreply,
       socket
-      |> assign(:channel, Steer.Lnd.get_channel(id))}
+      |> assign(:channel, Steer.Lightning.get_channel(id))
+      |> assign(:forwards, [])}
   end
 end

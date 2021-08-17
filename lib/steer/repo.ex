@@ -47,6 +47,11 @@ defmodule Steer.Repo do
     all from c in Models.Channel
   end
 
+  def get_channel(id) do
+    one from c in Models.Channel,
+      where: c.id == ^id
+  end
+
   def get_channel_by_channel_point(channel_point) do
     one first from c in Models.Channel,
       where: c.channel_point == ^channel_point

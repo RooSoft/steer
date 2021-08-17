@@ -1,12 +1,12 @@
 <div class="text-xl mb-2">
-    <%= Enum.count(@channel.forwards) %> forwards
+    <%= Enum.count(@forwards) %> forwards
 </div>
 
 <div class="grid grid-cols-3 p-1 mb-1 max-w-screen-sm text-gray-400 rounded-xl bg-gray-800">
     <div class="border-black border-b-4 border-opacity-30"></div>
     <div class="font-bold text-xl  text-gray-400 border-black border-b-4 border-opacity-30 text-right">amount</div>
     <div class="font-bold text-xl  text-gray-400 border-black border-b-4 border-opacity-30 text-right">fee</div>
-    <%= for forward <- @channel.forwards do %>
+    <%= for forward <- @forwards do %>
         <div class="text-base"><%= Timex.from_now(forward.time) %></div>
         <div class="font-bold text-right text-base"><%= forward.formatted_amount_in %></div>
         <div class="font-bold text-right text-base"><%= forward.formatted_fee %></div>
