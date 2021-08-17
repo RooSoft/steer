@@ -61,17 +61,23 @@ defmodule Steer.Sync.Channel do
   end
 
   defp convert_closed_channel_to_map channel do
-    # { :ok, node_info } = LndClient.get_node_info(channel.remote_pubkey)
-
-    # node = node_info.node
+    node = case LndClient.get_node_info(channel.remote_pubkey) do
+      { :ok, node_info } ->
+        node_info.node
+      { :error, _ } ->
+        %{
+          alias: "--UNKNOWN--",
+          color: "#000000"
+        }
+    end
 
     %{
       lnd_id: channel.chan_id,
       channel_point: channel.channel_point,
       node_pub_key: channel.remote_pubkey,
       status: :closed,
-      alias: "TODO",
-      color: "TODO",
+      alias: node.alias,
+      color: node.color,
       capacity: channel.capacity * 1000,
       local_balance: 0,
       remote_balance: 0
