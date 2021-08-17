@@ -22,6 +22,8 @@ defmodule Steer.Sync.Channel do
     { :ok, _ } = Repo.insert(
       changeset,
       on_conflict: [set: [
+        alias: map.alias,
+        color: map.color,
         local_balance: map.local_balance,
         remote_balance: map.remote_balance,
         status: map.status
@@ -41,6 +43,8 @@ defmodule Steer.Sync.Channel do
     { :ok, _ } = Repo.insert(
       changeset,
       on_conflict: [set: [
+        alias: map.alias,
+        color: map.color,
         local_balance: map.local_balance,
         remote_balance: map.remote_balance,
         status: map.status
@@ -50,20 +54,25 @@ defmodule Steer.Sync.Channel do
   end
 
   defp convert_channel_to_map channel do
+    node = LndClient.get_node_info(channel.remote_pubkey).node
+
     %{
       lnd_id: channel.chan_id,
       channel_point: channel.channel_point,
       node_pub_key: channel.remote_pubkey,
       status: get_channel_status(channel),
-      alias: "TODO",
-      color: "TODO",
+      alias: node.alias,
+      color: node.color,
       capacity: channel.capacity * 1000,
       local_balance: channel.local_balance * 1000,
       remote_balance: channel.remote_balance * 1000
     }
+    |> IO.inspect
   end
 
   defp convert_closed_channel_to_map channel do
+  #  node = LndClient.get_node_info(channel.remote_pubkey).node
+
     %{
       lnd_id: channel.chan_id,
       channel_point: channel.channel_point,
