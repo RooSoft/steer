@@ -27,7 +27,7 @@ defmodule SteerWeb.HomeLive do
 
   defp add_channels(socket) do
     socket
-    |> assign(:channels, Repo.get_all_channels())
+    |> assign(:channels, Steer.Lightning.get_all_channels())
   end
 
   defp subscribe_to_events(socket) do
