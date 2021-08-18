@@ -52,6 +52,12 @@ defmodule Steer.Repo do
       where: c.id == ^id
   end
 
+  def get_channel_forwards(channel_id) do
+    all from f in Models.Forward,
+      where: f.channel_in_id == ^channel_id or f.channel_out_id == ^channel_id,
+      preload: [:channel_in, :channel_out]
+  end
+
   def get_channel_by_channel_point(channel_point) do
     one first from c in Models.Channel,
       where: c.channel_point == ^channel_point

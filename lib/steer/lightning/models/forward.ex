@@ -19,4 +19,38 @@ defmodule Steer.Lightning.Models.Forward do
     |> cast(params, [:amount_in, :amount_out, :fee, :channel_in_id, :channel_out_id, :timestamp])
     |> validate_required([:amount_in, :amount_out, :fee, :channel_in_id, :channel_out_id, :timestamp])
   end
+
+  def amount_in_in_sats forward do
+    Decimal.div(forward.amount_in, 1000)
+  end
+
+  def amount_out_in_sats forward do
+    Decimal.div(forward.amount_out, 1000)
+  end
+
+  def fee_in_sats forward do
+    Decimal.div(forward.fee, 1000)
+  end
+
+  def contextualize_forward(forward, channel) do
+    forward
+    |> Map.put(:direction, get_direction(forward, channel))
+    |> Map.put(:remote_alias, get_remote_alias(forward, channel))
+  end
+
+  defp get_direction(forward, channel) do
+    if forward.channel_in_id == channel.id do
+      "to"
+    else
+      "from"
+    end
+  end
+
+  defp get_remote_alias(forward, channel) do
+    if forward.channel_in.alias == channel.alias do
+      forward.channel_out.alias
+    else
+      forward.channel_in.alias
+    end
+  end
 end
