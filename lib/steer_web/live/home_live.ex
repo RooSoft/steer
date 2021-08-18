@@ -2,7 +2,6 @@ defmodule SteerWeb.HomeLive do
   use SteerWeb, :live_view
 
   alias SteerWeb.Endpoint
-  alias Steer.Repo
 
   @htlc_topic "htlc"
   @new_message "new"
