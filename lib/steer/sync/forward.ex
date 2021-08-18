@@ -10,7 +10,6 @@ defmodule Steer.Sync.Forward do
     } |> LndClient.get_forwarding_history()
 
     forwarding_history
-    |> Map.get(:forwarding_events)
     |> Enum.each(&insert_forward/1)
   end
 
@@ -32,7 +31,7 @@ defmodule Steer.Sync.Forward do
       fee: forward.fee_msat,
       channel_in_id: Repo.get_channel_by_lnd_id(forward.chan_id_in).id,
       channel_out_id: Repo.get_channel_by_lnd_id(forward.chan_id_out).id,
-      timestamp: forward.timestamp |> DateTime.from_unix!(:second) |> DateTime.to_naive
+      timestamp: forward.time
     }
   end
 end
