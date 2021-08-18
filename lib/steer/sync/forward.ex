@@ -9,7 +9,7 @@ defmodule Steer.Sync.Forward do
       max_events: @max_events_per_lnd_call
     } |> LndClient.get_forwarding_history()
 
-    forwarding_history
+    forwarding_history.forwarding_events
     |> Enum.each(&insert_forward/1)
   end
 
