@@ -154,9 +154,6 @@ defmodule Steer.Sync.Forward do
   end
 
   defp mark_as_consolidated context do
-    IO.puts "Mark #{context.date} as consolidated"
-    IO.inspect context.inserted_ids
-
     if Enum.any? context.inserted_ids do
       Repo.mark_forwards_as_consolidated context.inserted_ids
     end
