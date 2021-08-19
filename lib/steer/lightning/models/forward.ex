@@ -9,6 +9,7 @@ defmodule Steer.Lightning.Models.Forward do
     field :fee, :decimal
     belongs_to :channel_in, Models.Channel
     belongs_to :channel_out, Models.Channel
+    field :consolidated, :boolean
     field :timestamp, :naive_datetime
 
     timestamps()
