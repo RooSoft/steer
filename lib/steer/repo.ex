@@ -66,6 +66,16 @@ defmodule Steer.Repo do
       limit: 1
   end
 
+  def get_forwards_in_date_range(%{
+    start_time: start_time,
+    end_time: end_time
+  }) do
+    all from f in Models.Forward,
+      where: f.timestamp >= ^start_time and f.timestamp < ^end_time,
+      order_by: [desc: f.timestamp],
+      preload: [:channel_in, :channel_out]
+  end
+
   def get_channel_by_channel_point(channel_point) do
     one first from c in Models.Channel,
       where: c.channel_point == ^channel_point
