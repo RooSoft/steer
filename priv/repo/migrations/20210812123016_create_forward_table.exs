@@ -3,9 +3,9 @@ defmodule Steer.Repo.Migrations.CreateForwardTable do
 
   def change do
     create table(:forward) do
-      add :amount_in, :decimal, null: false
-      add :amount_out, :decimal, null: false
-      add :fee, :decimal, null: false
+      add :amount_in, :bigint, null: false
+      add :amount_out, :bigint, null: false
+      add :fee, :bigint, null: false
       add :channel_in_id, references(:channel), null: false
       add :channel_out_id, references(:channel), null: false
       add :consolidated, :boolean, default: false, null: false

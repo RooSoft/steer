@@ -6,15 +6,15 @@ defmodule Steer.Repo.Migrations.CreateChannelTable do
     ChannelStatus.create_type()
 
     create table(:channel) do
-      add :lnd_id, :decimal, null: false
+      add :lnd_id, :bigint, null: false
       add :channel_point, :string, null: false
       add :node_pub_key, :string, null: false
       add :status,:channel_status, values: [:active, :inactive, :closed], null: false
       add :alias, :string
       add :color, :string
-      add :capacity, :decimal, null: false
-      add :local_balance, :decimal, null: false
-      add :remote_balance, :decimal, null: false
+      add :capacity, :bigint, null: false
+      add :local_balance, :bigint, null: false
+      add :remote_balance, :bigint, null: false
 
       timestamps()
     end
@@ -23,3 +23,6 @@ defmodule Steer.Repo.Migrations.CreateChannelTable do
     create unique_index(:channel, [:channel_point])
   end
 end
+
+2147483647
+5000000000

@@ -4,9 +4,9 @@ defmodule Steer.Lightning.Models.Forward do
   alias Steer.Lightning.Models, as: Models
 
   schema "forward" do
-    field :amount_in, :decimal
-    field :amount_out, :decimal
-    field :fee, :decimal
+    field :amount_in, :integer
+    field :amount_out, :integer
+    field :fee, :integer
     belongs_to :channel_in, Models.Channel
     belongs_to :channel_out, Models.Channel
     field :consolidated, :boolean

@@ -5,15 +5,15 @@ defmodule Steer.Lightning.Models.Channel do
   alias Steer.Lightning.Models
 
   schema "channel" do
-    field :lnd_id, :decimal
+    field :lnd_id, :integer
     field :channel_point, :string
     field :node_pub_key, :string
     field :status, Ecto.Enum, values: [:active, :inactive, :closed]
     field :alias, :string
     field :color, :string
-    field :capacity, :decimal
-    field :local_balance, :decimal
-    field :remote_balance, :decimal
+    field :capacity, :integer
+    field :local_balance, :integer
+    field :remote_balance, :integer
 
     has_many :forwards_in, Models.Forward, foreign_key: :channel_in_id
     has_many :forwards_out, Models.Forward, foreign_key: :channel_out_id
