@@ -6,6 +6,8 @@ defmodule Steer.Lightning do
   def sync() do
     Steer.Sync.Channel.sync
     Steer.Sync.Forward.sync
+
+    IO.puts "Sync done at #{DateTime.utc_now()}"
   end
 
   def get_all_channels() do
