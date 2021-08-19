@@ -18,7 +18,7 @@ defmodule Steer.Sync.Forward do
     execute_if_not_tomorrow(date, &do_sync/1)
   end
 
-  def do_sync(date) do
+  defp do_sync(date) do
     context = %{
       max_events: @max_events_per_lnd_call,
       date: date
@@ -28,6 +28,7 @@ defmodule Steer.Sync.Forward do
     |> add_repo_forwarding_events
     |> find_new_forwards_in_lnd
     |> insert_new_forwards_in_lnd
+    |> maybe_mark_as_consolidated
 
     next_day = DateTime.to_date(context.end_time)
 
@@ -129,8 +130,36 @@ defmodule Steer.Sync.Forward do
   end
 
   defp insert_new_forwards_in_lnd context do
-    context.new_forwards_in_lnd
-    |> Enum.each(&insert_forward/1)
+    inserted_ids = context.new_forwards_in_lnd
+    |> Enum.map(&insert_forward/1)
+
+    if context |> Map.has_key?(:inserted_ids) do
+      context |> Map.put(:inserted_ids,
+        context |> Map.get(:inserted_ids)
+        |> Enum.concat(inserted_ids)
+      )
+    else
+      context |> Map.put(:inserted_ids, inserted_ids)
+    end
+  end
+
+  defp maybe_mark_as_consolidated context do
+    today = Date.utc_today()
+
+    case Date.compare(context.date, today) do
+      :lt -> context |> mark_as_consolidated
+      :eq -> context
+      :gt -> context
+    end
+  end
+
+  defp mark_as_consolidated context do
+    IO.puts "Mark #{context.date} as consolidated"
+    IO.inspect context.inserted_ids
+
+    if Enum.any? context.inserted_ids do
+      Repo.mark_forwards_as_consolidated context.inserted_ids
+    end
 
     context
   end
@@ -143,7 +172,9 @@ defmodule Steer.Sync.Forward do
       map
     )
 
-    { :ok, _ } = Repo.insert(changeset)
+    { :ok, inserted } = Repo.insert(changeset)
+
+    inserted.id
   end
 
   defp convert_forward_to_map forward do

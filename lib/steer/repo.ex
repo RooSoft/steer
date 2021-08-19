@@ -76,6 +76,16 @@ defmodule Steer.Repo do
       preload: [:channel_in, :channel_out]
   end
 
+  def mark_forwards_as_consolidated forward_ids do
+    query =
+      from f in Models.Forward,
+      where: f.id in ^forward_ids
+
+    update_all(query,
+      set: [consolidated: true]
+    )
+  end
+
   def get_channel_by_channel_point(channel_point) do
     one first from c in Models.Channel,
       where: c.channel_point == ^channel_point
