@@ -1,5 +1,6 @@
 defmodule Steer.HtlcSubscription do
   use GenServer
+  require Logger
 
   alias SteerWeb.Endpoint
 
@@ -21,8 +22,8 @@ defmodule Steer.HtlcSubscription do
   end
 
   def handle_info(%Routerrpc.HtlcEvent{event: {:settle_event, _}} = htlc, state) do
-    IO.puts "--------- got a SETTLE event"
-    IO.puts "-------- broadcasting"
+    Logger.info "--------- got a SETTLE event"
+    Logger.info "-------- broadcasting"
 
     Endpoint.broadcast(@htlc_topic, @new_message, htlc)
 
@@ -30,7 +31,7 @@ defmodule Steer.HtlcSubscription do
   end
 
   def handle_info(%Routerrpc.HtlcEvent{ event: {:forward_event, _forward_event } } = htlc, state) do
-    IO.puts "NEW HTLC: forward event"
+    Logger.info "NEW HTLC: forward event"
 
     IO.inspect htlc
 
@@ -38,7 +39,7 @@ defmodule Steer.HtlcSubscription do
   end
 
   def handle_info(%Routerrpc.HtlcEvent{ event: {:forward_fail_event, _ } } = htlc_event, state) do
-    IO.puts "NEW HTLC: forward fail event"
+    Logger.info "NEW HTLC: forward fail event"
 
     IO.inspect htlc_event
 
@@ -46,7 +47,7 @@ defmodule Steer.HtlcSubscription do
   end
 
   def handle_info(%Routerrpc.HtlcEvent{} = htlc_event, state) do
-    IO.puts "NEW HTLC of unknown type"
+    Logger.info "NEW HTLC of unknown type"
 
     IO.inspect htlc_event
 
@@ -54,7 +55,7 @@ defmodule Steer.HtlcSubscription do
   end
 
   def handle_info(event, state) do
-    IO.puts "--------- got an unknown event"
+    Logger.info "--------- got an unknown event"
     IO.inspect event
 
     {:noreply, state}

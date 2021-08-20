@@ -1,5 +1,6 @@
 defmodule Steer.LndInvoiceSubscription do
   use GenServer
+  require Logger
 
   alias SteerWeb.Endpoint
 
@@ -44,6 +45,6 @@ defmodule Steer.LndInvoiceSubscription do
   end
 
   defp write_in_yellow message do
-    IO.puts(IO.ANSI.yellow_background() <> IO.ANSI.black() <> message <> IO.ANSI.reset())
+    Logger.info(IO.ANSI.yellow_background() <> IO.ANSI.black() <> message <> IO.ANSI.reset())
   end
 end

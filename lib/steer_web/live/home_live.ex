@@ -1,5 +1,6 @@
 defmodule SteerWeb.HomeLive do
   use SteerWeb, :live_view
+  require Logger
 
   alias SteerWeb.Endpoint
 
@@ -172,18 +173,18 @@ defmodule SteerWeb.HomeLive do
   end
 
   defp write_in_blue message do
-    IO.puts(IO.ANSI.blue_background() <> IO.ANSI.black() <> message <> IO.ANSI.reset())
+    Logger.info(IO.ANSI.blue_background() <> IO.ANSI.black() <> message <> IO.ANSI.reset())
   end
 
   defp write_in_yellow message do
-    IO.puts(IO.ANSI.yellow_background() <> IO.ANSI.black() <> message <> IO.ANSI.reset())
+    Logger.info(IO.ANSI.yellow_background() <> IO.ANSI.black() <> message <> IO.ANSI.reset())
   end
 
   defp write_in_red message do
-    IO.puts(IO.ANSI.red_background() <> IO.ANSI.black() <> message <> IO.ANSI.reset())
+    Logger.info(IO.ANSI.red_background() <> IO.ANSI.black() <> message <> IO.ANSI.reset())
   end
 
   defp write_in_green message do
-    IO.puts(IO.ANSI.green_background() <> IO.ANSI.black() <> message <> IO.ANSI.reset())
+    Logger.info(IO.ANSI.green_background() <> IO.ANSI.black() <> message <> IO.ANSI.reset())
   end
 end

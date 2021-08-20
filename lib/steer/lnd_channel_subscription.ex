@@ -1,5 +1,6 @@
 defmodule Steer.LndChannelSubscription do
   use GenServer
+  require Logger
 
   alias Steer.Repo
   alias SteerWeb.Endpoint
@@ -80,14 +81,14 @@ defmodule Steer.LndChannelSubscription do
   end
 
   def handle_info(event, state) do
-    IO.puts "--------- got an unknown channel event"
+    Logger.debug "--------- got an unknown channel event"
     IO.inspect event
 
     {:noreply, state}
   end
 
   defp write_status_change channel, status do
-    IO.puts(
+    Logger.info(
       IO.ANSI.green_background() <>
       IO.ANSI.black() <>
       "#{channel.alias} became #{status}" <> IO.ANSI.reset()

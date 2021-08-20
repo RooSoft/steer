@@ -1,5 +1,6 @@
 defmodule Steer.Lightning do
   use GenServer
+  require Logger
 
   alias Steer.Repo
   alias Steer.Lightning.Models
@@ -17,7 +18,7 @@ defmodule Steer.Lightning do
     Steer.Sync.Channel.sync
     Steer.Sync.Forward.sync
 
-    IO.puts "Sync done at #{DateTime.utc_now()}"
+    Logger.info "Sync done at #{DateTime.utc_now()}"
   end
 
   def get_all_channels() do
@@ -25,7 +26,7 @@ defmodule Steer.Lightning do
   end
 
   def handle_call(:get_all_channels, _from, %{ channels: channels } = state) do
-    IO.puts "Getting channels from cache"
+    Logger.info "Getting channels from cache"
 
     { :reply, channels, state}
   end
