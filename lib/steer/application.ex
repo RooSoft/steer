@@ -23,6 +23,8 @@ defmodule Steer.Application do
       Steer.LndInvoiceSubscription,
       Steer.LndChannelSubscription,
 
+      Steer.Lightning,
+
       Steer.LndSyncTimer
     ]
 

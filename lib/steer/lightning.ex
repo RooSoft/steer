@@ -1,6 +1,17 @@
 defmodule Steer.Lightning do
+  use GenServer
+
   alias Steer.Repo
   alias Steer.Lightning.Models
+
+
+  def start_link(_opts) do
+    GenServer.start_link(__MODULE__, %{}, name: __MODULE__)
+  end
+
+  def init(state) do
+    { :ok, state }
+  end
 
   def sync() do
     Steer.Sync.Channel.sync
@@ -10,8 +21,22 @@ defmodule Steer.Lightning do
   end
 
   def get_all_channels() do
-    Repo.get_all_channels()
+    GenServer.call(__MODULE__, :get_all_channels)
+  end
+
+  def handle_call(:get_all_channels, _from, %{ channels: channels } = state) do
+    IO.puts "Getting channels from cache"
+
+    { :reply, channels, state}
+  end
+
+  def handle_call(:get_all_channels, _from, state) do
+    channels = Repo.get_all_channels()
     |> Models.Channel.format_balances
+
+    { :reply,
+      channels,
+      state |> Map.put(:channels, channels)}
   end
 
   def get_channel(id) do
