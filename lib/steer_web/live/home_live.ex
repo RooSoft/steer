@@ -41,28 +41,6 @@ defmodule SteerWeb.HomeLive do
   end
 
   @impl true
-  def handle_event("toggle_forwards", %{"channel-id" => channel_id}, socket) do
-    { channel_id, _ } = Integer.parse(channel_id)
-
-    channels = socket.assigns.channels
-    |> Enum.map(fn channel ->
-      case channel.id do
-        ^channel_id ->
-          if channel.show_forwards do
-            IO.puts "collapsing #{channel.alias}"
-          else
-            IO.puts "expanding #{channel.alias}"
-          end
-
-          channel |> Map.put(:show_forwards, !channel.show_forwards)
-        _ -> channel
-      end
-    end)
-
-    {:noreply, assign(socket, :channels, channels)}
-  end
-
-  @impl true
   def handle_info(%{
     topic: @htlc_topic,
     event: @new_message,
