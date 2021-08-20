@@ -62,7 +62,7 @@ defmodule Steer.Repo do
   def get_latest_unconsolidated_forward do
     one from f in Models.Forward,
       where: f.consolidated == false,
-      order_by: [asc: f.timestamp],
+      order_by: [desc: f.timestamp],
       limit: 1
   end
 

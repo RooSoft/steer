@@ -39,9 +39,9 @@ defmodule Steer.Lightning do
   end
 
   defp format_channel_balance(channel) do
-    capacity_in_sats = channel.capacity |> Decimal.div(1000)
-    total_balance = Decimal.add(channel.local_balance, channel.remote_balance)
-    balance_percent = Decimal.mult(Decimal.div(channel.local_balance, total_balance), 100)
+    capacity_in_sats = Integer.floor_div(channel.capacity, 1000)
+    total_balance = channel.local_balance + channel.remote_balance
+    balance_percent = Integer.floor_div(channel.local_balance * 100, total_balance)
 
     formatted_capacity = Number.SI.number_to_si(capacity_in_sats, unit: "", precision: 1)
     formatted_local_balance = Number.SI.number_to_si(channel.local_balance, unit: "", precision: 1)

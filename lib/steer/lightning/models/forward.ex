@@ -22,15 +22,15 @@ defmodule Steer.Lightning.Models.Forward do
   end
 
   def amount_in_in_sats forward do
-    Decimal.div(forward.amount_in, 1000)
+    Integer.floor_div(forward.amount_in, 1000)
   end
 
   def amount_out_in_sats forward do
-    Decimal.div(forward.amount_out, 1000)
+    Integer.floor_div(forward.amount_out, 1000)
   end
 
   def fee_in_sats forward do
-    Decimal.div(forward.fee, 1000)
+    Integer.floor_div(forward.fee, 1000)
   end
 
   def contextualize_forward(forward, channel) do
