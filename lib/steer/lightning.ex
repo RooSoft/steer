@@ -26,7 +26,11 @@ defmodule Steer.Lightning do
   end
 
   def get_channel(%{ id: _id } = params) do
-    GenServer.call(__MODULE__, { :get_channel, params } )
+    GenServer.call(__MODULE__, { :get_channel, params })
+  end
+
+  def get_channel_forwards(%{ channel_id: _ } = params) do
+    GenServer.call(__MODULE__, { :get_channel_forwards, params })
   end
 
   def handle_call(:get_all_channels, _from, %{ channels: channels } = state) do
@@ -44,7 +48,6 @@ defmodule Steer.Lightning do
       state |> Map.put(:channels, channels)}
   end
 
-
   def handle_call({ :get_channel, %{ id: id } }, _from, state) do
     Logger.info "Getting channel #{id} from cache"
 
@@ -54,13 +57,15 @@ defmodule Steer.Lightning do
     { :reply, channel, state}
   end
 
-  def get_channel_forwards(channel_id) do
+  def handle_call({ :get_channel_forwards, %{ channel_id: channel_id } }, _from, state) do
     channel = Repo.get_channel(channel_id)
 
-    channel_id
+    forwards = channel_id
     |> Repo.get_channel_forwards()
     |> Models.Forward.format_balances
     |> Models.Forward.contextualize_forwards(channel)
+
+    { :reply, forwards, state}
   end
 
   def get_latest_unconsolidated_forward do
