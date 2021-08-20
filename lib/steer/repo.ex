@@ -27,7 +27,10 @@ defmodule Steer.Repo do
       join: fi in subquery(forwards_in_subquery()), on: c.id == fi.channel_id,
       join: fo in subquery(forwards_out_subquery()), on: c.id == fo.channel_id,
       where: c.status != :closed,
-      order_by: [desc: fi.latest_timestamp],
+      order_by: [desc: fragment(
+        "SELECT coalesce(Max(v), '2000-01-01') FROM (VALUES (?), (?)) AS value(v)",
+        fi.latest_timestamp,
+        fo.latest_timestamp)],
       select: %{
         id: c.id,
         alias: c.alias,
@@ -38,7 +41,12 @@ defmodule Steer.Repo do
         node_pub_key: c.node_pub_key,
         forward_in_count: fi.forward_count,
         forward_out_count: fo.forward_count,
-        latest_forward_time: fi.latest_timestamp,
+        latest_forward_in_time: fi.latest_timestamp,
+        latest_forward_out_time: fo.latest_timestamp,
+        latest_forward_time: fragment(
+          "SELECT Max(v) FROM (VALUES (?), (?)) AS value(v)",
+          fi.latest_timestamp,
+          fo.latest_timestamp),
         status: c.status
       }
   end
