@@ -27,6 +27,10 @@ defmodule Steer.Lightning.Models.Channel do
     |> validate_required([:lnd_id, :channel_point, :node_pub_key, :status, :capacity, :local_balance, :remote_balance])
   end
 
+  def format_balances(channels) when is_list(channels) do
+    channels
+    |> Enum.map(&Models.Channel.format_balances/1)
+  end
 
   def format_balances channel do
     capacity_in_sats = Integer.floor_div(channel.capacity, 1000)

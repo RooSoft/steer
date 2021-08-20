@@ -21,7 +21,10 @@ defmodule Steer.Lightning.Models.Forward do
     |> validate_required([:amount_in, :amount_out, :fee, :channel_in_id, :channel_out_id, :timestamp])
   end
 
-
+  def format_balances(forwards) when is_list(forwards) do
+    forwards
+    |> Enum.map(&format_balances/1)
+  end
 
   def format_balances(forward) do
     amount_in_in_sats = Models.Forward.amount_in_in_sats(forward)
@@ -49,7 +52,6 @@ defmodule Steer.Lightning.Models.Forward do
   def fee_in_sats forward do
     Integer.floor_div(forward.fee, 1000)
   end
-
 
   def contextualize_forwards(forwards, channel) do
     forwards

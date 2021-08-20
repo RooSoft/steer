@@ -11,7 +11,7 @@ defmodule Steer.Lightning do
 
   def get_all_channels() do
     Repo.get_all_channels()
-    |> format_balances
+    |> Models.Channel.format_balances
   end
 
   def get_channel(id) do
@@ -24,21 +24,11 @@ defmodule Steer.Lightning do
 
     channel_id
     |> Repo.get_channel_forwards()
-    |> format_forwards_balances
+    |> Models.Forward.format_balances
     |> Models.Forward.contextualize_forwards(channel)
   end
 
   def get_latest_unconsolidated_forward do
     Repo.get_latest_unconsolidated_forward
-  end
-
-  defp format_balances(channels) do
-    channels
-    |> Enum.map(&Models.Channel.format_balances/1)
-  end
-
-  defp format_forwards_balances(forwards) do
-    forwards
-    |> Enum.map(&Models.Forward.format_balances/1)
   end
 end
