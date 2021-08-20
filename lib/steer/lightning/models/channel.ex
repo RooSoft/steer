@@ -26,4 +26,22 @@ defmodule Steer.Lightning.Models.Channel do
     |> cast(params, [:lnd_id, :channel_point, :node_pub_key, :status, :alias, :color, :capacity, :local_balance, :remote_balance])
     |> validate_required([:lnd_id, :channel_point, :node_pub_key, :status, :capacity, :local_balance, :remote_balance])
   end
+
+
+  def format_balances channel do
+    capacity_in_sats = Integer.floor_div(channel.capacity, 1000)
+    total_balance = channel.local_balance + channel.remote_balance
+    balance_percent = Integer.floor_div(channel.local_balance * 100, total_balance)
+
+    formatted_capacity = Number.SI.number_to_si(capacity_in_sats, unit: "", precision: 1)
+    formatted_local_balance = Number.SI.number_to_si(channel.local_balance, unit: "", precision: 1)
+    formatted_remote_balance = Number.SI.number_to_si(channel.remote_balance, unit: "", precision: 1)
+    formatted_balance_percent = Number.SI.number_to_si(balance_percent, unit: "", precision: 1)
+
+    channel
+    |> Map.put(:formatted_capacity, formatted_capacity)
+    |> Map.put(:formatted_local_balance, formatted_local_balance)
+    |> Map.put(:formatted_remote_balance, formatted_remote_balance)
+    |> Map.put(:formatted_balance_percent, formatted_balance_percent)
+  end
 end

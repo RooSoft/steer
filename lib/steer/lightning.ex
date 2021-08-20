@@ -1,6 +1,5 @@
 defmodule Steer.Lightning do
   alias Steer.Repo
-
   alias Steer.Lightning.Models
 
   def sync() do
@@ -17,7 +16,7 @@ defmodule Steer.Lightning do
 
   def get_channel(id) do
     Repo.get_channel(id)
-    |> format_channel_balance
+    |> Models.Channel.format_balances
   end
 
   def get_channel_forwards(channel_id) do
@@ -35,44 +34,12 @@ defmodule Steer.Lightning do
 
   defp format_balances(channels) do
     channels
-    |> Enum.map(&format_channel_balance/1)
-  end
-
-  defp format_channel_balance(channel) do
-    capacity_in_sats = Integer.floor_div(channel.capacity, 1000)
-    total_balance = channel.local_balance + channel.remote_balance
-    balance_percent = Integer.floor_div(channel.local_balance * 100, total_balance)
-
-    formatted_capacity = Number.SI.number_to_si(capacity_in_sats, unit: "", precision: 1)
-    formatted_local_balance = Number.SI.number_to_si(channel.local_balance, unit: "", precision: 1)
-    formatted_remote_balance = Number.SI.number_to_si(channel.remote_balance, unit: "", precision: 1)
-    formatted_balance_percent = Number.SI.number_to_si(balance_percent, unit: "", precision: 1)
-
-    channel
-    |> Map.put(:formatted_capacity, formatted_capacity)
-    |> Map.put(:formatted_local_balance, formatted_local_balance)
-    |> Map.put(:formatted_remote_balance, formatted_remote_balance)
-    |> Map.put(:formatted_balance_percent, formatted_balance_percent)
+    |> Enum.map(&Models.Channel.format_balances/1)
   end
 
   defp format_forwards_balances(forwards) do
     forwards
-    |> Enum.map(&format_forward_balances/1)
-  end
-
-  defp format_forward_balances(forward) do
-    amount_in_in_sats = Models.Forward.amount_in_in_sats(forward)
-    amount_out_in_sats = Models.Forward.amount_out_in_sats(forward)
-    fee_in_sats = Models.Forward.fee_in_sats(forward)
-
-    formatted_amount_in = Number.SI.number_to_si(amount_in_in_sats, unit: "", precision: 1)
-    formatted_amount_out = Number.SI.number_to_si(amount_out_in_sats, unit: "", precision: 1)
-    formatted_fee = Number.SI.number_to_si(fee_in_sats, unit: "", precision: 1)
-
-    forward
-    |> Map.put(:formatted_amount_in, formatted_amount_in)
-    |> Map.put(:formatted_amount_out, formatted_amount_out)
-    |> Map.put(:formatted_fee, formatted_fee)
+    |> Enum.map(&Models.Forward.format_balances/1)
   end
 
   defp contextualize_forwards(forwards, channel) do
