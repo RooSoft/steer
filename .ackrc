@@ -1,3 +1,5 @@
 --ignore-dir=deps
 --ignore-dir=_build
 --ignore-dir=.elixir_ls
+--ignore-dir=priv/static/js
+--ignore-file=is:package-lock.json
