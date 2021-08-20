@@ -6,8 +6,6 @@ defmodule Steer.LndSyncTimer do
   end
 
   def init(state) do
-    send(self(), :sync) # sync right now
-
     schedule_sync() # and then schedule next sync
 
     { :ok, state }
