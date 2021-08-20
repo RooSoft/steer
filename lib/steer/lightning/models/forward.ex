@@ -50,6 +50,15 @@ defmodule Steer.Lightning.Models.Forward do
     Integer.floor_div(forward.fee, 1000)
   end
 
+
+  def contextualize_forwards(forwards, channel) do
+    forwards
+    |> Enum.map(fn forward ->
+      forward
+      |> contextualize_forward(channel)
+    end)
+  end
+
   def contextualize_forward(forward, channel) do
     forward
     |> Map.put(:direction, get_direction(forward, channel))
