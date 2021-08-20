@@ -25,6 +25,10 @@ defmodule Steer.Lightning do
     GenServer.call(__MODULE__, :get_all_channels)
   end
 
+  def get_channel(%{ id: _id } = params) do
+    GenServer.call(__MODULE__, { :get_channel, params } )
+  end
+
   def handle_call(:get_all_channels, _from, %{ channels: channels } = state) do
     Logger.info "Getting channels from cache"
 
@@ -40,9 +44,14 @@ defmodule Steer.Lightning do
       state |> Map.put(:channels, channels)}
   end
 
-  def get_channel(id) do
-    Repo.get_channel(id)
+
+  def handle_call({ :get_channel, %{ id: id } }, _from, state) do
+    Logger.info "Getting channel #{id} from cache"
+
+    channel = Repo.get_channel(id)
     |> Models.Channel.format_balances
+
+    { :reply, channel, state}
   end
 
   def get_channel_forwards(channel_id) do
