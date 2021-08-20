@@ -86,20 +86,47 @@ defmodule Steer.Sync.Forward do
   end
 
   defp get_latest_unconsolidated_forward_timestamp() do
+    get_repo_latest_unconsolidated_forward_timestamp()
+    |> maybe_get_repo_latest_forward_timestamp
+    |> maybe_get_lnd_first_forward_timestamp
+    |> NaiveDateTime.to_date
+  end
+
+  defp maybe_get_repo_latest_forward_timestamp nil do
+    case Repo.get_latest_forward() do
+      %{ timestamp: timestamp } ->
+        timestamp
+      nil ->
+        nil
+    end
+  end
+
+  defp maybe_get_repo_latest_forward_timestamp timestamp do
+    timestamp
+  end
+
+  defp maybe_get_lnd_first_forward_timestamp nil do
+    case LndClient.get_forwarding_history %{ max_events: 1 } do
+      { :ok, %{ forwarding_events: [] } } ->
+        ~N[2000-01-01 00:00:00]
+      { :ok, %{ forwarding_events: [first_forward | _] } } ->
+        first_forward.time
+      { :error, _ } ->
+        ~N[2000-01-01 00:00:00]
+    end
+  end
+
+  defp maybe_get_lnd_first_forward_timestamp timestamp do
+    timestamp
+  end
+
+  defp get_repo_latest_unconsolidated_forward_timestamp do
     case Repo.get_latest_unconsolidated_forward() do
       %{ timestamp: timestamp } ->
         timestamp
       nil ->
-        case LndClient.get_forwarding_history %{ max_events: 1 } do
-          { :ok, %{ forwarding_events: [] } } ->
-            ~N[2000-01-01 00:00:00]
-          { :ok, %{ forwarding_events: [first_forward | _] } } ->
-            first_forward.time
-          { :error, _ } ->
-            ~N[2000-01-01 00:00:00]
-        end
+        nil
     end
-    |> NaiveDateTime.to_date
   end
 
   defp compare_forwards(%{

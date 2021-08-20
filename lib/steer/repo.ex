@@ -59,6 +59,12 @@ defmodule Steer.Repo do
       preload: [:channel_in, :channel_out]
   end
 
+  def get_latest_forward do
+    one from f in Models.Forward,
+      order_by: [desc: f.timestamp],
+      limit: 1
+  end
+
   def get_latest_unconsolidated_forward do
     one from f in Models.Forward,
       where: f.consolidated == false,
