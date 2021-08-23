@@ -2,7 +2,6 @@ defmodule Steer.LndChannelSubscription do
   use GenServer
   require Logger
 
-  alias Steer.Repo
   alias SteerWeb.Endpoint
 
   @channel_topic "channel"
@@ -57,7 +56,7 @@ defmodule Steer.LndChannelSubscription do
 
     channel_point = convert_channel_point(channel_point_struct)
 
-    Repo.get_channel_by_channel_point(channel_point)
+    Steer.Lightning.get_channel_by_channel_point(channel_point)
     |> Steer.Lightning.update_channel(%{ status: :active })
     |> write_status_change("active")
     |> broadcast(@channel_topic, @active_message)
@@ -72,7 +71,7 @@ defmodule Steer.LndChannelSubscription do
 
     channel_point = convert_channel_point(channel_point_struct)
 
-    Repo.get_channel_by_channel_point(channel_point)
+    Steer.Lightning.get_channel_by_channel_point(channel_point)
     |> Steer.Lightning.update_channel(%{ status: :inactive })
     |> write_status_change("inactive")
     |> broadcast(@channel_topic, @inactive_message)
