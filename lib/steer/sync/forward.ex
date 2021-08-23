@@ -89,25 +89,25 @@ defmodule Steer.Sync.Forward do
 
   defp get_latest_unconsolidated_forward_time() do
     get_repo_latest_unconsolidated_forward_time()
-    |> maybe_get_repo_latest_forward_timestamp
-    |> maybe_get_lnd_first_forward_timestamp
+    |> maybe_get_repo_latest_forward_time
+    |> maybe_get_lnd_first_forward_time
     |> NaiveDateTime.to_date
   end
 
-  defp maybe_get_repo_latest_forward_timestamp nil do
+  defp maybe_get_repo_latest_forward_time nil do
     case Repo.get_latest_forward() do
-      %{ timestamp: timestamp } ->
-        timestamp
+      %{ time: time } ->
+        time
       nil ->
         nil
     end
   end
 
-  defp maybe_get_repo_latest_forward_timestamp timestamp do
-    timestamp
+  defp maybe_get_repo_latest_forward_time time do
+    time
   end
 
-  defp maybe_get_lnd_first_forward_timestamp nil do
+  defp maybe_get_lnd_first_forward_time nil do
     case LndClient.get_forwarding_history %{ max_events: 1 } do
       { :ok, %{ forwarding_events: [] } } ->
         ~N[2000-01-01 00:00:00]
@@ -118,8 +118,8 @@ defmodule Steer.Sync.Forward do
     end
   end
 
-  defp maybe_get_lnd_first_forward_timestamp timestamp do
-    timestamp
+  defp maybe_get_lnd_first_forward_time time do
+    time
   end
 
   defp get_repo_latest_unconsolidated_forward_time do
@@ -137,20 +137,20 @@ defmodule Steer.Sync.Forward do
     chan_id_in: lnd_channel_id_in,
     chan_id_out: lnd_channel_id_out,
     fee_msat: lnd_fee,
-    time: lnd_timestamp
+    timestamp_ns: lnd_timestamp_ns
   }, %{
     amount_in: repo_amount_in,
     amount_out: repo_amount_out,
     channel_in: repo_channel_in,
     channel_out: repo_channel_out,
     fee: repo_fee,
-    timestamp: repo_timestamp
+    timestamp_ns: repo_timestamp_ns
   }) when lnd_amount_in == repo_amount_in
       and lnd_amount_out == repo_amount_out
       and lnd_channel_id_in == repo_channel_in.lnd_id
       and lnd_channel_id_out == repo_channel_out.lnd_id
       and lnd_fee == repo_fee
-      and lnd_timestamp == repo_timestamp do
+      and lnd_timestamp_ns == repo_timestamp_ns do
     true
   end
 

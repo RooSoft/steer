@@ -2,7 +2,6 @@ defmodule Steer.Lnd.Forward do
   def convert(lnd_forwards) do
     lnd_forwards
     |> create_map()
-    |> format_timestamps()
     |> format_amounts
   end
 
@@ -15,16 +14,9 @@ defmodule Steer.Lnd.Forward do
         chan_id_in: lnd_forward.chan_id_in,
         chan_id_out: lnd_forward.chan_id_out,
         fee: lnd_forward.fee_msat,
-        timestamp: lnd_forward.timestamp
+        time: lnd_forward.time,
+        timestamp_ns: lnd_forward.timestamp_ns
       }
-    end)
-  end
-
-  defp format_timestamps(forwards) do
-    forwards
-    |> Enum.map(fn forward ->
-      forward
-      |> Map.put(:time, DateTime.from_unix!(forward.timestamp))
     end)
   end
 
