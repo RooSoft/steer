@@ -60,6 +60,11 @@ defmodule Steer.Repo do
       where: c.id == ^id
   end
 
+  def get_channel_by_lnd_id(lnd_id) do
+    one from c in Models.Channel,
+      where: c.lnd_id == ^lnd_id
+  end
+
   def get_channel_forwards(channel_id) do
     all from f in Models.Forward,
       where: f.channel_in_id == ^channel_id or f.channel_out_id == ^channel_id,
@@ -105,17 +110,20 @@ defmodule Steer.Repo do
       where: c.channel_point == ^channel_point
   end
 
-  def get_channel_by_lnd_id(lnd_id) do
-    one first from c in Models.Channel,
-      where: c.lnd_id == ^lnd_id
-  end
-
   def update_channel(channel, changes) do
     changeset = Models.Channel.changeset(channel, changes)
 
     { :ok, channel } = update(changeset)
 
     channel
+  end
+
+  def insert_htlc_event changes do
+    changeset = Models.HtlcEvent.changeset(%Models.HtlcEvent{}, changes)
+
+    { :ok, htlc_event } = insert(changeset)
+
+    htlc_event
   end
 
   defp forwards_in_subquery() do

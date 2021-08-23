@@ -30,10 +30,24 @@ defmodule Steer.HtlcSubscription do
     {:noreply, state}
   end
 
-  def handle_info(%Routerrpc.HtlcEvent{ event: {:forward_event, _forward_event } } = htlc, state) do
+  def handle_info(%Routerrpc.HtlcEvent{ event: {:forward_event, _forward_event } } = htlc_event, state) do
     Logger.info "NEW HTLC: forward event"
 
-    IO.inspect htlc
+    IO.inspect htlc_event
+
+    in_channel = Steer.Lightning.get_channel(%{ lnd_id: htlc_event.incoming_channel_id })
+    out_channel = Steer.Lightning.get_channel(%{ lnd_id: htlc_event.outgoing_channel_id })
+    time = DateTime.from_unix!(htlc_event.timestamp_ns, :nanosecond)
+
+    Steer.Lightning.insert_htlc_event(%{
+      type: :forward,
+      channel_in_id: in_channel.id,
+      channel_out_id: out_channel.id,
+      htlc_in_id: htlc_event.incoming_htlc_id,
+      htlc_out_id: htlc_event.outgoing_htlc_id,
+      time: DateTime.to_naive(time),
+      timestamp_ns: htlc_event.timestamp_ns
+    })
 
     {:noreply, state}
   end

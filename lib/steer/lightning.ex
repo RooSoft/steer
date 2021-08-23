@@ -29,6 +29,10 @@ defmodule Steer.Lightning do
     GenServer.call(__MODULE__, { :get_channel, params })
   end
 
+  def get_channel(%{ lnd_id: _lnd_id } = params) do
+    GenServer.call(__MODULE__, { :get_channel, params })
+  end
+
   def get_channel_by_channel_point(channel_point) do
     GenServer.call(__MODULE__, { :get_channel_by_channel_point, channel_point })
   end
@@ -46,6 +50,10 @@ defmodule Steer.Lightning do
 
   def get_latest_unconsolidated_forward do
     GenServer.call(__MODULE__, :get_latest_unconsolidated_forward)
+  end
+
+  def insert_htlc_event htlc_event do
+    GenServer.call(__MODULE__, { :insert_htlc_event, htlc_event })
   end
 
   def handle_call(:get_all_channels, _from, %{ channels: channels } = state) do
@@ -67,6 +75,15 @@ defmodule Steer.Lightning do
     Logger.info "Getting channel #{id} from cache"
 
     channel = Repo.get_channel(id)
+    |> Models.Channel.format_balances
+
+    { :reply, channel, state}
+  end
+
+  def handle_call({ :get_channel, %{ lnd_id: lnd_id } }, _from, state) do
+    Logger.info "Getting channel #{lnd_id} from cache"
+
+    channel = Repo.get_channel_by_lnd_id(lnd_id)
     |> Models.Channel.format_balances
 
     { :reply, channel, state}
@@ -107,6 +124,10 @@ defmodule Steer.Lightning do
 
   def handle_call(:get_latest_unconsolidated_forward, _from, state) do
     { :reply, Repo.get_latest_unconsolidated_forward, state}
+  end
+
+  def handle_call({ :insert_htlc_event, htlc_event }, _from, state) do
+    { :reply, Repo.insert_htlc_event(htlc_event), state}
   end
 
   def reload_channels(state) do
