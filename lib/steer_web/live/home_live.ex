@@ -52,7 +52,7 @@ defmodule SteerWeb.HomeLive do
     write_in_blue "New HTLC received: #{event_type}"
     write_in_blue ".... updating channels ...."
 
-    channels = Steer.Lnd.get_all_channels()
+    channels = Steer.Lightning.get_all_channels()
 
     { :noreply, socket
       |> assign(:channels, channels)
@@ -73,7 +73,7 @@ defmodule SteerWeb.HomeLive do
     write_in_yellow "New paid invoice received"
     write_in_yellow ".... updating channels ...."
 
-    channels = Steer.Lnd.get_all_channels()
+    channels = Steer.Lightning.get_all_channels()
 
     { :noreply, socket
       |> assign(:channels, channels)
@@ -104,7 +104,7 @@ defmodule SteerWeb.HomeLive do
     write_in_green "A channel has been closed"
     write_in_green ".... updating channels ...."
 
-    channels = Steer.Lnd.get_all_channels()
+    channels = Steer.Lightning.get_all_channels()
 
     { :noreply, socket
       |> assign(:channels, channels)
