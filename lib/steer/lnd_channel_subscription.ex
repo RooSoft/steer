@@ -58,7 +58,7 @@ defmodule Steer.LndChannelSubscription do
     channel_point = convert_channel_point(channel_point_struct)
 
     Repo.get_channel_by_channel_point(channel_point)
-    |> Repo.update_channel(%{ is_active: true })
+    |> Steer.Lightning.update_channel(%{ status: :active })
     |> write_status_change("active")
     |> broadcast(@channel_topic, @active_message)
 
@@ -73,7 +73,7 @@ defmodule Steer.LndChannelSubscription do
     channel_point = convert_channel_point(channel_point_struct)
 
     Repo.get_channel_by_channel_point(channel_point)
-    |> Repo.update_channel(%{ is_active: false })
+    |> Steer.Lightning.update_channel(%{ status: :inactive })
     |> write_status_change("inactive")
     |> broadcast(@channel_topic, @inactive_message)
 

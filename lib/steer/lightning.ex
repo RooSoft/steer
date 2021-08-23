@@ -29,6 +29,13 @@ defmodule Steer.Lightning do
     GenServer.call(__MODULE__, { :get_channel, params })
   end
 
+  def update_channel(channel, struct) do
+    GenServer.call(__MODULE__, { :update_channel, %{
+      channel: channel,
+      struct: struct
+    } })
+  end
+
   def get_channel_forwards(%{ channel_id: _ } = params) do
     GenServer.call(__MODULE__, { :get_channel_forwards, params })
   end
@@ -61,6 +68,19 @@ defmodule Steer.Lightning do
     { :reply, channel, state}
   end
 
+  def handle_call({ :update_channel, %{ channel: channel, struct: struct }}, _from, state) do
+    Logger.info "Updating channel #{channel.id}"
+    IO.inspect struct
+    IO.inspect channel
+
+    channel = channel
+    |> Repo.update_channel(struct)
+
+    { :reply,
+      channel,
+      state |> reload_channels }
+  end
+
   def handle_call({ :get_channel_forwards, %{ channel_id: channel_id } }, _from, state) do
     channel = Repo.get_channel(channel_id)
 
@@ -74,5 +94,13 @@ defmodule Steer.Lightning do
 
   def handle_call(:get_latest_unconsolidated_forward, _from, state) do
     { :reply, Repo.get_latest_unconsolidated_forward, state}
+  end
+
+  def reload_channels(state) do
+    channels = Repo.get_all_channels()
+    |> Models.Channel.format_balances
+
+    state
+    |> Map.put(:channels, channels)
   end
 end

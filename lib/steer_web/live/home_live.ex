@@ -114,15 +114,17 @@ defmodule SteerWeb.HomeLive do
   @impl true
   def handle_info(%{ topic: @channel_topic, event: @active_message, payload: channel }, socket) do
     { :noreply, socket
-    |> assign(:channels, update_channel(socket.assigns.channels, channel))
-    |> put_flash(:info, "#{channel.alias} became active")}
+      |> assign(:channels, Steer.Lightning.get_all_channels())
+      |> put_flash(:info, "#{channel.alias} became active")}
   end
 
   @impl true
   def handle_info(%{ topic: @channel_topic, event: @inactive_message, payload: channel }, socket) do
-    { :noreply, socket
-      |> assign(:channels, update_channel(socket.assigns.channels, channel))
-      |> put_flash(:info, "#{channel.alias} became inactive")}
+    socket = socket
+      |> assign(:channels, Steer.Lightning.get_all_channels())
+      |> put_flash(:info, "#{channel.alias} became inactive")
+
+    { :noreply, socket }
   end
 
   @impl true
