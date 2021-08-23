@@ -164,16 +164,6 @@ defmodule SteerWeb.HomeLive do
     end)
   end
 
-  defp update_channel(channels, channel) do
-    channel_point = channel.channel_point
-
-    channels
-    |> Enum.map(fn
-      %{channel_point: ^channel_point} -> channel
-      other -> other
-    end)
-  end
-
   defp write_in_blue message do
     Logger.info(IO.ANSI.blue_background() <> IO.ANSI.black() <> message <> IO.ANSI.reset())
   end
