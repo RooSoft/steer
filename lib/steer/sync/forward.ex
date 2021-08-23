@@ -9,13 +9,15 @@ defmodule Steer.Sync.Forward do
   @one_day @hours_in_day * @minutes_in_hour * @seconds_in_minute
 
   def sync() do
-    date = get_latest_unconsolidated_forward_timestamp()
+    time = get_latest_unconsolidated_forward_time()
 
-    sync(date)
+    sync(time)
   end
 
-  def sync(date) do
-    execute_if_not_tomorrow(date, &do_sync/1)
+  @spec sync(%{:calendar => any, :day => any, :month => any, :year => any, optional(any) => any}) ::
+          nil
+  def sync(time) do
+    execute_if_not_tomorrow(time, &do_sync/1)
   end
 
   defp do_sync(date) do
@@ -85,8 +87,8 @@ defmodule Steer.Sync.Forward do
     |> Map.put(:new_forwards_in_lnd, new_forwards_in_lnd)
   end
 
-  defp get_latest_unconsolidated_forward_timestamp() do
-    get_repo_latest_unconsolidated_forward_timestamp()
+  defp get_latest_unconsolidated_forward_time() do
+    get_repo_latest_unconsolidated_forward_time()
     |> maybe_get_repo_latest_forward_timestamp
     |> maybe_get_lnd_first_forward_timestamp
     |> NaiveDateTime.to_date
@@ -120,10 +122,10 @@ defmodule Steer.Sync.Forward do
     timestamp
   end
 
-  defp get_repo_latest_unconsolidated_forward_timestamp do
+  defp get_repo_latest_unconsolidated_forward_time do
     case Repo.get_latest_unconsolidated_forward() do
-      %{ timestamp: timestamp } ->
-        timestamp
+      %{ time: time } ->
+        time
       nil ->
         nil
     end
@@ -208,7 +210,8 @@ defmodule Steer.Sync.Forward do
       fee: forward.fee_msat,
       channel_in_id: Repo.get_channel_by_lnd_id(forward.chan_id_in).id,
       channel_out_id: Repo.get_channel_by_lnd_id(forward.chan_id_out).id,
-      timestamp: forward.time
+      time: forward.time,
+      timestamp_ns: forward.timestamp_ns
     }
   end
 

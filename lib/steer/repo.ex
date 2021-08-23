@@ -63,20 +63,20 @@ defmodule Steer.Repo do
   def get_channel_forwards(channel_id) do
     all from f in Models.Forward,
       where: f.channel_in_id == ^channel_id or f.channel_out_id == ^channel_id,
-      order_by: [desc: f.timestamp],
+      order_by: [desc: f.timestamp_ns],
       preload: [:channel_in, :channel_out]
   end
 
   def get_latest_forward do
     one from f in Models.Forward,
-      order_by: [desc: f.timestamp],
+      order_by: [desc: f.timestamp_ns],
       limit: 1
   end
 
   def get_latest_unconsolidated_forward do
     one from f in Models.Forward,
       where: f.consolidated == false,
-      order_by: [desc: f.timestamp],
+      order_by: [desc: f.timestamp_ns],
       limit: 1
   end
 
@@ -85,8 +85,8 @@ defmodule Steer.Repo do
     end_time: end_time
   }) do
     all from f in Models.Forward,
-      where: f.timestamp >= ^start_time and f.timestamp < ^end_time,
-      order_by: [desc: f.timestamp],
+      where: f.time >= ^start_time and f.time < ^end_time,
+      order_by: [desc: f.timestamp_ns],
       preload: [:channel_in, :channel_out]
   end
 
@@ -125,7 +125,7 @@ defmodule Steer.Repo do
       select: %{
         channel_id: c.id,
         forward_count: count(f.id),
-        latest_timestamp: max(f.timestamp)
+        latest_timestamp: max(f.time)
       }
   end
 
@@ -136,7 +136,7 @@ defmodule Steer.Repo do
       select: %{
         channel_id: c.id,
         forward_count: count(f.id),
-        latest_timestamp: max(f.timestamp)
+        latest_timestamp: max(f.time)
       }
   end
 end

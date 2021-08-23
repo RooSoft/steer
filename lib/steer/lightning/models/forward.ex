@@ -10,15 +10,16 @@ defmodule Steer.Lightning.Models.Forward do
     belongs_to :channel_in, Models.Channel
     belongs_to :channel_out, Models.Channel
     field :consolidated, :boolean
-    field :timestamp, :naive_datetime
+    field :time, :naive_datetime
+    field :timestamp_ns, :integer
 
     timestamps()
   end
 
   def changeset(struct, params) do
     struct
-    |> cast(params, [:amount_in, :amount_out, :fee, :channel_in_id, :channel_out_id, :timestamp])
-    |> validate_required([:amount_in, :amount_out, :fee, :channel_in_id, :channel_out_id, :timestamp])
+    |> cast(params, [:amount_in, :amount_out, :fee, :channel_in_id, :channel_out_id, :time, :timestamp_ns])
+    |> validate_required([:amount_in, :amount_out, :fee, :channel_in_id, :channel_out_id, :time, :timestamp_ns])
   end
 
   def format_balances(forwards) when is_list(forwards) do

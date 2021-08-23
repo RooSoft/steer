@@ -9,7 +9,8 @@ defmodule Steer.Repo.Migrations.CreateForwardTable do
       add :channel_in_id, references(:channel), null: false
       add :channel_out_id, references(:channel), null: false
       add :consolidated, :boolean, default: false, null: false
-      add :timestamp, :naive_datetime_usec, null: false
+      add :time, :naive_datetime_usec, null: false
+      add :timestamp_ns, :bigint, null: false
 
       timestamps()
     end
