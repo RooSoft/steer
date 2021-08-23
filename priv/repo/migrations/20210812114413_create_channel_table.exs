@@ -23,6 +23,3 @@ defmodule Steer.Repo.Migrations.CreateChannelTable do
     create unique_index(:channel, [:channel_point])
   end
 end
-
-2147483647
-5000000000
