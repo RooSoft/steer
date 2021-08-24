@@ -52,14 +52,19 @@ defmodule Steer.HtlcSubscription do
     {:noreply, state}
   end
 
-  def handle_info(%Routerrpc.HtlcEvent{ event: {:link_fail_event, _ } } = lnd_htlc_event, state) do
+  def handle_info(%Routerrpc.HtlcEvent{ event: {:link_fail_event, link_fail_event } } = lnd_htlc_event, state) do
     Logger.info "NEW HTLC: link fail event"
 
     IO.inspect lnd_htlc_event
 
-    lnd_htlc_event
+    htlc_event = lnd_htlc_event
     |> extract_htlc_event_map(:link_fail)
     |> Steer.Lightning.insert_htlc_event
+
+    link_fail_event
+    |> extract_link_fail_event_map()
+    |> Map.put(:htlc_event_id, htlc_event.id)
+    |> Steer.Lightning.insert_htlc_link_fail()
 
     {:noreply, state}
   end
@@ -109,7 +114,25 @@ defmodule Steer.HtlcSubscription do
     }
   end
 
-  defp extract_link_fail_event_map %{ } do
-    %{}
+  defp extract_link_fail_event_map %Routerrpc.LinkFailEvent{
+    failure_detail: failure_detail,
+    failure_string: failure_string,
+    wire_failure: wire_failure,
+    info: %Routerrpc.HtlcInfo{
+      incoming_amt_msat: incoming_amt_msat,
+      outgoing_amt_msat: outgoing_amt_msat,
+      incoming_timelock: incoming_timelock,
+      outgoing_timelock: outgoing_timelock
+      }
+  } do
+    %{
+      amount_in: incoming_amt_msat,
+      amount_out: outgoing_amt_msat,
+      timelock_in: incoming_timelock,
+      timelock_out: outgoing_timelock,
+      failure_detail: Atom.to_string(failure_detail),
+      failure_string: failure_string,
+      wire_failure: Atom.to_string(wire_failure)
+    }
   end
 end

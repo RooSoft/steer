@@ -3,7 +3,7 @@ defmodule Steer.Lightning.Models.HtlcLinkFail do
   import Ecto.Changeset
   alias Steer.Lightning.Models, as: Models
 
-  schema "htlc_forward" do
+  schema "htlc_link_fail" do
     belongs_to :htlc_event, Models.HtlcEvent
     field :amount_in, :integer
     field :amount_out, :integer
@@ -19,7 +19,7 @@ defmodule Steer.Lightning.Models.HtlcLinkFail do
 
   def changeset(struct, params) do
     struct
-    |> cast(params, [:htlc_event_id, :amount_in, :amount_out, :timelock_in, :timelock_out, :wire_failure, :failure_datail, :failure_string])
-    |> validate_required([:htlc_event_id, :amount_in, :amount_out, :timelock_in, :timelock_out, :wire_failure, :failure_datail, :failure_string])
+    |> cast(params, [:htlc_event_id, :amount_in, :amount_out, :timelock_in, :timelock_out, :wire_failure, :failure_detail, :failure_string])
+    |> validate_required([:htlc_event_id, :amount_in, :amount_out, :timelock_in, :timelock_out, :wire_failure, :failure_detail, :failure_string])
   end
 end
