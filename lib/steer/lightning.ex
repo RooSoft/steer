@@ -21,6 +21,10 @@ defmodule Steer.Lightning do
     Logger.info "Sync done at #{DateTime.utc_now()}"
   end
 
+  def update_channel_cache() do
+    GenServer.call(__MODULE__, :update_channel_cache)
+  end
+
   def get_all_channels() do
     GenServer.call(__MODULE__, :get_all_channels)
   end
@@ -60,6 +64,15 @@ defmodule Steer.Lightning do
     Logger.info "Getting channels from cache"
 
     { :reply, channels, state}
+  end
+
+  def handle_call(:update_channel_cache, _from, state) do
+    channels = Repo.get_all_channels()
+    |> Models.Channel.format_balances
+
+    { :reply,
+      channels,
+      state |> Map.put(:channels, channels)}
   end
 
   def handle_call(:get_all_channels, _from, state) do
