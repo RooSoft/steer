@@ -25,12 +25,12 @@ defmodule Steer.Lightning do
     GenServer.call(__MODULE__, :get_all_channels)
   end
 
-  def get_channel(%{ id: _id } = params) do
-    GenServer.call(__MODULE__, { :get_channel, params })
+  def get_channel([{ :id, id }]) do
+    GenServer.call(__MODULE__, { :get_channel, %{ id: id } })
   end
 
-  def get_channel(%{ lnd_id: _lnd_id } = params) do
-    GenServer.call(__MODULE__, { :get_channel, params })
+  def get_channel([{ :lnd_id, lnd_id }]) do
+    GenServer.call(__MODULE__, { :get_channel, %{ lnd_id: lnd_id } })
   end
 
   def get_channel_by_channel_point(channel_point) do

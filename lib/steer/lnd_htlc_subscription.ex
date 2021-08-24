@@ -35,8 +35,8 @@ defmodule Steer.HtlcSubscription do
 
     IO.inspect htlc_event
 
-    in_channel = Steer.Lightning.get_channel(%{ lnd_id: htlc_event.incoming_channel_id })
-    out_channel = Steer.Lightning.get_channel(%{ lnd_id: htlc_event.outgoing_channel_id })
+    in_channel = Steer.Lightning.get_channel(lnd_id: htlc_event.incoming_channel_id)
+    out_channel = Steer.Lightning.get_channel(lnd_id: htlc_event.outgoing_channel_id)
     time = DateTime.from_unix!(htlc_event.timestamp_ns, :nanosecond)
 
     Steer.Lightning.insert_htlc_event(%{
