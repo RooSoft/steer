@@ -3,7 +3,7 @@ defmodule Steer.Lightning.Models.HtlcForward do
   import Ecto.Changeset
   alias Steer.Lightning.Models, as: Models
 
-  schema "htlc_event" do
+  schema "htlc_forward" do
     belongs_to :htlc_event, Models.HtlcEvent
     field :amount_in, :integer
     field :amount_out, :integer

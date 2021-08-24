@@ -126,6 +126,14 @@ defmodule Steer.Repo do
     htlc_event
   end
 
+  def insert_htlc_forward changes do
+    changeset = Models.HtlcForward.changeset(%Models.HtlcForward{}, changes)
+
+    { :ok, htlc_forward } = insert(changeset)
+
+    htlc_forward
+  end
+
   defp forwards_in_subquery() do
     from c in Models.Channel,
       left_join: f in assoc(c, :forwards_in),

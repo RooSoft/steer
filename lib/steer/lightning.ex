@@ -60,6 +60,10 @@ defmodule Steer.Lightning do
     GenServer.call(__MODULE__, { :insert_htlc_event, htlc_event })
   end
 
+  def insert_htlc_forward htlc_forward do
+    GenServer.call(__MODULE__, { :insert_htlc_forward, htlc_forward })
+  end
+
   def handle_call(:get_all_channels, _from, %{ channels: channels } = state) do
     Logger.info "Getting channels from cache"
 
@@ -141,6 +145,10 @@ defmodule Steer.Lightning do
 
   def handle_call({ :insert_htlc_event, htlc_event }, _from, state) do
     { :reply, Repo.insert_htlc_event(htlc_event), state}
+  end
+
+  def handle_call({ :insert_htlc_forward, htlc_forward }, _from, state) do
+    { :reply, Repo.insert_htlc_forward(htlc_forward), state}
   end
 
   def reload_channels(state) do
