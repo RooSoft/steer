@@ -2,11 +2,6 @@ defmodule Steer.HtlcSubscription do
   use GenServer
   require Logger
 
-  alias SteerWeb.Endpoint
-
-  @htlc_topic "htlc"
-  @new_message "new"
-
   def start_link(_) do
     GenServer.start_link(__MODULE__, nil, name: __MODULE__)
   end
@@ -21,11 +16,13 @@ defmodule Steer.HtlcSubscription do
     { :ok, nil }
   end
 
-  def handle_info(%Routerrpc.HtlcEvent{event: {:settle_event, _}} = htlc, state) do
+  def handle_info(%Routerrpc.HtlcEvent{event: {:settle_event, _}} = lnd_htlc_event, state) do
     Logger.info "--------- got a SETTLE event"
     Logger.info "-------- broadcasting"
 
-    Endpoint.broadcast(@htlc_topic, @new_message, htlc)
+    lnd_htlc_event
+    |> extract_htlc_event_map(:settle)
+    |> Steer.Lightning.insert_htlc_event
 
     {:noreply, state}
   end
@@ -34,7 +31,7 @@ defmodule Steer.HtlcSubscription do
     Logger.info "NEW HTLC: forward event"
 
     htlc_event = lnd_htlc_event
-    |> extract_htlc_event_map
+    |> extract_htlc_event_map(:forward)
     |> Steer.Lightning.insert_htlc_event
 
     forward_event
@@ -68,13 +65,13 @@ defmodule Steer.HtlcSubscription do
     {:noreply, state}
   end
 
-  defp extract_htlc_event_map htlc_event do
+  defp extract_htlc_event_map htlc_event, type do
     in_channel = Steer.Lightning.get_channel(lnd_id: htlc_event.incoming_channel_id)
     out_channel = Steer.Lightning.get_channel(lnd_id: htlc_event.outgoing_channel_id)
     time = DateTime.from_unix!(htlc_event.timestamp_ns, :nanosecond)
 
     %{
-      type: :forward,
+      type: type,
       channel_in_id: in_channel.id,
       channel_out_id: out_channel.id,
       htlc_in_id: htlc_event.incoming_htlc_id,
