@@ -1,6 +1,10 @@
 defmodule Steer.Sync.Channel do
+  require Logger
+
   alias Steer.Repo, as: Repo
   alias Steer.Lightning.Models, as: Models
+
+  @unable_to_find_node_code 5
 
   def sync() do
     { :ok, channels } = LndClient.get_channels()
@@ -14,16 +18,37 @@ defmodule Steer.Sync.Channel do
   end
 
   defp upsert_channel channel do
-    convert_channel_to_map(channel)
-    |> upsert_channel_map()
+    channel
+    |> convert_channel_to_map
+    |> filter_already_closed_channels
+    |> maybe_upsert_channel_map()
+  end
+
+  defp filter_already_closed_channels nil do
+    nil
+  end
+
+  defp filter_already_closed_channels channel_map do
+    case Repo.get_channel_by_channel_point(channel_map.channel_point) do
+      %{ status: :closed } = channel ->
+        Logger.info "Skipping sync of #{channel.alias} cause it's already closed"
+        nil
+      _ ->
+        channel_map
+    end
   end
 
   defp upsert_closed_channel closed_channel do
-    convert_closed_channel_to_map(closed_channel)
-    |> upsert_channel_map
+    closed_channel
+    |> convert_closed_channel_to_map
+    |> maybe_upsert_channel_map
   end
 
-  defp upsert_channel_map map do
+  defp maybe_upsert_channel_map nil do
+    Logger.info "No channel to upsert"
+  end
+
+  defp maybe_upsert_channel_map map do
     changeset = Models.Channel.changeset(
       %Models.Channel{},
       map
@@ -43,21 +68,24 @@ defmodule Steer.Sync.Channel do
   end
 
   defp convert_channel_to_map channel do
-    { :ok, node_info } = LndClient.get_node_info(channel.remote_pubkey)
+    case LndClient.get_node_info(channel.remote_pubkey) do
+      {:error, %GRPC.RPCError{status: @unable_to_find_node_code}} ->
+        nil
+      { :ok, node_info } ->
+        node = node_info.node
 
-    node = node_info.node
-
-    %{
-      lnd_id: channel.chan_id,
-      channel_point: channel.channel_point,
-      node_pub_key: channel.remote_pubkey,
-      status: get_channel_status(channel),
-      alias: node.alias,
-      color: node.color,
-      capacity: channel.capacity * 1000,
-      local_balance: channel.local_balance * 1000,
-      remote_balance: channel.remote_balance * 1000
-    }
+        %{
+          lnd_id: channel.chan_id,
+          channel_point: channel.channel_point,
+          node_pub_key: channel.remote_pubkey,
+          status: get_channel_status(channel),
+          alias: node.alias,
+          color: node.color,
+          capacity: channel.capacity * 1000,
+          local_balance: channel.local_balance * 1000,
+          remote_balance: channel.remote_balance * 1000
+        }
+    end
   end
 
   defp convert_closed_channel_to_map channel do
