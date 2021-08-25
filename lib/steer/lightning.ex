@@ -18,6 +18,8 @@ defmodule Steer.Lightning do
     Steer.Sync.Channel.sync
     Steer.Sync.Forward.sync
 
+    update_channel_cache()
+
     Logger.info "Sync done at #{DateTime.utc_now()}"
   end
 
