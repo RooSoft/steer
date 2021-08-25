@@ -39,8 +39,6 @@ defmodule Steer.HtlcSubscription do
   def handle_info(%Routerrpc.HtlcEvent{ event: {:forward_event, forward_event } } = lnd_htlc_event, state) do
     Logger.info "NEW HTLC: forward event"
 
-    IO.inspect lnd_htlc_event
-
     htlc_event = lnd_htlc_event
     |> extract_htlc_event_map(:forward)
     |> Steer.Lightning.insert_htlc_event
@@ -67,8 +65,6 @@ defmodule Steer.HtlcSubscription do
 
   def handle_info(%Routerrpc.HtlcEvent{ event: {:link_fail_event, link_fail_event } } = lnd_htlc_event, state) do
     Logger.info "NEW HTLC: link fail event"
-
-    IO.inspect lnd_htlc_event
 
     htlc_event = lnd_htlc_event
     |> extract_htlc_event_map(:link_fail)
