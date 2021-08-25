@@ -25,62 +25,61 @@ defmodule Steer.HtlcSubscription do
   end
 
   def handle_info(%Routerrpc.HtlcEvent{event: {:settle_event, _}} = lnd_htlc_event, state) do
-    Logger.info "--------- got a SETTLE event"
-    Logger.info "-------- broadcasting"
-
-    lnd_htlc_event
+    htlc_event = lnd_htlc_event
     |> extract_htlc_event_map(:settle)
     |> Steer.Lightning.insert_htlc_event
     |> broadcast(@htlc_event_topic, @settle_message)
 
+    Logger.info "HTLC settle event \##{htlc_event.id}"
+
     {:noreply, state}
   end
 
-  def handle_info(%Routerrpc.HtlcEvent{ event: {:forward_event, forward_event } } = lnd_htlc_event, state) do
-    Logger.info "NEW HTLC: forward event"
-
+  def handle_info(%Routerrpc.HtlcEvent{ event: {:forward_event, lnd_forward_event } } = lnd_htlc_event, state) do
     htlc_event = lnd_htlc_event
     |> extract_htlc_event_map(:forward)
     |> Steer.Lightning.insert_htlc_event
 
-    forward_event
+    forward_event = lnd_forward_event
     |> extract_forward_event_map()
     |> Map.put(:htlc_event_id, htlc_event.id)
     |> Steer.Lightning.insert_htlc_forward
     |> broadcast(@htlc_event_topic, @forward_message)
 
+    Logger.info "HTLC forward event \##{forward_event.id}"
+
     {:noreply, state}
   end
 
   def handle_info(%Routerrpc.HtlcEvent{ event: {:forward_fail_event, _ } } = lnd_htlc_event, state) do
-    Logger.info "NEW HTLC: forward fail event"
-
-    lnd_htlc_event
+    htlc_event = lnd_htlc_event
     |> extract_htlc_event_map(:forward_fail)
     |> Steer.Lightning.insert_htlc_event
     |> broadcast(@htlc_event_topic, @forward_fail_message)
 
+    Logger.info "HTLC forward fail event \##{htlc_event.id}"
+
     {:noreply, state}
   end
 
-  def handle_info(%Routerrpc.HtlcEvent{ event: {:link_fail_event, link_fail_event } } = lnd_htlc_event, state) do
-    Logger.info "NEW HTLC: link fail event"
-
+  def handle_info(%Routerrpc.HtlcEvent{ event: {:link_fail_event, lnd_link_fail_event } } = lnd_htlc_event, state) do
     htlc_event = lnd_htlc_event
     |> extract_htlc_event_map(:link_fail)
     |> Steer.Lightning.insert_htlc_event
 
-    link_fail_event
+    link_fail_event = lnd_link_fail_event
     |> extract_link_fail_event_map()
     |> Map.put(:htlc_event_id, htlc_event.id)
     |> Steer.Lightning.insert_htlc_link_fail()
     |> broadcast(@htlc_event_topic, @link_fail_message)
 
+    Logger.info "HTLC link fail event \##{link_fail_event.id}"
+
     {:noreply, state}
   end
 
   def handle_info(%Routerrpc.HtlcEvent{} = htlc_event, state) do
-    Logger.info "NEW HTLC of unknown type"
+    Logger.info "HTLC of unknown type"
 
     IO.inspect htlc_event
 
