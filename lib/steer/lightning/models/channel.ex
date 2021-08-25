@@ -38,8 +38,8 @@ defmodule Steer.Lightning.Models.Channel do
     balance_percent = Integer.floor_div(channel.local_balance * 100, total_balance)
 
     formatted_capacity = Number.SI.number_to_si(capacity_in_sats, unit: "", precision: 1)
-    formatted_local_balance = Number.SI.number_to_si(channel.local_balance, unit: "", precision: 1)
-    formatted_remote_balance = Number.SI.number_to_si(channel.remote_balance, unit: "", precision: 1)
+    formatted_local_balance = Number.SI.number_to_si(channel.local_balance/1000, unit: "", precision: 1)
+    formatted_remote_balance = Number.SI.number_to_si(channel.remote_balance/1000, unit: "", precision: 1)
     formatted_balance_percent = Number.SI.number_to_si(balance_percent, unit: "", precision: 1)
 
     channel
