@@ -13,7 +13,6 @@ defmodule SteerWeb.HomeLive do
 
   @channel_topic "channel"
   @open_message "open"
-  @pending_message "pending"
   @closed_message "closed"
   @active_message "active"
   @inactive_message "inactive"
@@ -81,20 +80,13 @@ defmodule SteerWeb.HomeLive do
   end
 
   @impl true
-  def handle_info(%{ topic: @channel_topic, event: @open_message }, socket) do
-    write_in_green "A new channel opened"
+  def handle_info(%{ topic: @channel_topic, event: @open_message, payload: channel }, socket) do
+    write_in_green "New channel opened with #{channel.alias}"
     write_in_green ".... NOT updating channels until active ...."
 
     ### would be nice to refresh the graph at that point, but it seems
     ### a channel refresh poses a problem before the channel becomes active
     ### so we wait at that point...
-
-    { :noreply, socket }
-  end
-
-  @impl true
-  def handle_info(%{ topic: @channel_topic, event: @pending_message }, socket) do
-    write_in_green "A channel is pending..."
 
     { :noreply, socket }
   end

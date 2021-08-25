@@ -7,7 +7,6 @@ defmodule Steer.LndChannelSubscription do
   @channel_topic "channel"
   @open_message "open"
   @closed_message "closed"
-  @pending_message "pending"
   @active_message "active"
   @inactive_message "inactive"
 
@@ -25,30 +24,29 @@ defmodule Steer.LndChannelSubscription do
     { :ok, nil }
   end
 
-  def handle_info(%Lnrpc.ChannelEventUpdate{type: :PENDING_OPEN_CHANNEL} = channel, state) do
-    Steer.Lightning.sync
+  def handle_info(%Lnrpc.ChannelEventUpdate{
+    type: :PENDING_OPEN_CHANNEL,
+    channel: { :pending_open_channel, _channel }
+  }, state) do
 
-    IO.puts "--------PENDING CHANNEL"
-    IO.inspect channel
-
-    Endpoint.broadcast(@channel_topic, @pending_message, channel)
+    IO.puts "--------GOT A PENDING CHANNEL"
 
     {:noreply, state}
   end
 
   def handle_info(%Lnrpc.ChannelEventUpdate{
     type: :OPEN_CHANNEL,
-    channel: { :open_channel, channel }}, state)
-  do
-    write_in_rgb("calling wait_for_node...", 5, 0, 1)
-
+    channel: { :open_channel, channel }
+  }, state) do
     wait_for_node(channel.remote_pubkey)
 
     Steer.Lightning.sync
 
     IO.puts "--------OPEN CHANNEL"
 
-    Endpoint.broadcast(@channel_topic, @open_message, channel)
+    Steer.Lightning.get_channel(lnd_id: channel.chan_id)
+    |> write_status_change("open")
+    |> broadcast(@channel_topic, @open_message)
 
     {:noreply, state}
   end
