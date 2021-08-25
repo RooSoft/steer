@@ -18,7 +18,7 @@ defmodule Steer.Lightning.Models.HtlcEvent do
   def changeset(struct, params) do
     struct
     |> cast(params, [:type, :channel_in_id, :channel_out_id, :htlc_in_id, :htlc_out_id, :time, :timestamp_ns])
-    |> validate_required([:type, :channel_in_id, :channel_out_id, :htlc_in_id, :htlc_out_id, :time, :timestamp_ns])
+    |> validate_required([:type, :htlc_in_id, :htlc_out_id, :time, :timestamp_ns])
   end
 
   def contextualize_htlc_events(htlc_events, channel) do
