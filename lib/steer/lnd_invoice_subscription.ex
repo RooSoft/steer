@@ -23,17 +23,15 @@ defmodule Steer.LndInvoiceSubscription do
   end
 
   def handle_info(%Lnrpc.Invoice{state: :SETTLED} = invoice, state) do
-    write_in_yellow "Got a SETTLED invoice vent"
-
-    Endpoint.broadcast(@invoice_topic, @paid_message, invoice)
+    invoice
+    |> broadcast(@invoice_topic, @paid_message)
 
     {:noreply, state}
   end
 
   def handle_info(%Lnrpc.Invoice{state: :OPEN} = invoice, state) do
-    write_in_yellow "Got a OPEN invoice vent"
-
-    Endpoint.broadcast(@invoice_topic, @created_message, invoice)
+    invoice
+    |> broadcast(@invoice_topic, @created_message)
 
     {:noreply, state}
   end
@@ -46,5 +44,11 @@ defmodule Steer.LndInvoiceSubscription do
 
   defp write_in_yellow message do
     Logger.info(IO.ANSI.yellow_background() <> IO.ANSI.black() <> message <> IO.ANSI.reset())
+  end
+
+  defp broadcast channel, topic, message do
+    Endpoint.broadcast(topic, message, channel)
+
+    channel
   end
 end
