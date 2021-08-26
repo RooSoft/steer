@@ -40,7 +40,7 @@ defmodule Steer.Lightning.Models.Channel do
     formatted_capacity = Number.SI.number_to_si(capacity_in_sats, unit: "", precision: 1)
     formatted_local_balance = Number.SI.number_to_si(channel.local_balance/1000, unit: "", precision: 1)
     formatted_remote_balance = Number.SI.number_to_si(channel.remote_balance/1000, unit: "", precision: 1)
-    formatted_balance_percent = Number.SI.number_to_si(balance_percent, unit: "", precision: 1)
+    formatted_balance_percent = Number.SI.number_to_si(balance_percent, unit: "", precision: 0)
 
     channel
     |> Map.put(:formatted_capacity, formatted_capacity)
