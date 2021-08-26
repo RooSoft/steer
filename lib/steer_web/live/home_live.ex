@@ -5,10 +5,7 @@ defmodule SteerWeb.HomeLive do
   alias SteerWeb.Endpoint
 
   @htlc_event_topic "htlc_event"
-#  @forward_message "forward"
-#  @forward_fail_message "forward_fail"
   @settle_message "settle"
-#  @link_fail_message "link_fail"
 
   @invoice_topic "invoice"
   @created_message "created"
