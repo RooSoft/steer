@@ -4,8 +4,11 @@ defmodule SteerWeb.HomeLive do
 
   alias SteerWeb.Endpoint
 
-  @htlc_topic "htlc"
-  @new_message "new"
+  @htlc_event_topic "htlc_event"
+#  @forward_message "forward"
+#  @forward_fail_message "forward_fail"
+  @settle_message "settle"
+#  @link_fail_message "link_fail"
 
   @invoice_topic "invoice"
   @created_message "created"
@@ -21,18 +24,18 @@ defmodule SteerWeb.HomeLive do
   @spec mount(any, any, Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   def mount(_params, _session, socket) do
     {:ok, socket
-      |> add_channels()
+      |> get_channels()
       |> subscribe_to_events()}
   end
 
-  defp add_channels(socket) do
+  defp get_channels(socket) do
     socket
     |> assign(:channels, Steer.Lightning.get_all_channels())
   end
 
   defp subscribe_to_events(socket) do
     if connected?(socket) do
-      Endpoint.subscribe(@htlc_topic)
+      Endpoint.subscribe(@htlc_event_topic)
       Endpoint.subscribe(@invoice_topic)
       Endpoint.subscribe(@channel_topic)
     end
@@ -42,20 +45,16 @@ defmodule SteerWeb.HomeLive do
 
   @impl true
   def handle_info(%{
-    topic: @htlc_topic,
-    event: @new_message,
-    payload: %Routerrpc.HtlcEvent{
-      event_type: event_type
-    } }, socket) do
+    topic: @htlc_event_topic,
+    event: @settle_message,
+    payload: _htlc_event
+  }, socket) do
 
-    write_in_blue "New HTLC received: #{event_type}"
-    write_in_blue ".... updating channels ...."
-
-    channels = Steer.Lightning.get_all_channels()
+    write_in_blue "HTLC settle event received"
 
     { :noreply, socket
-      |> assign(:channels, channels)
-      |> put_flash(:info, "New forward received")}
+      |> get_channels
+      |> put_flash(:info, "Some HTLC settle event happened")}
   end
 
   @impl true
