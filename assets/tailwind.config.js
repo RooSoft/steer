@@ -10,7 +10,8 @@ module.exports = {
     theme: {
         fontFamily: {
           "branding": ["Krona One"],
-          "username": ["Special Elite"]
+          "username": ["Special Elite"],
+          "nodename": ["Maven Pro"]
         },
         extend: {},
     },
