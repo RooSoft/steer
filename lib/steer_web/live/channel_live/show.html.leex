@@ -1,7 +1,10 @@
-<div class="text-2xl text-blue-500 hover:underline mb-2">
+<div class="text-2xl text-blue-500 hover:underline">
     <a href="https://amboss.space/node/<%= @channel.node_pub_key %>">
         <%= @channel.alias %>
     </a>
+</div>
+<div class="text-xs mb-3">
+    <%= String.slice(@channel.node_pub_key, 0..19) %>
 </div>
 
 <%= live_component @socket,
