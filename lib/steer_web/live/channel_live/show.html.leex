@@ -1,8 +1,10 @@
-<div class="text-3xl font-nodename">
-    <%= @channel.alias %>
-</div>
-<div class="text-xs mb-3">
-    <%= String.slice(@channel.node_pub_key, 0..19) %>
+<div class="text-gray-300 text-opacity-80">
+    <div class="text-3xl font-nodename">
+        <%= @channel.alias %>
+    </div>
+    <div class="text-xs mb-3">
+        <%= String.slice(@channel.node_pub_key, 0..19) %>
+    </div>
 </div>
 
 <div class="mb-3">
