@@ -4,7 +4,9 @@
       <div class="flex justify-between items-center">
         <a class="text-4xl text-gray-900 font-branding" href="/">Steer</a>
         <div class="text-gray-900 flex">
-          <div class="pt-2">🔔</div>
+          <div class="pt-2">
+            <img src="/images/notifications.svg">
+          </div>
           <div class="pl-2">
             <div class="flex flex-col justify-center">
               <div class="relative sm:max-w-xl mx-auto">
