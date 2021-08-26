@@ -11,20 +11,25 @@ defmodule Steer.Lightning do
   end
 
   def init(state) do
-    { :ok, state }
+    Steer.Sync.Channel.sync
+    Steer.Sync.Forward.sync
+
+    { :ok,
+      state
+      |> reload_channels() }
   end
 
   def sync() do
     Steer.Sync.Channel.sync
     Steer.Sync.Forward.sync
 
-    update_channel_cache()
+    update_cache()
 
     Logger.info "Sync done at #{DateTime.utc_now()}"
   end
 
-  def update_channel_cache() do
-    GenServer.call(__MODULE__, :update_channel_cache)
+  def update_cache() do
+    GenServer.call(__MODULE__, :update_cache)
   end
 
   def get_all_channels() do
@@ -76,13 +81,10 @@ defmodule Steer.Lightning do
     { :reply, channels, state}
   end
 
-  def handle_call(:update_channel_cache, _from, state) do
-    channels = Repo.get_all_channels()
-    |> Models.Channel.format_balances
-
+  def handle_call(:update_cache, _from, state) do
     { :reply,
-      channels,
-      state |> Map.put(:channels, channels)}
+      nil,
+      state |> reload_channels()}
   end
 
   def handle_call(:get_all_channels, _from, state) do
@@ -123,8 +125,6 @@ defmodule Steer.Lightning do
 
   def handle_call({ :update_channel, %{ channel: channel, struct: struct }}, _from, state) do
     Logger.info "Updating channel #{channel.id}"
-    IO.inspect struct
-    IO.inspect channel
 
     channel = channel
     |> Repo.update_channel(struct)
@@ -161,7 +161,7 @@ defmodule Steer.Lightning do
     { :reply, Repo.insert_htlc_link_fail(htlc_link_fail), state}
   end
 
-  def reload_channels(state) do
+  defp reload_channels(state) do
     channels = Repo.get_all_channels()
     |> Models.Channel.format_balances
 
