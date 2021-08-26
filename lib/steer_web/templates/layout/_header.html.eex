@@ -4,7 +4,7 @@
       <div class="flex justify-between items-center">
         <a class="text-4xl text-gray-900 font-branding" href="/">Steer</a>
         <div class="text-gray-900 flex">
-          <div class="pt-2">
+          <div style="padding-top: 9px">
             <img src="/images/notifications.svg">
           </div>
           <div class="pl-2">
