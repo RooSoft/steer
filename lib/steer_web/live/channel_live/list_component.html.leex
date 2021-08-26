@@ -2,7 +2,11 @@
     <%= live_patch to: Routes.channel_show_path(@socket, :show, channel.id) do %>
         <div class="p-1 mb-1 max-w-screen-sm text-gray-400 rounded-xl flex flex-row justify-between
                 bg-gray-800
-                <%= if channel.status == :active do %> border-green-500 <% else %> border-red-500 <% end %>
+                <%= if channel.status == :active do %>
+                    border-green-500
+                <% else %>
+                    border-red-500
+                <% end %>
                 border-l-4">
             <div class="w-max px-2">
                 <div class="text-xl text-gray-300 text-opacity-80 w-auto" phx-click="">
@@ -20,11 +24,11 @@
                     <% end %>
                 </div>
             </div>
-            <div class="w-24 px-2">
+            <div class="w-28 px-2">
                 <div class="flex flex-row">
-                    <div class="text-right text-xs inline-block align-middle mr-2 mb-2 pt-1"><%= channel.formatted_capacity %></div>
-                    <div class="text-right text-xs inline-block align-middle mr-2 pt-1"><%= channel.formatted_balance_percent %>%</div>
-                    <div class="text-right" style="color:<%= channel.color %>">&#9632;</div>
+                    <div class="text-right text-xs inline-block align-middle pt-1 flex-none"><%= channel.formatted_capacity %></div>
+                    <div class="text-right text-xs inline-block align-middle mr-3 pt-1 flex-grow"><%= channel.formatted_balance_percent %>%</div>
+                    <div class="text-right flex-non" style="color:<%= channel.color %>">&#9632;</div>
                 </div>
                 <div class="w-full filter drop-shadow-sm">
                     <div class="rounded-xl w-full bg-gray-500">
