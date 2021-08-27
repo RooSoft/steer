@@ -17,5 +17,13 @@
       ->
       <%= attempt.channel_out %>
     </div>
+    <div>
+      amount: <%= attempt.formatted_amount_out %> sats
+    </div>
+    <%= if attempt.amount_in > 0 and attempt.amount_out > 0 do %>
+      <div>
+        fee: <%= attempt.amount_in - attempt.amount_out %> sats
+      </div>
+    <% end %>
   </div>
 <% end %>

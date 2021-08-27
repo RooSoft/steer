@@ -10,6 +10,7 @@ defmodule SteerWeb.AttemptsLive do
       |> assign_attempts
       |> format_channels
       |> format_statuses
+      |> format_amounts
     }
   end
 
@@ -57,5 +58,28 @@ defmodule SteerWeb.AttemptsLive do
     attempt
     |> Map.put(:status, "unknown")
     |> IO.inspect
+  end
+
+  defp format_amounts(%{ assigns: %{ attempts: attempts } } = socket) do
+    new_attempts = attempts
+    |> Enum.map(&format_amount/1)
+
+    socket
+    |> assign(:attempts, new_attempts)
+  end
+
+  defp format_amount(attempt) do
+    amount_in_sats = attempt.amount_in/1000
+    amount_out_sats = attempt.amount_out/1000
+
+    attempt
+    |> Map.put(
+      :formatted_amount_in,
+      Number.SI.number_to_si(amount_in_sats, unit: "", precision: 0)
+    )
+    |> Map.put(
+      :formatted_amount_out,
+      Number.SI.number_to_si(amount_out_sats, unit: "", precision: 0)
+      )
   end
 end
