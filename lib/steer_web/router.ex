@@ -19,6 +19,8 @@ defmodule SteerWeb.Router do
 
     live "/", HomeLive, :index
 
+    live "/attempts", AttemptsLive, :index
+
     live "/channel/:id", ChannelLive.Show, :show
   end
 
