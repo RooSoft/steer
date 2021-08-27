@@ -111,7 +111,7 @@ defmodule Steer.Repo do
         ci.id == htlc.channel_in_id,
       left_join: co in Models.Channel, on:
         co.id == htlc.channel_out_id,
-      order_by: [desc: htlc.time],
+      order_by: [desc: htlc.timestamp_ns],
       select: %{
         htlc_id: htlc.id,
         fail_id: fail.id,
@@ -122,7 +122,8 @@ defmodule Steer.Repo do
         channel_out: co.alias,
         amount_in: hf.amount_in,
         amount_out: hf.amount_out,
-        time: htlc.time
+        time: htlc.time,
+        timestamp_ns: htlc.timestamp_ns
       }
   end
 
