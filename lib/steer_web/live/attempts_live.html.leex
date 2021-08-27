@@ -1,3 +1,5 @@
-<section>
-  here will lie information about HTLC forward attempts
-</section>
+<%= for attempt <- @attempts do %>
+  <div>
+    <%= attempt.channel_in %> -> <%= attempt.channel_out %>
+  </div>
+<% end %>
