@@ -1,8 +1,20 @@
 <%= for attempt <- @attempts do %>
-  <div>
-    <%= attempt.channel_in %>
-    ->
-    <%= attempt.channel_out %>
-    <%= attempt.status %>
+  <div class="flex">
+    <div class="text-yellow-300 mr-2"><%= Timex.from_now(attempt.time) %></div>
+    <div class="mr-2
+      <%= if attempt.status == "settled" do %>
+          text-green-500
+      <% else %>
+          text-red-500
+      <% end %>"
+    >
+      <%= attempt.status %>
+    </div>
+    <div>
+      <%= attempt.channel_in %>
+      ->
+      <%= attempt.channel_out %>
+    </div>
+
   </div>
 <% end %>
