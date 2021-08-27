@@ -104,9 +104,9 @@ defmodule Steer.Repo do
         and fail.htlc_out_id == htlc.htlc_out_id
         and fail.type == :forward_fail,
       left_join: settle in Models.HtlcEvent, on:
-        fail.htlc_in_id == htlc.htlc_in_id
-        and fail.htlc_out_id == htlc.htlc_out_id
-        and fail.type == :settle,
+        settle.htlc_in_id == htlc.htlc_in_id
+        and settle.htlc_out_id == htlc.htlc_out_id
+        and settle.type == :settle,
       left_join: ci in Models.Channel, on:
         ci.id == htlc.channel_in_id,
       left_join: co in Models.Channel, on:
