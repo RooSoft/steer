@@ -12,6 +12,7 @@ defmodule SteerWeb.AttemptsLive do
     {:ok,
       socket
       |> load
+      |> subscribe_to_events
     }
   end
 
@@ -34,7 +35,6 @@ defmodule SteerWeb.AttemptsLive do
     |> format_channels
     |> format_statuses
     |> format_amounts
-    |> subscribe_to_events
   end
 
   defp subscribe_to_events(socket) do
