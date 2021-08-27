@@ -2,16 +2,47 @@ defmodule SteerWeb.AttemptsLive do
   use SteerWeb, :live_view
   require Logger
 
+  alias SteerWeb.Endpoint
+
+  @htlc_event_topic "htlc_event"
+
   @impl true
   @spec mount(any, any, Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   def mount(_params, _session, socket) do
     {:ok,
       socket
-      |> assign_attempts
-      |> format_channels
-      |> format_statuses
-      |> format_amounts
+      |> load
     }
+  end
+
+  @impl true
+  def handle_info(%{
+    topic: @htlc_event_topic,
+    event: event,
+    payload: _htlc_event
+  }, socket) do
+
+    { :noreply,
+      socket
+      |> load
+      |> put_flash(:info, "Some HTLC settle event happened: #{event}")}
+  end
+
+  defp load(socket) do
+    socket
+    |> assign_attempts
+    |> format_channels
+    |> format_statuses
+    |> format_amounts
+    |> subscribe_to_events
+  end
+
+  defp subscribe_to_events(socket) do
+    if connected?(socket) do
+      Endpoint.subscribe(@htlc_event_topic)
+    end
+
+    socket
   end
 
   defp assign_attempts(socket) do
