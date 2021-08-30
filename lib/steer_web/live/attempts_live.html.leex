@@ -22,7 +22,7 @@
     </div>
     <%= if attempt.amount_in > 0 and attempt.amount_out > 0 do %>
       <div>
-        fee: <%= attempt.amount_in - attempt.amount_out %> sats
+        fee: <%= (attempt.amount_in - attempt.amount_out) / 1000 %> sats
       </div>
     <% end %>
   </div>
