@@ -9,7 +9,7 @@ defmodule Steer.Sync.Forward do
   @one_day @hours_in_day * @minutes_in_hour * @seconds_in_minute
 
   def sync() do
-    time = get_latest_unconsolidated_forward_time()
+    time = get_oldest_unconsolidated_forward_time()
 
     sync(time)
   end
@@ -87,8 +87,8 @@ defmodule Steer.Sync.Forward do
     |> Map.put(:new_forwards_in_lnd, new_forwards_in_lnd)
   end
 
-  defp get_latest_unconsolidated_forward_time() do
-    get_repo_latest_unconsolidated_forward_time()
+  defp get_oldest_unconsolidated_forward_time() do
+    get_repo_oldest_unconsolidated_forward_time()
     |> maybe_get_repo_latest_forward_time
     |> maybe_get_lnd_first_forward_time
     |> NaiveDateTime.to_date
@@ -122,8 +122,8 @@ defmodule Steer.Sync.Forward do
     time
   end
 
-  defp get_repo_latest_unconsolidated_forward_time do
-    case Repo.get_latest_unconsolidated_forward() do
+  defp get_repo_oldest_unconsolidated_forward_time do
+    case Repo.get_oldest_unconsolidated_forward() do
       %{ time: time } ->
         time
       nil ->

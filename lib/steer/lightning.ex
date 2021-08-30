@@ -59,8 +59,8 @@ defmodule Steer.Lightning do
     GenServer.call(__MODULE__, { :get_channel_forwards, params })
   end
 
-  def get_latest_unconsolidated_forward do
-    GenServer.call(__MODULE__, :get_latest_unconsolidated_forward)
+  def get_oldest_unconsolidated_forward do
+    GenServer.call(__MODULE__, :get_oldest_unconsolidated_forward)
   end
 
   def insert_htlc_event htlc_event do
@@ -153,8 +153,8 @@ defmodule Steer.Lightning do
     { :reply, forwards, state}
   end
 
-  def handle_call(:get_latest_unconsolidated_forward, _from, state) do
-    { :reply, Repo.get_latest_unconsolidated_forward, state}
+  def handle_call(:get_oldest_unconsolidated_forward, _from, state) do
+    { :reply, Repo.get_oldest_unconsolidated_forward, state}
   end
 
   def handle_call({ :insert_htlc_event, htlc_event }, _from, state) do
