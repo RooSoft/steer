@@ -162,6 +162,16 @@ defmodule Steer.Repo do
     )
   end
 
+  def mark_date_forwards_as_consolidated date do
+    query =
+      from f in Models.Forward,
+      where: fragment("?::date", f.time) == ^date
+
+    update_all(query,
+      set: [consolidated: true]
+    )
+  end
+
   def get_channel_by_channel_point(channel_point) do
     one first from c in Models.Channel,
       where: c.channel_point == ^channel_point
