@@ -41,9 +41,15 @@
             x-transition:leave-start="transform opacity-100 scale-100"
             x-transition:leave-end="transform opacity-0 scale-50">
             <div class="shadow-xs mx-10 my-4">
-              <div class="mb-4 text-gray-400 text-blue-500 hover:underline"><a href="/">Channels</a></div>
-              <div class="mb-4 text-gray-400 text-blue-500 hover:underline"><a href="/attempts">Attempts</a></div>
-              <div class="text-gray-400 text-blue-500 hover:underline"><a href="/link_fails">Link fails</a></div>
+              <div class="mb-4 text-gray-400 text-blue-500 hover:underline">
+                <a href="/">Channels</a>
+              </div>
+              <div class="mb-4 text-gray-400 text-blue-500 hover:underline">
+                <a href="/attempts">Attempts</a>
+              </div>
+              <div class="text-gray-400 text-blue-500 hover:underline">
+                <a href="/link_fails">Link fails</a>
+              </div>
             </div>
           </div>
         </div>
