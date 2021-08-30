@@ -3,3 +3,4 @@
 --ignore-dir=.elixir_ls
 --ignore-dir=priv/static/js
 --ignore-file=is:package-lock.json
+--ignore-dir=is:priv/static/css
