@@ -127,6 +127,31 @@ defmodule Steer.Repo do
       }
   end
 
+  def get_link_fails do
+    all from lf in Models.HtlcLinkFail,
+      join: htlc in Models.HtlcEvent, on:
+        lf.htlc_event_id == htlc.id,
+      left_join: ci in Models.Channel, on:
+        ci.id == htlc.channel_in_id,
+      left_join: co in Models.Channel, on:
+        co.id == htlc.channel_out_id,
+      order_by: [desc: htlc.timestamp_ns],
+      select: %{
+        htlc_id: htlc.id,
+        channel_in_id: ci.id,
+        channel_in: ci.alias,
+        channel_out_id: co.id,
+        channel_out: co.alias,
+        amount_in: lf.amount_in,
+        amount_out: lf.amount_out,
+        wire_failure: lf.wire_failure,
+        failure_detail: lf.failure_detail,
+        failure_string: lf.failure_string,
+        time: htlc.time,
+        timestamp_ns: htlc.timestamp_ns
+      }
+  end
+
   def mark_forwards_as_consolidated forward_ids do
     query =
       from f in Models.Forward,
