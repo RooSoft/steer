@@ -25,10 +25,6 @@
               </div>
             </div>
           </a>
-          <%# <div class="absolute right-0 mt-12 py-2 w-48 bg-gray-400 rounded-md shadow-xl z-20
-            transition ease-out duration-500" x-show="show_menu">
-            hello
-          </div> %>
           <div class="origin-top-right absolute right-0 mt-12 z-40
               bg-gray-800
               rounded-md shadow-lg"
