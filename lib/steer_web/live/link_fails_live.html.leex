@@ -1,0 +1,23 @@
+<%= for link_fail <- @link_fails do %>
+  <div class="pb-3">
+    <div class="flex">
+      <div class="text-yellow-300 mr-2"><%= Timex.from_now(link_fail.time) %></div>
+      <div class="mr-2">
+        <%= link_fail.failure_detail %>
+      </div>
+    </div>
+    <div>
+      <%= link_fail.channel_in %>
+      ->
+      <%= link_fail.channel_out %>
+    </div>
+    <div>
+      amount: <%= link_fail.formatted_amount_out %> sats
+    </div>
+    <%= if link_fail.amount_in > 0 and link_fail.amount_out > 0 do %>
+      <div>
+        fee: <%= link_fail.formatted_fees %> sats
+      </div>
+    <% end %>
+  </div>
+<% end %>

@@ -20,6 +20,7 @@ defmodule SteerWeb.Router do
     live "/", HomeLive, :index
 
     live "/attempts", AttemptsLive, :index
+    live "/link_fails", LinkFailsLive, :index
 
     live "/channel/:id", ChannelLive.Show, :show
   end
