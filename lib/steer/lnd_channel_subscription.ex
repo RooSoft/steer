@@ -69,9 +69,6 @@ defmodule Steer.LndChannelSubscription do
     channel: {:active_channel, channel_point_struct }
   }, state) do
 
-    IO.puts "---ACTIVE_CHANNEL-----"
-    IO.inspect channel_point_struct
-
     convert_channel_point(channel_point_struct)
     |> Steer.Lightning.get_channel_by_channel_point
     |> Steer.Lightning.update_channel(%{ status: :active })
@@ -85,9 +82,6 @@ defmodule Steer.LndChannelSubscription do
     type: :INACTIVE_CHANNEL,
     channel: {:inactive_channel, channel_point_struct }
   }, state) do
-
-    IO.puts "----INACTIVE_CHANNEL----"
-    IO.inspect channel_point_struct
 
     channel = convert_channel_point(channel_point_struct)
     |> Steer.Lightning.get_channel_by_channel_point
