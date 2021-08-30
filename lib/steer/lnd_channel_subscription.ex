@@ -4,6 +4,8 @@ defmodule Steer.LndChannelSubscription do
 
   alias SteerWeb.Endpoint
 
+  @max_number_of_node_call_attempts 10
+
   @channel_topic "channel"
   @open_message "open"
   @closed_message "closed"
@@ -38,15 +40,10 @@ defmodule Steer.LndChannelSubscription do
     type: :OPEN_CHANNEL,
     channel: { :open_channel, channel }
   }, state) do
-    wait_for_node(channel.remote_pubkey)
-
-    Steer.Lightning.sync
-
-    IO.puts "--------OPEN CHANNEL"
-
-    Steer.Lightning.get_channel(lnd_id: channel.chan_id)
-    |> write_status_change("open")
-    |> broadcast(@channel_topic, @open_message)
+    case wait_for_node(channel.remote_pubkey) do
+      { :ok, _pubkey } -> sync_and_announce_new_channel channel.chan_id
+      { :error, _message } -> Logger.warn("Failed to find new node #{channel.remote_pubkey}")
+    end
 
     {:noreply, state}
   end
@@ -145,7 +142,14 @@ defmodule Steer.LndChannelSubscription do
     Logger.info(IO.ANSI.color_background(r, g, b) <> IO.ANSI.black() <> message <> IO.ANSI.reset())
   end
 
-  defp wait_for_node remote_pubkey do
+
+  defp wait_for_node remote_pubkey, attempt_number \\ 0
+
+  defp wait_for_node(_, attempt_number) when attempt_number >= @max_number_of_node_call_attempts do
+    { :error, "Cannot find node" }
+  end
+
+  defp wait_for_node remote_pubkey, attempt_number do
     case LndClient.get_node_info(remote_pubkey) do
       { :ok,
         %Lnrpc.NodeInfo{
@@ -156,19 +160,29 @@ defmodule Steer.LndChannelSubscription do
       } ->
         write_in_rgb("node not ready, waiting one second...", 5, 0, 3)
         :timer.sleep(1000)
-        wait_for_node(remote_pubkey)
+        wait_for_node(remote_pubkey, attempt_number + 1)
 
       { :error,
         %GRPC.RPCError{ status: 5 }
       } ->
         write_in_rgb("node not found, waiting one second...", 5, 0, 3)
         :timer.sleep(1000)
-        wait_for_node(remote_pubkey)
+        wait_for_node(remote_pubkey, attempt_number + 1)
 
       node ->
         write_in_rgb("node found!", 5, 0, 3)
         IO.inspect node
-        remote_pubkey
+        { :ok, remote_pubkey}
     end
+  end
+
+  defp sync_and_announce_new_channel chan_id do
+    Steer.Lightning.sync
+
+    IO.puts "--------OPEN CHANNEL"
+
+    Steer.Lightning.get_channel(lnd_id: chan_id)
+    |> write_status_change("open")
+    |> broadcast(@channel_topic, @open_message)
   end
 end
