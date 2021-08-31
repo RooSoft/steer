@@ -7,7 +7,10 @@
           <div style="padding-top: 9px">
             <img src="/images/notifications.svg">
           </div>
-          <div class="pl-2" @click.prevent="show_menu = !show_menu" @click.away="show_menu = false">
+          <div class="pl-2"
+            @click.prevent="show_menu = !show_menu"
+            @click.away="show_menu = false"
+            @keydown.escape.window="show_menu = false">
             <div class="flex flex-col justify-center">
               <div class="relative sm:max-w-xl mx-auto">
                 <button class="text-gray-900 w-10 h-10 relative focus:outline-none">
