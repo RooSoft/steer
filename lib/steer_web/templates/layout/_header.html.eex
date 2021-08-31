@@ -35,19 +35,19 @@
             x-transition:leave="transition ease-in duration-250"
             x-transition:leave-start="transform opacity-100 scale-100"
             x-transition:leave-end="transform opacity-0 scale-50">
-            <div class="my-4">
-              <div class="hover:underline pb-4 px-10
-                text-gray-400 text-blue-500
+            <div class="text-sm">
+              <div class="py-4 px-6 rounded-t-lg
+                text-gray-300 font-bold hover:bg-blue-600
                  border-b border-gray-600">
                 <a href="/">Channels</a>
               </div>
-              <div class="hover:underline pt-4 pb-4 px-10
-                text-gray-400 text-blue-500
+              <div class="pt-4 pb-4 px-6
+                text-gray-300 font-bold hover:bg-blue-600
                 border-b border-gray-600">
                 <a href="/attempts">Forward attempts</a>
               </div>
-              <div class="hover:underline pt-4 px-10
-                text-gray-400 text-blue-500">
+              <div class="py-4 px-6 rounded-b-lg
+                text-gray-300 font-bold hover:bg-blue-600">
                 <a href="/link_fails">Link fails</a>
               </div>
             </div>
