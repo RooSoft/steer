@@ -24,9 +24,9 @@
               </div>
             </div>
           </div>
-          <div class="origin-top-right absolute right-0 mt-12 z-40
-              bg-gray-800
-              rounded-md shadow-lg"
+          <div class="origin-top-right absolute right-0 mt-12 mr-1 z-40
+            bg-gray-800
+            border-gray-600 border rounded-lg"
             x-show="show_menu"
             x-cloak
             x-transition:enter="transition ease-out duration-250"
@@ -35,7 +35,7 @@
             x-transition:leave="transition ease-in duration-250"
             x-transition:leave-start="transform opacity-100 scale-100"
             x-transition:leave-end="transform opacity-0 scale-50">
-            <div class="shadow-xs mx-10 my-4">
+            <div class="mx-10 my-4">
               <div class="mb-4 text-gray-400 text-blue-500 hover:underline">
                 <a href="/">Channels</a>
               </div>
