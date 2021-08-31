@@ -8,12 +8,12 @@
     <%= live_title_tag assigns[:page_title] || "Steer", suffix: " · Phoenix Framework" %>
     <link phx-track-static rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>"/>
     <script defer phx-track-static type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
   </head>
   <body class="bg-gray-900 text-gray-100 mt-1">
     <%= render "_header.html", assigns %>
     <div class="mx-4">
       <%= @inner_content %>
     </div>
-    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
   </body>
 </html>
