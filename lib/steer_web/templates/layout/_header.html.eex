@@ -36,20 +36,26 @@
             x-transition:leave-start="transform opacity-100 scale-100"
             x-transition:leave-end="transform opacity-0 scale-50">
             <div class="text-sm">
-              <div class="py-4 px-6 rounded-t-lg
-                text-gray-300 font-bold hover:bg-blue-600
-                 border-b border-gray-600">
-                <a href="/">Channels</a>
-              </div>
-              <div class="pt-4 pb-4 px-6
-                text-gray-300 font-bold hover:bg-blue-600
-                border-b border-gray-600">
-                <a href="/attempts">Forward attempts</a>
-              </div>
-              <div class="py-4 px-6 rounded-b-lg
-                text-gray-300 font-bold hover:bg-blue-600">
-                <a href="/link_fails">Link fails</a>
-              </div>
+              <a href="/">
+                <div class="py-4 px-6 rounded-t-lg
+                  text-gray-300 font-bold hover:bg-blue-600
+                   border-b border-gray-600">
+                  Channels
+                </div>
+              </a>
+              <a href="/attempts">
+                <div class="pt-4 pb-4 px-6
+                  text-gray-300 font-bold hover:bg-blue-600
+                  border-b border-gray-600">
+                  Forward attempts
+                </div>
+              </a>
+              <a href="/link_fails">
+                <div class="py-4 px-6 rounded-b-lg
+                  text-gray-300 font-bold hover:bg-blue-600">
+                  Link link_fail
+                </div>
+              </a>
             </div>
           </div>
         </div>
