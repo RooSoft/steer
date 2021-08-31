@@ -44,7 +44,7 @@
               <div class="hover:underline pt-4 pb-4 px-10
                 text-gray-400 text-blue-500
                 border-b border-gray-600">
-                <a href="/attempts">Attempts</a>
+                <a href="/attempts">Forward attempts</a>
               </div>
               <div class="hover:underline pt-4 px-10
                 text-gray-400 text-blue-500">
