@@ -1,12 +1,15 @@
 <%= for attempt <- @attempts do %>
   <div class="pb-3">
-    <div class="flex">
+    <div class="flex items-center">
       <div class="text-yellow-300 mr-2"><%= Timex.from_now(attempt.time) %></div>
-      <div class="mr-2
+      <div class="mr-2 mt-1 px-2
+        rounded-full
+        justify-center items-center
+        text-black text-xs font-bold
         <%= if attempt.status == "settled" do %>
-            text-green-500
+            bg-green-400 border-green
         <% else %>
-            text-red-500
+            bg-red-400 border-red
         <% end %>"
       >
         <%= attempt.status %>
