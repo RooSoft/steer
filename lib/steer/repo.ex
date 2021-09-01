@@ -20,6 +20,10 @@ defmodule Steer.Repo do
     end
   end
 
+  def get_local_node() do
+    one from c in Models.LocalNode
+  end
+
   def get_all_channels(_ \\ %{include_closed: false})
 
   def get_all_channels(%{include_closed: false}) do
