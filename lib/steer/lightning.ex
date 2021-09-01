@@ -11,7 +11,7 @@ defmodule Steer.Lightning do
   end
 
   def init(state) do
-    Steer.Sync.LocalNode.sync
+    { :ok, _ } = Steer.Sync.LocalNode.sync
     Steer.Sync.Channel.sync
     Steer.Sync.Forward.sync
 
