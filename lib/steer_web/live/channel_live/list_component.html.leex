@@ -1,13 +1,24 @@
 <%= for channel <- @channels do %>
     <%= live_patch to: Routes.channel_show_path(@socket, :show, channel.id) do %>
         <div x-data="{ active: <%= channel.status == :active %> }"
-            :class="active ? 'border-green-500' : 'border-red-500'"
             class="p-1 mb-1 max-w-screen-sm text-gray-400 rounded-xl flex flex-row justify-between
-                bg-gray-800
-                border-l-4">
+            bg-gray-800
+            border-gray-600
+            border-l-4">
             <div class="w-max px-2">
-                <div class="text-xl text-gray-300 text-opacity-80 w-auto font-nodename" phx-click="">
-                    <%= channel.alias %>
+                <div class="flex">
+                    <div
+                        :class="active ? 'bg-green-600' : 'bg-red-500'"
+                        class="rounded-full ring-2 ring-black w-2 h-2 mt-3 mr-2">
+                    </div>
+                    <div class="text-xl text-gray-300 text-opacity-80 w-auto font-nodename" phx-click="">
+                        <%= channel.alias %>
+                    </div>
+                    <div x-text="active" class="m-1">
+                    </div>
+                    <div>
+                        <%= channel.status %>
+                    </div>
                 </div>
                 <div class="text-xs text-gray-500 w-auto">
                     <%= String.slice(channel.node_pub_key, 0..19) %>
