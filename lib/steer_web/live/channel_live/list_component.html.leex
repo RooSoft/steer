@@ -14,11 +14,6 @@
                     <div class="text-xl text-gray-300 text-opacity-80 w-auto font-nodename" phx-click="">
                         <%= channel.alias %>
                     </div>
-                    <div x-text="active" class="m-1">
-                    </div>
-                    <div>
-                        <%= channel.status %>
-                    </div>
                 </div>
                 <div class="text-xs text-gray-500 w-auto">
                     <%= String.slice(channel.node_pub_key, 0..19) %>
