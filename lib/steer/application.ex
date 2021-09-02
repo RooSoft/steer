@@ -19,6 +19,7 @@ defmodule Steer.Application do
       # {Steer.Worker, arg}
       LndClient,
 
+      Steer.LndUptimeSubscription,
       Steer.HtlcSubscription,
       Steer.LndInvoiceSubscription,
       Steer.LndChannelSubscription,
