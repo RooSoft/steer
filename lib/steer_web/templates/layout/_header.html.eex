@@ -4,6 +4,10 @@
       <div class="flex justify-between items-center">
         <a class="text-4xl text-gray-900 font-branding" href="/">Steer</a>
         <div class="text-gray-900 flex" x-data="{ show_menu: false }">
+          <div
+            :class="is_lnd_node_online ? 'bg-green-600' : 'bg-red-600'"
+            class="rounded-full ring-2 ring-black w-3.5 h-3.5 mt-3.5 mr-3.5">
+          </div>
           <div style="padding-top: 9px">
             <img src="/images/notifications.svg">
           </div>

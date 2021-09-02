@@ -10,7 +10,7 @@
     <script defer phx-track-static type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
   </head>
-  <body class="bg-gray-900 text-gray-100 mt-1">
+  <body class="bg-gray-900 text-gray-100 mt-1" x-data="{ is_lnd_node_online: true }">
     <%= render "_header.html", assigns %>
     <div class="mx-4">
       <%= @inner_content %>
