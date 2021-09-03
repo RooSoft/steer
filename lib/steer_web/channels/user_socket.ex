@@ -3,6 +3,7 @@ defmodule SteerWeb.UserSocket do
 
   ## Channels
   # channel "room:*", SteerWeb.RoomChannel
+  channel "lnd_node_status:*", SteerWeb.LndNodeStatusChannel
 
   # Socket params are passed from the client and can
   # be used to verify and authenticate a user. After
