@@ -1,6 +1,13 @@
-<div class="text-gray-300 text-opacity-80">
-    <div class="text-3xl font-nodename">
-        <%= @channel.alias %>
+<div class="text-gray-300 text-opacity-80"
+    x-data="{ active: <%= @channel.status == :active %> }">
+    <div class="flex">
+        <div
+            :class="active ? 'bg-green-600' : 'bg-red-500'"
+            class="rounded-full ring-2 ring-black w-2 h-2 mt-4 mr-2">
+        </div>
+        <div class="text-3xl font-nodename">
+            <%= @channel.alias %>
+        </div>
     </div>
     <div class="text-xs mb-3">
         <%= String.slice(@channel.node_pub_key, 0..19) %>
