@@ -4,7 +4,8 @@
             class="p-1 mb-1 max-w-screen-sm text-gray-400 rounded-xl flex flex-row justify-between
             bg-gray-800
             border-gray-600
-            border-l-4">
+            border-l-4"
+            style="border-color:<%= channel.color %>">
             <div class="w-max px-2">
                 <div class="flex">
                     <div
@@ -29,7 +30,6 @@
             </div>
             <div class="w-28 px-2">
                 <div class="flex flex-row">
-                    <div class="text-right flex-no mr-1" style="color:<%= channel.color %>">&#9632;</div>
                     <div class="text-right text-xs inline-block align-middle mr-1 pt-1 flex-none"><%= channel.formatted_capacity %></div>
                     <div class="text-right text-xs inline-block align-middle pt-1 flex-grow"><%= channel.formatted_balance_percent %>%</div>
                 </div>
