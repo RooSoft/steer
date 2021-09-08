@@ -1,8 +1,13 @@
 <header class="bg-gradient-to-br from-green-500 to-purple-600">
   <nav class="mb-4 p-0.5">
-    <div class="px-6">
+    <div class="px-3">
       <div class="flex justify-between items-center">
-        <a class="text-4xl text-gray-900 font-branding" href="/">Steer</a>
+        <div class="flex">
+          <div class="mt-0.5 mr-4">
+            <img width="40" height="40" src="images/steer.svg">
+          </div>
+          <a class="mt-1 text-4xl text-gray-900 font-branding" href="/">Steer</a>
+        </div>
         <div class="text-gray-900 flex" x-data="{ show_menu: false }">
           <div
             :class="is_lnd_node_online ? 'bg-green-600' : 'bg-red-600'"
