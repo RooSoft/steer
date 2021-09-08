@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logo Editor</title>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<body>
+    <div x-data="points">
+      <svg 
+        viewbox="-101 -101 205 205"
+        xmlns="http://www.w3.org/2000/svg" version="1.1">
+
+        <g id="logo">
+          <path id="path" 
+            :d="path" 
+            stroke="blue" 
+            stroke-width="1" 
+            fill="black" 
+            transform="translate(0 -10)"
+            />
+        </g>
+      </svg>
+    </div>
+
+    <script>
+      function d_to_r(degrees) {
+        var pi = Math.PI;
+        return degrees * (pi/180);
+      }
+
+      function get_x(degrees) {
+        radians = d_to_r(degrees)
+        return 100 * Math.cos(radians)
+      }
+
+      function get_y(degrees) {
+        radians = d_to_r(degrees)
+        return 100 * Math.sin(radians)
+      }
+
+      function new_get_q(distance, angle) {
+        rads = d_to_r(angle)
+
+        qx = distance * Math.cos(rads)
+        qy = distance * Math.sin(rads)
+
+        return `Q${qx.toFixed(2)} ${qy.toFixed(2)}`
+      }
+
+      document.addEventListener('alpine:init', () => {
+        angles = [65, 115, 185, 235, 305, 355]
+        convexDistance = 125
+        concaveDistance = -40
+
+        points = {
+          x0: get_x(angles[0]),
+          y0:	get_y(angles[0]),
+
+          x1: get_x(angles[1]),
+          y1: get_y(angles[1]),
+
+          x2: get_x(angles[2]),
+          y2: get_y(angles[2]),
+
+          x3: get_x(angles[3]),
+          y3:	get_y(angles[3]),
+
+          x4: get_x(angles[4]),
+          y4: get_y(angles[4]),
+
+          x5: get_x(angles[5]),
+          y5:	get_y(angles[5]),
+        }
+
+        q1 = new_get_q(convexDistance, (angles[1] + angles[0]) / 2)
+        q2 = new_get_q(concaveDistance, (angles[2] + angles[1]) / 2)
+        q3 = new_get_q(convexDistance, (angles[3] + angles[2]) / 2)
+        q4 = new_get_q(concaveDistance, (angles[4] + angles[3]) / 2)
+        q5 = new_get_q(convexDistance, (angles[5] + angles[4]) / 2)
+        q6 = new_get_q(concaveDistance, (angles[0] + 360 + angles[5]) / 2)
+
+        qq1 = `${q2}, ${points.x2.toFixed(2)} ${points.y2.toFixed(2)}`
+        qq2 = `${q3}, ${points.x3.toFixed(2)} ${points.y3.toFixed(2)}`
+        qq3 = `${q4}, ${points.x4.toFixed(2)} ${points.y4.toFixed(2)}`
+        qq4 = `${q5}, ${points.x5.toFixed(2)} ${points.y5.toFixed(2)}`
+        qq5 = `${q6}, ${points.x0.toFixed(2)} ${points.y0.toFixed(2)}`
+        qq6 = `${q1}, ${points.x1.toFixed(2)} ${points.y1.toFixed(2)}`
+
+        arc1 = `M${points.x1.toFixed(2)} ${points.y1.toFixed(2)} ${qq1} `
+        arc2 = `M${points.x2.toFixed(2)} ${points.y2.toFixed(2)}  ${qq2} `
+        arc3 = `M${points.x3.toFixed(2)} ${points.y3.toFixed(2)}  ${qq3} `
+        arc4 = `M${points.x4.toFixed(2)} ${points.y4.toFixed(2)}  ${qq4} `
+        arc5 = `M${points.x5.toFixed(2)} ${points.y5.toFixed(2)}  ${qq5} `
+        arc6 = `M${points.x0.toFixed(2)} ${points.y0.toFixed(2)}  ${qq6} `
+
+        path = arc1 + qq2 + qq3 + qq4 + qq5 + qq6 + 'Z'
+
+        console.dir(points)
+        console.log(path)
+
+        Alpine.data('points', () => ({ points, path }))
+      })
+    </script>
+</body>
+</html>
