@@ -4,7 +4,7 @@
       <div class="flex justify-between items-center">
         <div class="flex">
           <div class="mt-0.5 mr-4">
-            <img width="40" height="40" src="images/steer.svg">
+            <img width="40" height="40" src="/images/steer.svg">
           </div>
           <a class="mt-1 text-4xl text-gray-900 font-branding" href="/">Steer</a>
         </div>
