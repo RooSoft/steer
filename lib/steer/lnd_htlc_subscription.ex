@@ -26,6 +26,7 @@ defmodule Steer.HtlcSubscription do
 
   def handle_info(%Routerrpc.HtlcEvent{event: {:settle_event, _}} = lnd_htlc_event, state) do
     Steer.Lightning.sync
+    Steer.Lightning.update_cache
 
     htlc_event = lnd_htlc_event
     |> extract_htlc_event_map(:settle)
