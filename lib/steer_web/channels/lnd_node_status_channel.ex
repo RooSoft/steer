@@ -11,11 +11,19 @@ defmodule SteerWeb.LndNodeStatusChannel do
   def join("lnd_node_status:status", _payload, socket) do
     Endpoint.subscribe(@uptime_event_topic)
 
+    send(self(), :after_join)
+
     {:ok, socket}
   end
 
   def join("lnd_node_status:" <> _private_room_id, _params, _socket) do
     {:error, %{reason: "unauthorized"}}
+  end
+
+  def handle_info(:after_join, socket) do
+    push(socket, "node_status", Steer.Lightning.get_node_status())
+
+    {:noreply, socket}
   end
 
   @impl true
