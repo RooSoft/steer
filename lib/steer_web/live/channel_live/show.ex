@@ -6,6 +6,12 @@ defmodule SteerWeb.ChannelLive.Show do
   @htlc_event_topic "htlc_event"
   @settle_message "settle"
 
+  @channel_topic "channel"
+  # @open_message "open"
+  # @closed_message "closed"
+  @active_message "active"
+  @inactive_message "inactive"
+
   @impl true
   def handle_params(%{"id" => channel_id_string}, _, socket) do
     { channel_id, _ } = Integer.parse(channel_id_string)
@@ -39,6 +45,29 @@ defmodule SteerWeb.ChannelLive.Show do
     { :noreply, socket }
   end
 
+  @impl true
+  def handle_info(%{ topic: @channel_topic, event: @active_message, payload: channel }, socket) do
+    { :noreply, socket
+      |> update_socket
+      |> put_flash(:info, "#{channel.alias} became active")}
+  end
+
+  @impl true
+  def handle_info(%{ topic: @channel_topic, event: @inactive_message, payload: channel }, socket) do
+    socket = socket
+      |> update_socket
+      |> put_flash(:info, "#{channel.alias} became inactive")
+
+    { :noreply, socket }
+  end
+
+  @impl true
+  def handle_info(%{ topic: @channel_topic, event: _, payload: _channel }, socket) do
+    # ingnore all other events
+
+    { :noreply, socket }
+  end
+
   defp update_socket socket do
     socket
     |> update_socket(socket.assigns.channel.id)
@@ -53,6 +82,7 @@ defmodule SteerWeb.ChannelLive.Show do
   defp subscribe_to_events(socket) do
     if connected?(socket) do
       Endpoint.subscribe(@htlc_event_topic)
+      Endpoint.subscribe(@channel_topic)
     end
 
     socket
