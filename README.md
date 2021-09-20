@@ -21,6 +21,12 @@ This starts both the database and the web server
 docker-compose up
 ```
 
+### Update steer if already running
+
+```
+docker-compose up -d --build steer
+```
+
 
 ## How to run manually
 
