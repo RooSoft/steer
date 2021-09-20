@@ -17,12 +17,6 @@ defmodule Steer.Application do
       SteerWeb.Endpoint,
       # Start a worker by calling: Steer.Worker.start_link(arg)
       # {Steer.Worker, arg}
-      LndClient,
-
-      Steer.LndUptimeSubscription,
-      Steer.HtlcSubscription,
-      Steer.LndInvoiceSubscription,
-      Steer.LndChannelSubscription,
 
       Steer.Lightning,
 

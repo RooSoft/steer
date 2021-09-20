@@ -8,8 +8,8 @@ defmodule Steer.LndInvoiceSubscription do
   @created_message "created"
   @paid_message "paid"
 
-  def start_link(_) do
-    GenServer.start_link(__MODULE__, nil, name: __MODULE__)
+  def start() do
+    GenServer.start(__MODULE__, nil, name: __MODULE__)
   end
 
   def stop(reason \\ :normal, timeout \\ :infinity) do

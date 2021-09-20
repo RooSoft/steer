@@ -11,13 +11,38 @@ defmodule Steer.Lightning do
   end
 
   def init(state) do
-    { :ok, _ } = Steer.Sync.LocalNode.sync
-    Steer.Sync.Channel.sync
-    Steer.Sync.Forward.sync
+    LndClient.start()
 
-    { :ok,
-      state
-      |> reload_channels() }
+    node_uri = System.get_env("NODE") || "localhost:10009"
+    cert_path = System.get_env("CERT") || "~/.lnd/lnd.cert"
+    macaroon_path = System.get_env("MACAROON") || "~/.lnd/readonly.macaroon"
+
+    case LndClient.connect(node_uri, cert_path, macaroon_path) do
+      { :ok, state } ->
+        Logger.info("LndClient started")
+
+        { :ok, _ } = Steer.Sync.LocalNode.sync
+        Steer.Sync.Channel.sync
+        Steer.Sync.Forward.sync
+
+        Steer.LndUptimeSubscription.start()
+        Steer.LndChannelSubscription.start()
+        Steer.LndHtlcSubscription.start()
+        Steer.LndInvoiceSubscription.start()
+
+        { :ok,
+          state
+          |> add_status(true)
+          |> reload_channels() }
+
+      { :error, error } ->
+        Logger.warn "LndClient can't start"
+        IO.inspect error
+
+        { :ok,
+          state
+          |> add_status(false) }
+    end
   end
 
   def sync() do
@@ -31,6 +56,10 @@ defmodule Steer.Lightning do
 
   def update_cache() do
     GenServer.call(__MODULE__, :update_cache)
+  end
+
+  def get_node_status() do
+    GenServer.call(__MODULE__, :get_node_status)
   end
 
   def get_all_channels() do
@@ -82,6 +111,10 @@ defmodule Steer.Lightning do
 
   def get_link_fails do
     GenServer.call(__MODULE__, :get_link_fails)
+  end
+
+  def handle_call(:get_node_status, _from, state) do
+    { :reply, state.status, state}
   end
 
   def handle_call(:get_all_channels, _from, %{ channels: channels } = state) do
@@ -176,6 +209,13 @@ defmodule Steer.Lightning do
 
   def handle_call(:get_link_fails, _from, state) do
     { :reply, Repo.get_link_fails(), state}
+  end
+
+  defp add_status(state, is_up) do
+    state
+    |> Map.put(:status, %{
+      is_up: is_up
+    })
   end
 
   defp reload_channels(state) do

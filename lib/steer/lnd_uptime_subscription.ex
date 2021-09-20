@@ -8,8 +8,8 @@ defmodule Steer.LndUptimeSubscription do
   @up_message "up"
   @down_message "down"
 
-  def start_link(_) do
-    GenServer.start_link(__MODULE__, nil, name: __MODULE__)
+  def start() do
+    GenServer.start(__MODULE__, nil, name: __MODULE__)
   end
 
   def stop(reason \\ :normal, timeout \\ :infinity) do

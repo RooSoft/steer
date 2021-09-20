@@ -1,4 +1,4 @@
-defmodule Steer.HtlcSubscription do
+defmodule Steer.LndHtlcSubscription do
   use GenServer
   require Logger
 
@@ -10,7 +10,7 @@ defmodule Steer.HtlcSubscription do
   @settle_message "settle"
   @link_fail_message "link_fail"
 
-  def start_link(_) do
+  def start() do
     GenServer.start_link(__MODULE__, nil, name: __MODULE__)
   end
 
@@ -19,6 +19,7 @@ defmodule Steer.HtlcSubscription do
   end
 
   def init(_) do
+    IO.puts "++++++++++++++++++subscribing to HTLCs+++++++++++++++"
     LndClient.subscribe_htlc_events(%{pid: self()})
 
     { :ok, nil }

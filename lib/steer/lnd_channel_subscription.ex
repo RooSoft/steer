@@ -12,7 +12,7 @@ defmodule Steer.LndChannelSubscription do
   @active_message "active"
   @inactive_message "inactive"
 
-  def start_link(_) do
+  def start() do
     GenServer.start_link(__MODULE__, nil, name: __MODULE__)
   end
 

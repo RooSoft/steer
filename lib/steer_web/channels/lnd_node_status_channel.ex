@@ -1,6 +1,8 @@
 defmodule SteerWeb.LndNodeStatusChannel do
   use SteerWeb, :channel
 
+  require Logger
+
   alias SteerWeb.Endpoint
 
   @uptime_event_topic "uptime"
@@ -44,6 +46,18 @@ defmodule SteerWeb.LndNodeStatusChannel do
     payload: _payload
   }, socket) do
     socket |> broadcast("lnd_node_status:status", %{status: "DOWN"})
+
+    { :noreply, socket }
+  end
+
+
+  @impl true
+  def handle_info(%{
+    topic: topic,
+    event: event,
+    payload: _payload
+  }, socket) do
+    Logger.warn "--- abnormal uptime event topic: #{topic} #{event} ---"
 
     { :noreply, socket }
   end

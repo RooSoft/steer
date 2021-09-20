@@ -18,6 +18,7 @@ defmodule SteerWeb.Router do
     pipe_through :browser
 
     live "/", HomeLive, :index
+    live "/diagnostics", DiagnosticsLive, :index
 
     live "/attempts", AttemptsLive, :index
     live "/link_fails", LinkFailsLive, :index
