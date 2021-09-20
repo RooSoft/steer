@@ -10,7 +10,7 @@ Lightning Network routing node management tool
 - Go to the root folder and run this command once every time this repo is pulled
 
 ```bash
-docker build -t steer:0.0.5 .
+docker build -t steer:0.0.6 .
 ```
 
 ### Run it
