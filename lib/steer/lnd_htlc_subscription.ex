@@ -11,7 +11,9 @@ defmodule Steer.LndHtlcSubscription do
   @link_fail_message "link_fail"
 
   def start() do
-    GenServer.start_link(__MODULE__, nil, name: __MODULE__)
+    { :ok, subscription } = GenServer.start_link(__MODULE__, nil, name: __MODULE__)
+
+    Process.monitor(subscription)
   end
 
   def stop(reason \\ :normal, timeout \\ :infinity) do
@@ -86,6 +88,16 @@ defmodule Steer.LndHtlcSubscription do
     Logger.info "HTLC of unknown type"
 
     IO.inspect htlc_event
+
+    {:noreply, state}
+  end
+
+  def handle_info({ :DOWN, _ref, :process, _subscription, reason}, state) do
+    Logger.error("HTLC subscription is DOWN and shouldn't be")
+    IO.inspect reason
+    Logger.info("Restarting HTLC subscription")
+
+    start()
 
     {:noreply, state}
   end

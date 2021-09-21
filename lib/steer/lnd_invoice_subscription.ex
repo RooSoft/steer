@@ -9,7 +9,9 @@ defmodule Steer.LndInvoiceSubscription do
   @paid_message "paid"
 
   def start() do
-    GenServer.start(__MODULE__, nil, name: __MODULE__)
+    { :ok, subscription } = GenServer.start(__MODULE__, nil, name: __MODULE__)
+
+    Process.monitor(subscription)
   end
 
   def stop(reason \\ :normal, timeout \\ :infinity) do
@@ -32,6 +34,16 @@ defmodule Steer.LndInvoiceSubscription do
   def handle_info(%Lnrpc.Invoice{state: :OPEN} = invoice, state) do
     invoice
     |> broadcast(@invoice_topic, @created_message)
+
+    {:noreply, state}
+  end
+
+  def handle_info({ :DOWN, _ref, :process, _subscription, reason}, state) do
+    Logger.error("Invoice subscription is DOWN and shouldn't be")
+    IO.inspect reason
+    Logger.info("Restarting invoice subscription")
+
+    start()
 
     {:noreply, state}
   end
