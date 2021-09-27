@@ -11,7 +11,7 @@
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
   </head>
   <body class="bg-gray-900 text-gray-100 mt-1"
-    x-data="{ is_lnd_node_online: false }"
+    x-data="{ is_lnd_node_online: undefined }"
     x-on:lnd-node-status.window="is_lnd_node_online = $event.detail.is_up">
     <%= render "_header.html", assigns %>
     <div class="mx-4">

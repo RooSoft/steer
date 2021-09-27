@@ -13,7 +13,12 @@ module.exports = {
           "username": ["Special Elite"],
           "nodename": ["Maven Pro"]
         },
-        extend: {},
+        extend: {
+            colors: {
+                "node-online": 'rgb(5, 150, 105)',
+                "node-offline": 'rgb(239, 68, 68)',
+            }
+        },
     },
     variants: {
         extend: {},

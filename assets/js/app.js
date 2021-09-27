@@ -44,5 +44,7 @@ liveSocket.connect()
 // >> liveSocket.disableLatencySim()
 window.liveSocket = liveSocket
 
-import socket from "./socket"
+import "./socket"
+import css  from "./css"
 
+window.css = css
