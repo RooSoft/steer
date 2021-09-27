@@ -26,7 +26,21 @@ channel.on('node_status', detail => {
     console.dir(detail)
 
     let event = new CustomEvent("lnd-node-status", { detail })
-    window.dispatchEvent(event)
+    dispatchEventWhenDomReady(event)
 })
+
+let dispatchEventWhenDomReady = (event) => {
+    if(document.readyState === "complete") {
+        console.log('~~~~~~~ quick dispatching')
+        window.dispatchEvent(event)
+    }
+    else {
+        console.log('~~~~~~~ waiting for event')
+        window.addEventListener("load", () => {
+            console.log('~~~~~~~ dispatching after event')
+            window.dispatchEvent(event)
+        });
+    }
+} 
 
 export default socket
