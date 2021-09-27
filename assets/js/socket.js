@@ -7,10 +7,11 @@ let channel = socket.channel("lnd_node_status:status", {})
 
 channel.join()
     .receive("ok", (resp, yo) => { 
-        console.log("Joined successfully")
-        console.dir(resp)
+        console.log("Connected to node")
     })
-    .receive("error", resp => { console.log("Unable to join", resp)})
+    .receive("error", resp => { 
+        console.log("Unable to connect to node ", resp)
+    })
 
 channel.on('lnd_node_status:status', payload => {
     let detail = { is_up: payload.status === "UP"}
@@ -22,9 +23,6 @@ channel.on('lnd_node_status:status', payload => {
 })
 
 channel.on('node_status', detail => {
-    console.log("GOT NODE STATUS")
-    console.dir(detail)
-
     let event = new CustomEvent("lnd-node-status", { detail })
     dispatchEventWhenDomReady(event)
 })
