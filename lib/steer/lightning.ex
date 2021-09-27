@@ -11,38 +11,8 @@ defmodule Steer.Lightning do
   end
 
   def init(state) do
-    LndClient.start()
-
-    node_uri = System.get_env("NODE") || "localhost:10009"
-    cert_path = System.get_env("CERT") || "~/.lnd/lnd.cert"
-    macaroon_path = System.get_env("MACAROON") || "~/.lnd/readonly.macaroon"
-
-    case LndClient.connect(node_uri, cert_path, macaroon_path) do
-      { :ok, state } ->
-        Logger.info("LndClient started")
-
-        { :ok, _ } = Steer.Sync.LocalNode.sync
-        Steer.Sync.Channel.sync
-        Steer.Sync.Forward.sync
-
-        Steer.LndUptimeSubscription.start()
-        Steer.LndChannelSubscription.start()
-        Steer.LndHtlcSubscription.start()
-        Steer.LndInvoiceSubscription.start()
-
-        { :ok,
-          state
-          |> add_status(true)
-          |> reload_channels() }
-
-      { :error, error } ->
-        Logger.warn "LndClient can't start"
-        IO.inspect error
-
-        { :ok,
-          state
-          |> add_status(false) }
-    end
+    { _, state } = do_connect(state)
+    { :ok, state }
   end
 
   def sync() do
@@ -52,6 +22,10 @@ defmodule Steer.Lightning do
     update_cache()
 
     Logger.info "Sync done at #{DateTime.utc_now()}"
+  end
+
+  def connect() do
+    GenServer.call(__MODULE__, :connect)
   end
 
   def update_cache() do
@@ -209,6 +183,50 @@ defmodule Steer.Lightning do
 
   def handle_call(:get_link_fails, _from, state) do
     { :reply, Repo.get_link_fails(), state}
+  end
+
+
+  def handle_call(:connect, _from, state) do
+    {status, state} = do_connect(state)
+
+    { :reply, status, state}
+  end
+
+  defp do_connect(state) do
+    LndClient.start()
+
+    node_uri = System.get_env("NODE") || "localhost:10009"
+    cert_path = System.get_env("CERT") || "~/.lnd/lnd.cert"
+    macaroon_path = System.get_env("MACAROON") || "~/.lnd/readonly.macaroon"
+
+    case LndClient.connect(node_uri, cert_path, macaroon_path) do
+      { :ok, state } ->
+        Logger.info("LndClient started")
+
+        { :ok, _ } = Steer.Sync.LocalNode.sync
+        Steer.Sync.Channel.sync
+        Steer.Sync.Forward.sync
+
+        Steer.LndUptimeSubscription.start()
+        Steer.LndChannelSubscription.start()
+        Steer.LndHtlcSubscription.start()
+        Steer.LndInvoiceSubscription.start()
+
+        { :ok,
+          state
+          |> add_status(true)
+          |> reload_channels()
+        }
+
+      { :error, error } ->
+        Logger.warn "LndClient can't start"
+        IO.inspect error
+
+        { :error,
+          state
+          |> add_status(false)
+        }
+    end
   end
 
   defp add_status(state, is_up) do
