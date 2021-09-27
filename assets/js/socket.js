@@ -29,15 +29,14 @@ channel.on('node_status', detail => {
     dispatchEventWhenDomReady(event)
 })
 
+// inspiration for this function
+// https://stackoverflow.com/questions/8100576/how-to-check-if-dom-is-ready-without-a-framework
 let dispatchEventWhenDomReady = (event) => {
     if(document.readyState === "complete") {
-        console.log('~~~~~~~ quick dispatching')
         window.dispatchEvent(event)
     }
     else {
-        console.log('~~~~~~~ waiting for event')
         window.addEventListener("load", () => {
-            console.log('~~~~~~~ dispatching after event')
             window.dispatchEvent(event)
         });
     }
