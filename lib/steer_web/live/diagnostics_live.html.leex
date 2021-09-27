@@ -1,7 +1,8 @@
 <div x-data>
 
   <div
-    :class="is_lnd_node_online ? 'bg-green-600' : 'bg-red-600'"
+    :title="css.getNodeStatusText(is_lnd_node_online)"
+    :class="css.getNodeStatusColor(is_lnd_node_online)"
     class="rounded-full ring-2 ring-black w-16 h-16">
   </div>
 
