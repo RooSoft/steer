@@ -1,11 +1,32 @@
 <div x-data>
 
-  <div
-    :title="css.getNodeStatusText(is_lnd_node_online)"
-    :class="css.getNodeStatusColor(is_lnd_node_online)"
-    class="rounded-full ring-2 ring-black w-16 h-16">
+  <div class="flex w-100">
+    <div class="">
+      <div
+        :title="css.getNodeStatusText(is_lnd_node_online)"
+        :class="css.getNodeStatusColor(is_lnd_node_online)"
+        class="rounded-full ring-2 ring-black w-16 h-16 flex-none ml-4">
+      </div>
+
+      <button phx-click="connect" phx-disable-with="Working..." class="bg-blue-900 hover:bg-blue-700 text-white font-bold mt-4 py-2 px-4 rounded">
+        Connect
+      </button>
+
+    </div>
+
+    <div class="mx-4 flex-1">
+      <span class="text-2xl mb-6 border-b-2">Log</span>
+      <div class="mt-4">
+        <%= for message <- @messages do %>
+          <div><%= message.text %></div>
+        <% end %>
+      </div>
+    </div>
   </div>
 
-  <button phx-click="connect">Connect</button>
-
 </div>
+
+<style>
+  .phx-click-loading {background-color: red;}
+  .phx-click-loading:hover {background-color: red;disable}
+</style>
