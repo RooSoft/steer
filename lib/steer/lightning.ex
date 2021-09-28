@@ -12,6 +12,7 @@ defmodule Steer.Lightning do
 
   def init(state) do
     { _, state } = do_connect(state)
+
     { :ok, state }
   end
 
@@ -25,7 +26,7 @@ defmodule Steer.Lightning do
   end
 
   def connect() do
-    GenServer.call(__MODULE__, :connect)
+    GenServer.call(__MODULE__, :connect, 10000)
   end
 
   def update_cache() do
@@ -186,10 +187,13 @@ defmodule Steer.Lightning do
   end
 
 
-  def handle_call(:connect, _from, state) do
-    {status, state} = do_connect(state)
+  def handle_call(:connect, _from, previous_state) do
+    {status, new_state} = do_connect(previous_state)
 
-    { :reply, status, state}
+    { :reply, status, case status do
+      :ok -> new_state
+      :error -> previous_state
+    end }
   end
 
   defp do_connect(state) do
