@@ -6,30 +6,40 @@ defmodule SteerWeb.DiagnosticsLive do
   @spec mount(any, any, Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   def mount(_params, _session, socket) do
     { :ok, socket
-      |> assign(:messages, [%{text: "this is a message"}]) }
+    |> assign(:messages, [%{text: "this is a message"}])
+    |> set_connecting_flag(false) }
   end
 
 
   @impl true
   def handle_event("connect", _value, socket) do
-    socket = case Steer.Lightning.connect() do
-      :ok ->
-        socket = socket |> dispatch_message("Trying to connect to the node...")
-
-        Steer.Lightning.sync()
-        Steer.Lightning.update_cache()
-
-        socket |> dispatch_message("Node connection successful")
-      _ ->
-        socket |> dispatch_message("Node connection failed")
-    end
+    self() |> Steer.LndConnection.initiate()
 
     { :noreply, socket }
   end
 
-  defp dispatch_message(socket, message) do
+  @impl true
+  def handle_info(:done_connecting, socket) do
+    IO.puts "______done"
+    { :noreply, socket |> set_connecting_flag(false)}
+  end
+
+
+  def handle_info(:connecting, socket) do
+    IO.puts "______started"
+    { :noreply, socket |> set_connecting_flag(true)}
+  end
+
+  def handle_info({ :dispatch_message, message }, socket) do
     Logger.info(message)
-    socket |> add_message(message)
+
+    { :noreply, socket |> add_message(message) }
+  end
+
+
+  defp set_connecting_flag(socket, is_connecting) do
+    socket
+    |> assign(:connecting, is_connecting)
   end
 
   defp add_message(socket, message_text) do

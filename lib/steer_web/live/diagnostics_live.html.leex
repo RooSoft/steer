@@ -1,4 +1,4 @@
-<div x-data>
+<div x-data="{ connecting: <%= @connecting %> }">
 
   <div class="flex w-100">
     <div class="">
@@ -8,10 +8,14 @@
         class="rounded-full ring-2 ring-black w-16 h-16 flex-none ml-4">
       </div>
 
-      <button phx-click="connect" phx-disable-with="Working..." class="bg-blue-900 hover:bg-blue-700 text-white font-bold mt-4 py-2 px-4 rounded">
-        Connect
+      <button phx-click="connect"
+        :class="connecting ? 'bg-red-900 hover:bg-red-900' : 'bg-green-900 hover:bg-green-700'"
+        :name="connecting ? 'working' : 'connect'"
+        :style="connecting ? 'cursor: wait' : 'cursor: pointer'"
+        :disabled="connecting"
+        class="text-white font-bold mt-4 py-2 px-4 rounded">
+        <%= case @connecting do true -> "connecting..."; false -> "connect" end  %>
       </button>
-
     </div>
 
     <div class="mx-4 flex-1">
@@ -25,8 +29,3 @@
   </div>
 
 </div>
-
-<style>
-  .phx-click-loading {background-color: red;}
-  .phx-click-loading:hover {background-color: red;disable}
-</style>
