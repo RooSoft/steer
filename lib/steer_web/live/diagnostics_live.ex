@@ -23,11 +23,12 @@ defmodule SteerWeb.DiagnosticsLive do
     { :noreply, socket |> set_connecting_flag(false)}
   end
 
-
+  @impl true
   def handle_info(:connecting, socket) do
     { :noreply, socket |> set_connecting_flag(true)}
   end
 
+  @impl true
   def handle_info({ :dispatch_message, message }, socket) do
     Logger.info(message)
 
