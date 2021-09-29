@@ -20,13 +20,11 @@ defmodule SteerWeb.DiagnosticsLive do
 
   @impl true
   def handle_info(:done_connecting, socket) do
-    IO.puts "______done"
     { :noreply, socket |> set_connecting_flag(false)}
   end
 
 
   def handle_info(:connecting, socket) do
-    IO.puts "______started"
     { :noreply, socket |> set_connecting_flag(true)}
   end
 
