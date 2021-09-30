@@ -24,6 +24,10 @@ channel.on('lnd_node_status:status', payload => {
 
 channel.on('node_status', detail => {
     let event = new CustomEvent("lnd-node-status", { detail })
+
+    console.log("NODE STATUS")
+    console.dir(detail)
+    
     dispatchEventWhenDomReady(event)
 })
 

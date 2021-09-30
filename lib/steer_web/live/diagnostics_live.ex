@@ -15,26 +15,33 @@ defmodule SteerWeb.DiagnosticsLive do
   def handle_event("connect", _value, socket) do
     self() |> Steer.LndConnection.initiate()
 
-    { :noreply, socket }
+    { :noreply, socket |> set_connecting_flag(true) }
   end
 
   @impl true
-  def handle_info(:done_connecting, socket) do
-    { :noreply, socket |> set_connecting_flag(false)}
+  def handle_info({ :node_connection, { :connected, message } }, socket) do
+    Logger.info(message)
+
+    { :noreply, socket
+      |> add_message(message)
+      |> set_connecting_flag(false) }
   end
 
   @impl true
-  def handle_info(:connecting, socket) do
-    { :noreply, socket |> set_connecting_flag(true)}
+  def handle_info({ :node_connection, { :disconnected, message } }, socket) do
+    Logger.info(message)
+
+    { :noreply, socket
+      |> add_message(message)
+      |> set_connecting_flag(false) }
   end
 
   @impl true
-  def handle_info({ :dispatch_message, message }, socket) do
+  def handle_info({ :node_connection, { _, message } }, socket) do
     Logger.info(message)
 
     { :noreply, socket |> add_message(message) }
   end
-
 
   defp set_connecting_flag(socket, is_connecting) do
     socket
