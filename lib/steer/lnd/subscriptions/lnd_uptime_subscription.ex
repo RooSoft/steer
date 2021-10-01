@@ -21,6 +21,8 @@ defmodule Steer.Lnd.Subscriptions.Uptime do
   def init(_) do
     LndClient.subscribe_uptime(%{pid: self()})
 
+    send(self(), :up)
+
     { :ok, nil }
   end
 
