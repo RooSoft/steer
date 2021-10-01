@@ -24,10 +24,10 @@
         <%= for message <- @messages do %>
           <div>
             <span class="text-yellow-600">
-              <%= Enum.join [message.time.year, message.time.month, message.time.day], "/" %>
+              <%= message.date %>
             <span>
             <span class=" text-yellow-400">
-              <%= Enum.join [message.time.hour, message.time.minute, message.time.second], ":" %>
+              <%= message.time %>
             </span>
             <span class=" text-yellow-200">
               <%= message.text %>

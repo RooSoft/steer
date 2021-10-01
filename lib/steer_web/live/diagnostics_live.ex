@@ -51,9 +51,29 @@ defmodule SteerWeb.DiagnosticsLive do
   defp add_message(socket, message_text) do
     { :ok, now } = DateTime.now("Etc/UTC")
 
-    message = %{time: now, text: message_text}
+    message = %{
+      date: now |> format_date,
+      time: now |> format_time,
+      text: message_text
+    }
 
     socket
     |> assign(:messages, [message|socket.assigns.messages])
+  end
+
+  defp format_date(date) do
+    Enum.join [
+      date.year,
+      date.month |> Integer.to_string |> String.pad_leading(2, "0"),
+      date.day |> Integer.to_string |> String.pad_leading(2, "0")
+    ], "/"
+  end
+
+  defp format_time(date) do
+    Enum.join [
+      date.hour |> Integer.to_string |> String.pad_leading(2, "0"),
+      date.minute |> Integer.to_string |> String.pad_leading(2, "0"),
+      date.second |> Integer.to_string |> String.pad_leading(2, "0")
+    ], ":"
   end
 end
