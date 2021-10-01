@@ -21,7 +21,7 @@
     <div class="mx-4 flex-1">
       <span class="text-2xl mb-6 border-b-2">Log</span>
       <div class="mt-4">
-        <%= for message <- @messages do %>
+        <%= for message <- Enum.reverse @messages do %>
           <div>
             <span class="text-yellow-600">
               <%= message.date %>
