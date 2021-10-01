@@ -1,4 +1,4 @@
-defmodule Steer.LndUptimeSubscription do
+defmodule Steer.Lnd.Subscriptions.Uptime do
   use GenServer
   require Logger
 

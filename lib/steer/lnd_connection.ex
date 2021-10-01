@@ -1,6 +1,8 @@
 defmodule Steer.LndConnection do
   require Logger
 
+  alias Steer.Lnd.Subscriptions
+
   def initiate(page_pid \\ nil) do
     spawn(fn ->
       case connect() do
@@ -30,10 +32,10 @@ defmodule Steer.LndConnection do
         Steer.Sync.Channel.sync
         Steer.Sync.Forward.sync
 
-        Steer.LndUptimeSubscription.start()
-        Steer.LndChannelSubscription.start()
-        Steer.LndHtlcSubscription.start()
-        Steer.LndInvoiceSubscription.start()
+        Subscriptions.Uptime.start()
+        Subscriptions.Channel.start()
+        Subscriptions.Htlc.start()
+        Subscriptions.Invoice.start()
 
         :ok
 

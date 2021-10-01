@@ -1,4 +1,4 @@
-defmodule Steer.LndHtlcSubscription do
+defmodule Steer.Lnd.Subscriptions.Htlc do
   use GenServer
   require Logger
 

@@ -1,4 +1,4 @@
-defmodule Steer.LndInvoiceSubscription do
+defmodule Steer.Lnd.Subscriptions.Invoice do
   use GenServer
   require Logger
 

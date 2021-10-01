@@ -1,4 +1,4 @@
-defmodule Steer.LndChannelSubscription do
+defmodule Steer.Lnd.Subscriptions.Channel do
   use GenServer
   require Logger
 
