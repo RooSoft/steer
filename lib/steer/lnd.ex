@@ -1,5 +1,5 @@
 defmodule Steer.Lnd do
-  alias Steer.Lnd.{Channel, Forward}
+  alias Steer.Lnd.Models.{Channel, Forward}
 
   def get_all_channels() do
     get_lnd_channels()

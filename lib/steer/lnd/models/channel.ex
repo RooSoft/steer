@@ -1,4 +1,4 @@
-defmodule Steer.Lnd.Channel do
+defmodule Steer.Lnd.Models.Channel do
   def convert(channel) do
     channel
     |> convert_channel

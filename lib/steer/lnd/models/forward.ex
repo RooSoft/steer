@@ -1,4 +1,4 @@
-defmodule Steer.Lnd.Forward do
+defmodule Steer.Lnd.Models.Forward do
   def convert(lnd_forwards) do
     lnd_forwards
     |> create_map()
