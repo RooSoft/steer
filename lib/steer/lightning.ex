@@ -11,7 +11,7 @@ defmodule Steer.Lightning do
   end
 
   def init(state) do
-    Steer.LndConnection.initiate self()
+    Steer.Lnd.Connection.initiate self()
 
     { :ok, state |> add_status(false) }
   end

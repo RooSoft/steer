@@ -1,4 +1,4 @@
-defmodule Steer.LndConnection do
+defmodule Steer.Lnd.Connection do
   require Logger
 
   alias Steer.Lnd.Subscriptions

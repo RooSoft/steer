@@ -13,7 +13,7 @@ defmodule SteerWeb.DiagnosticsLive do
 
   @impl true
   def handle_event("connect", _value, socket) do
-    self() |> Steer.LndConnection.initiate()
+    self() |> Steer.Lnd.Connection.initiate()
 
     { :noreply, socket |> set_connecting_flag(true) }
   end
