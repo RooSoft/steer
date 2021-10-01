@@ -6,7 +6,7 @@ defmodule SteerWeb.DiagnosticsLive do
   @spec mount(any, any, Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   def mount(_params, _session, socket) do
     { :ok, socket
-    |> assign(:messages, [%{text: "this is a message"}])
+    |> assign(:messages, [])
     |> set_connecting_flag(false) }
   end
 
@@ -49,7 +49,9 @@ defmodule SteerWeb.DiagnosticsLive do
   end
 
   defp add_message(socket, message_text) do
-    message = %{text: message_text}
+    { :ok, now } = DateTime.now("Etc/UTC")
+
+    message = %{time: now, text: message_text}
 
     socket
     |> assign(:messages, [message|socket.assigns.messages])

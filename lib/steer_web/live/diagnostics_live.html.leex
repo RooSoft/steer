@@ -22,7 +22,17 @@
       <span class="text-2xl mb-6 border-b-2">Log</span>
       <div class="mt-4">
         <%= for message <- @messages do %>
-          <div><%= message.text %></div>
+          <div>
+            <span class="text-yellow-600">
+              <%= Enum.join [message.time.year, message.time.month, message.time.day], "/" %>
+            <span>
+            <span class=" text-yellow-400">
+              <%= Enum.join [message.time.hour, message.time.minute, message.time.second], ":" %>
+            </span>
+            <span class=" text-yellow-200">
+              <%= message.text %>
+            </span>
+          </div>
         <% end %>
       </div>
     </div>
