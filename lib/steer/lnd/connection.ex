@@ -5,14 +5,19 @@ defmodule Steer.Lnd.Connection do
 
   def initiate(page_pid \\ nil) do
     spawn(fn ->
+      maybe_send page_pid, { :connecting, "Trying to connect to the node..." }
+
       case connect() do
         :ok ->
-          maybe_send page_pid, { :connecting, "Trying to connect to the node..." }
+          maybe_send page_pid, { :connecting, "Connected, ready to sync..." }
 
           Steer.Lightning.sync()
+
+          maybe_send page_pid, { :connecting, "Updating cache..." }
+
           Steer.Lightning.update_cache()
 
-          maybe_send page_pid, { :connected, "Node connection successful" }
+          maybe_send page_pid, { :connected, "In sync with node" }
         _ ->
           maybe_send page_pid, { :disconnected, "Node connection failed" }
       end
