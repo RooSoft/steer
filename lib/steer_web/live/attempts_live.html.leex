@@ -1,4 +1,12 @@
 <%= for attempt <- @attempts do %>
+  <%= if attempt.is_last do %>
+    <div
+      phx-click="load-more"
+      phx-value-htlc-id="<%= attempt.htlc_id %>"
+      x-intersect.once="console.log('<%= attempt.htlc_id %> shown');$el.click();"
+      class="w-0">
+    </div>
+  <% end %>
   <div class="pb-2 pt-2 border-b border-gray-500">
     <div class="flex items-center">
       <div class="text-yellow-300 mr-2"><%= Timex.from_now(attempt.time) %></div>
@@ -27,9 +35,6 @@
       <div>
         fee: <%= (attempt.amount_in - attempt.amount_out) / 1000 %> sats
       </div>
-    <% end %>
-    <%= if attempt.is_last do %>
-      <div x-intersect.once="console.log('shown')" class="w-0"></div>
     <% end %>
   </div>
 <% end %>

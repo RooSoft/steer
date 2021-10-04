@@ -17,6 +17,16 @@ defmodule SteerWeb.AttemptsLive do
   end
 
   @impl true
+  def handle_event("load-more", %{"htlc-id" => htlc_id_string}, socket) do
+    Logger.warn "load more..."
+
+    { htlc_id, _error } = htlc_id_string |> Integer.parse
+    IO.inspect htlc_id
+
+    {:noreply, socket}
+  end
+
+  @impl true
   def handle_info(%{
     topic: @htlc_event_topic,
     event: event,
