@@ -76,8 +76,8 @@ defmodule Steer.Lightning do
     GenServer.call(__MODULE__, { :insert_htlc_link_fail, htlc_link_fail })
   end
 
-  def get_htlc_forwards_with_statuses do
-    GenServer.call(__MODULE__, :get_htlc_forwards_with_statuses)
+  def get_htlc_forwards_with_statuses options \\ [] do
+    GenServer.call(__MODULE__, { :get_htlc_forwards_with_statuses, options })
   end
 
   def get_link_fails do
@@ -174,8 +174,8 @@ defmodule Steer.Lightning do
     { :reply, Repo.insert_htlc_link_fail(htlc_link_fail), state}
   end
 
-  def handle_call(:get_htlc_forwards_with_statuses, _from, state) do
-    { :reply, Repo.get_htlc_forwards_with_statuses(), state}
+  def handle_call({ :get_htlc_forwards_with_statuses, options }, _from, state) do
+    { :reply, Repo.get_htlc_forwards_with_statuses(options), state}
   end
 
   def handle_call(:get_link_fails, _from, state) do
