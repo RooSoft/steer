@@ -25,10 +25,6 @@ defmodule Steer.Repo.Queries.GetHtlcForwardsWithStatuses do
 
   defp maybe_from_forward_id(query, nil), do: query
   defp maybe_from_forward_id(query, from_forward_htlc_id) do
-    IO.puts "YO"
-    IO.inspect from_forward_htlc_id
-    IO.inspect query
-
     query
     |> where([_hf, htlc], htlc.id <= ^from_forward_htlc_id)
     |> IO.inspect
