@@ -6,6 +6,8 @@ defmodule Steer.Repo do
 
   import Ecto.Query
 
+  #use Steer.Repo.Queries.GetHtlcForwardsWithStatuses
+
   alias Steer.Lightning.Models, as: Models
 
   def init(_type, config) do
@@ -98,37 +100,8 @@ defmodule Steer.Repo do
       order_by: [desc: f.timestamp_ns],
       preload: [:channel_in, :channel_out]
   end
-
-  def get_htlc_forwards_with_statuses do
-    all from hf in Models.HtlcForward,
-      join: htlc in Models.HtlcEvent, on:
-        hf.htlc_event_id == htlc.id,
-      left_join: fail in Models.HtlcEvent, on:
-        fail.htlc_in_id == htlc.htlc_in_id
-        and fail.htlc_out_id == htlc.htlc_out_id
-        and fail.type == :forward_fail,
-      left_join: settle in Models.HtlcEvent, on:
-        settle.htlc_in_id == htlc.htlc_in_id
-        and settle.htlc_out_id == htlc.htlc_out_id
-        and settle.type == :settle,
-      left_join: ci in Models.Channel, on:
-        ci.id == htlc.channel_in_id,
-      left_join: co in Models.Channel, on:
-        co.id == htlc.channel_out_id,
-      order_by: [desc: htlc.timestamp_ns],
-      select: %{
-        htlc_id: htlc.id,
-        fail_id: fail.id,
-        settle_id: settle.id,
-        channel_in_id: ci.id,
-        channel_in: ci.alias,
-        channel_out_id: co.id,
-        channel_out: co.alias,
-        amount_in: hf.amount_in,
-        amount_out: hf.amount_out,
-        time: htlc.time,
-        timestamp_ns: htlc.timestamp_ns
-      }
+  def get_htlc_forwards_with_statuses options \\ [] do
+    all Steer.Repo.Queries.GetHtlcForwardsWithStatuses.get_query(options)
   end
 
   def get_link_fails do
