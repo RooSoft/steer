@@ -45,9 +45,12 @@ defmodule SteerWeb.AttemptsLive do
     socket
   end
 
-  defp assign_attempts(socket) do
+  defp assign_attempts(socket, options \\ []) do
+    defaults = %{from_forward_htlc_id: 9, limit: 2}
+    options = Enum.into(options, defaults)
+
     socket
-    |> assign(:attempts, Steer.Lightning.get_htlc_forwards_with_statuses())
+    |> assign(:attempts, Steer.Lightning.get_htlc_forwards_with_statuses(options))
   end
 
   defp format_channels(%{ assigns: %{ attempts: attempts } } = socket) do
