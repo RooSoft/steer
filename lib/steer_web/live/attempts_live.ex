@@ -46,7 +46,7 @@ defmodule SteerWeb.AttemptsLive do
   end
 
   defp assign_attempts(socket, options \\ []) do
-    defaults = %{from_forward_htlc_id: 9, limit: 2}
+    defaults = %{from_forward_htlc_id: nil, limit: nil}
     options = Enum.into(options, defaults)
 
     socket
