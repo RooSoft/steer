@@ -35,6 +35,7 @@ defmodule SteerWeb.AttemptsLive do
     |> format_channels
     |> format_statuses
     |> format_amounts
+    |> flag_last
   end
 
   defp subscribe_to_events(socket) do
@@ -51,6 +52,19 @@ defmodule SteerWeb.AttemptsLive do
 
     socket
     |> assign(:attempts, Steer.Lightning.get_htlc_forwards_with_statuses(options))
+  end
+
+  defp flag_last socket do
+    attempts = socket.assigns.attempts
+
+    number_of_attempts = attempts |> Enum.count
+
+    socket
+    |> assign(:attempts,
+      Enum.with_index(attempts, 1) |> Enum.map(fn { attempt, index } ->
+        attempt |> Map.put(:is_last, index == number_of_attempts)
+      end)
+    )
   end
 
   defp format_channels(%{ assigns: %{ attempts: attempts } } = socket) do

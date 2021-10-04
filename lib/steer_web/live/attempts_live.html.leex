@@ -28,5 +28,8 @@
         fee: <%= (attempt.amount_in - attempt.amount_out) / 1000 %> sats
       </div>
     <% end %>
+    <%= if attempt.is_last do %>
+      <div x-intersect.once="console.log('shown')" class="w-0"></div>
+    <% end %>
   </div>
 <% end %>
