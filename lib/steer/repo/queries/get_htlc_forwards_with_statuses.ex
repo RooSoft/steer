@@ -7,13 +7,14 @@ defmodule Steer.Repo.Queries.GetHtlcForwardsWithStatuses do
 
 
   def get_query options \\ [] do
-    defaults = %{from_forward_htlc_id: nil, limit: 10}
+    defaults = %{from_forward_htlc_id: nil, limit: 10, offset: 0}
     options = Enum.into(options, defaults)
 
     Logger.info "GetHtlcForwardsWithStatuses - from forward HTLC id #{options.from_forward_htlc_id} limit #{options.limit} "
 
     main_query()
     |> maybe_add_limit(options.limit)
+    |> maybe_add_offset(options.offset)
     |> maybe_from_forward_id(options.from_forward_htlc_id)
   end
 
@@ -23,10 +24,16 @@ defmodule Steer.Repo.Queries.GetHtlcForwardsWithStatuses do
     |> limit(^limit_number)
   end
 
+  defp maybe_add_offset(query, nil), do: query
+  defp maybe_add_offset query, offset_number do
+    query
+    |> offset(^offset_number)
+  end
+
   defp maybe_from_forward_id(query, nil), do: query
   defp maybe_from_forward_id(query, from_forward_htlc_id) do
     query
-    |> where([_hf, htlc], htlc.id < ^from_forward_htlc_id)
+    |> where([_hf, htlc], htlc.id <= ^from_forward_htlc_id)
   end
 
   defp main_query do
