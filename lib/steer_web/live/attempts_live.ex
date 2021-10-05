@@ -125,7 +125,6 @@ defmodule SteerWeb.AttemptsLive do
   defp format_status attempt do
     attempt
     |> Map.put(:status, "unknown")
-    |> IO.inspect
   end
 
   defp format_amounts(%{ assigns: %{ attempts: attempts } } = socket) do
