@@ -4,6 +4,8 @@ defmodule SteerWeb.AttemptsLive do
 
   alias SteerWeb.Endpoint
 
+  @attempts_per_page 20
+
   @htlc_event_topic "htlc_event"
 
   @impl true
@@ -11,19 +13,19 @@ defmodule SteerWeb.AttemptsLive do
   def mount(_params, _session, socket) do
     {:ok,
       socket
+      |> init_attempts
       |> load
       |> subscribe_to_events
     }
   end
 
   @impl true
-  def handle_event("load-more", %{"htlc-id" => htlc_id_string}, socket) do
-    Logger.warn "load more..."
+  def handle_event("load-more", %{"htlc-id" => htlc_id}, socket) do
+    Logger.info "load more... from #{htlc_id}"
 
-    { htlc_id, _error } = htlc_id_string |> Integer.parse
-    IO.inspect htlc_id
-
-    {:noreply, socket}
+    {:noreply,
+      socket
+      |> load(from_forward_htlc_id: htlc_id)}
   end
 
   @impl true
@@ -39,9 +41,14 @@ defmodule SteerWeb.AttemptsLive do
       |> put_flash(:info, "Some HTLC settle event happened: #{event}")}
   end
 
-  defp load(socket) do
+  defp init_attempts(socket) do
     socket
-    |> assign_attempts
+    |> assign(:attempts, [])
+  end
+
+  defp load(socket, options \\ []) do
+    socket
+    |> assign_attempts(options)
     |> format_channels
     |> format_statuses
     |> format_amounts
@@ -56,12 +63,15 @@ defmodule SteerWeb.AttemptsLive do
     socket
   end
 
-  defp assign_attempts(socket, options \\ []) do
-    defaults = %{from_forward_htlc_id: nil, limit: nil}
+  defp assign_attempts(socket, options) do
+    defaults = %{from_forward_htlc_id: nil, limit: @attempts_per_page}
     options = Enum.into(options, defaults)
 
+    current_attempts = socket.assigns.attempts
+    new_attempts = Steer.Lightning.get_htlc_forwards_with_statuses(options)
+
     socket
-    |> assign(:attempts, Steer.Lightning.get_htlc_forwards_with_statuses(options))
+    |> assign(:attempts, current_attempts ++ new_attempts)
   end
 
   defp flag_last socket do

@@ -1,13 +1,22 @@
+<script>
+  let requestMoreAttempts = (element, attemptHtlcId) => {
+    window.attempts = { needsMore: true, lastAttemptHtlcId: attemptHtlcId }
+
+    element.dispatchEvent(new Event('load-more'))
+  }
+</script>
+
 <%= for attempt <- @attempts do %>
   <%= if attempt.is_last do %>
     <div
-      phx-click="load-more"
-      phx-value-htlc-id="<%= attempt.htlc_id %>"
-      x-intersect.once="console.log('<%= attempt.htlc_id %> shown');$el.click();"
+      id="load-more-<%=attempt.htlc_id%>"
+      phx-hook="LoadMoreAttemptsHook"
+      x-intersect.once="requestMoreAttempts($el, <%=attempt.htlc_id%>)"
       class="w-0">
     </div>
   <% end %>
   <div class="pb-2 pt-2 border-b border-gray-500">
+    <div><%= attempt.htlc_id %></div>
     <div class="flex items-center">
       <div class="text-yellow-300 mr-2"><%= Timex.from_now(attempt.time) %></div>
       <div class="mr-2 mt-1 px-2
