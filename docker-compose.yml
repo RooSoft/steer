@@ -8,7 +8,7 @@ services:
     env_file:
     - .env
     volumes:
-    - $HOME/.lnd:/home/app//.lnd:ro
+    - $HOME/.lnd:/home/app/.lnd:ro
     depends_on:
     - db
   db:
@@ -21,5 +21,5 @@ services:
       PGDATA: /var/lib/postgresql/data/pgdata
     restart: always
     volumes:
-    - ${HOME}/postgres-data:/var/lib/postgresql/data
+    - ${HOME}/postgres-steer:/var/lib/postgresql/data
   
