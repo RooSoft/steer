@@ -113,7 +113,7 @@ defmodule Steer.Lightning do
     Logger.info "Getting channel #{id} from cache"
 
     channel = Repo.get_channel(id)
-    |> Models.Channel.format_balances
+    |> maybe_format_channel_balances
 
     { :reply, channel, state}
   end
@@ -209,5 +209,14 @@ defmodule Steer.Lightning do
 
     state
     |> Map.put(:channels, channels)
+  end
+
+  defp maybe_format_channel_balances nil do
+    nil
+  end
+
+  defp maybe_format_channel_balances channel do
+    channel
+    |> Models.Channel.format_balances
   end
 end
