@@ -59,7 +59,9 @@ Setup these according to the Lightning Network node Steer will connect with
 mix phx.server
 
 
-## Build for production
+## Production deployment
+
+### Build
 
 create a `.env` file in the root folder and make sure that those variables are configured
 
@@ -73,4 +75,18 @@ then, run this command.
 
 ```bash
 export $(cat .env | xargs) && mix release
+```
+
+### Deploy
+
+Copy file to the production server
+
+```bash
+scp _build/prod/steer-0.x.0.tar.gz steer@prod-server:.
+```
+
+Then unpack the tarball wherever you like, such as /opt/steer-0.x.0 and run this command
+
+```bash
+/opt/steer-0.x.0/bin/steer start
 ```
