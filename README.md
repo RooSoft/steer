@@ -57,3 +57,20 @@ Setup these according to the Lightning Network node Steer will connect with
 ### Start the web server
 
 mix phx.server
+
+
+## Build for production
+
+create a `.env` file in the root folder and make sure that those variables are configured
+
+* PORT
+* MIX_ENV
+* NODE
+* DATABASE_URL
+* SECRET_KEY_BASE
+
+then, run this command.
+
+```bash
+export $(cat .env | xargs) && mix release
+```
