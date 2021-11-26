@@ -11,9 +11,9 @@
     </div>
     <div class="text-xs mb-3">
         <%= String.slice(@channel.node_pub_key, 0..19) %>
-        <template x-if="window.location.protocol === 'https:'">
-            <button @click="await $clipboard(pubKey)">📋</button>
-        </template>
+        <button @click.stop @click="event.preventDefault();$clipboard(pubKey);">
+            <img src="/images/clipboard.svg">
+        </button>
     </div>
 </div>
 

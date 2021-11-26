@@ -1,6 +1,6 @@
 <%= for channel <- @channels do %>
     <%= live_patch to: Routes.channel_show_path(@socket, :show, channel.id) do %>
-        <div x-data="{ active: <%= channel.status == :active %> }"
+        <div x-data="{ active: <%= channel.status == :active %>, pubKey: '<%= channel.node_pub_key %>' }"
             class="p-1 mb-1 max-w-screen-sm text-gray-400 rounded-xl flex flex-row justify-between
             bg-gray-800
             border-gray-600
@@ -18,6 +18,11 @@
                 </div>
                 <div class="text-xs text-gray-500 w-auto">
                     <%= String.slice(channel.node_pub_key, 0..19) %>
+                    <template x-if="window.location.protocol === 'https:'">
+                        <button @click.stop @click="event.preventDefault();$clipboard(pubKey);">
+                            <img src="/images/clipboard.svg">
+                        </button>
+                    </template>
                 </div>
                 <div class="text-xs">
                     <span class="text-base"><%= channel.forward_in_count + channel.forward_out_count %></span> forwards
