@@ -145,7 +145,7 @@ defmodule Steer.Mashups.ChannelForwards do
     channels
     |> Enum.map(fn channel ->
       sorted_forwards = channel.forwards
-      |> Enum.sort(&(&1.timestamp >= &2.timestamp))
+      |> Enum.sort(&(&1.timestamp_ns >= &2.timestamp_ns))
 
       channel
       |> Map.put(:forwards, sorted_forwards)

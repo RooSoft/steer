@@ -50,7 +50,7 @@ defmodule Steer.Lnd.Models.Channel do
     [channel1_forward | _] = channel1.forwards
     [channel2_forward | _] = channel2.forwards
 
-    channel1_forward.timestamp > channel2_forward.timestamp
+    channel1_forward.timestamp_ns > channel2_forward.timestamp_ns
   end
 
   defp sort_algo(channel1, channel2)
