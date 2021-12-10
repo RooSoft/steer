@@ -1,7 +1,14 @@
-<div x-data="{ connecting: <%= @connecting %> }">
+<div x-data="{ connecting: <%= @connecting %>, pubKey: '<%= @node.pubkey %>' }">
 
   <div><%= @node.alias %></div>
-  <div><%= @node.pubkey %></div>
+
+  <div class="text-xs mb-3">
+    <%= Steer.Formatting.Channel.compressed_pub_key(@node.pubkey) %>
+    <button @click.stop @click="event.preventDefault();$clipboard(pubKey);">
+        <img src="/images/clipboard.svg">
+    </button>
+  </div>
+
   <div>testnet: <%=@node.is_testnet%></div>
   <div class="mb-3">
     <a href="https://amboss.space/node/<%= @node.pubkey %>">
@@ -11,7 +18,7 @@
   <div class="mb-3">
     <a href="https://terminal.lightning.engineering/#/<%= @node.pubkey %>" class="flex">
       <img src="/images/terminal.svg" width="20px">
-      <span class="ml-2 text-2xl tracking-widest font-terminal">TERMINAL</span>
+      <span class="text-2xl tracking-widest font-terminal">TERMINAL</span>
     </a>
   </div>
 
