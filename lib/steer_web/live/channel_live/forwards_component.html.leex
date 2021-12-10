@@ -12,7 +12,9 @@
         <div class="font-bold text-right text-base"><%= forward.formatted_fee %></div>
         <div class="col-span-3">
             <span class="text-sm"><%= forward.direction %></span>
-            <span class="text-xl"><%= forward.remote_alias %></span>
+            <%= live_patch to: Routes.channel_show_path(@socket, :show, forward.remote_channel_id) do %>
+                <span class="text-xl"><%= forward.remote_alias %></span>
+            <% end %>
         </div>
         <div class="col-span-3 border-gray-400 border-opacity-30 border-b"></div>
     <% end %>

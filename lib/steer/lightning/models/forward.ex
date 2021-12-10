@@ -66,6 +66,7 @@ defmodule Steer.Lightning.Models.Forward do
     forward
     |> Map.put(:direction, get_direction(forward, channel))
     |> Map.put(:remote_alias, get_remote_alias(forward, channel))
+    |> Map.put(:remote_channel_id, get_remote_channel_id(forward, channel))
   end
 
   defp get_direction(forward, channel) do
@@ -81,6 +82,14 @@ defmodule Steer.Lightning.Models.Forward do
       forward.channel_out.alias
     else
       forward.channel_in.alias
+    end
+  end
+
+  defp get_remote_channel_id(forward, channel) do
+    if forward.channel_in.id == channel.id do
+      forward.channel_out.id
+    else
+      forward.channel_in.id
     end
   end
 end
