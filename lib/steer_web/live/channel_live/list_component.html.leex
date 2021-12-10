@@ -17,7 +17,7 @@
                     </div>
                 </div>
                 <div class="text-xs text-gray-500 w-auto">
-                    <%= String.slice(channel.node_pub_key, 0..19) %>
+                    <%= channel.formatted_node_pub_key %>
                     <template x-if="window.location.protocol === 'https:'">
                         <button @click.stop @click="event.preventDefault();$clipboard(pubKey);">
                             <img src="/images/clipboard.svg">

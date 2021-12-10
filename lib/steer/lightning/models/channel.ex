@@ -41,11 +41,13 @@ defmodule Steer.Lightning.Models.Channel do
     formatted_local_balance = Number.SI.number_to_si(channel.local_balance/1000, unit: "", precision: 1)
     formatted_remote_balance = Number.SI.number_to_si(channel.remote_balance/1000, unit: "", precision: 1)
     formatted_balance_percent = Number.SI.number_to_si(balance_percent, unit: "", precision: 0)
+    formatted_node_pub_key = "#{String.slice(channel.node_pub_key, 0..5)}..#{String.slice(channel.node_pub_key, -6..-1)}"
 
     channel
     |> Map.put(:formatted_capacity, formatted_capacity)
     |> Map.put(:formatted_local_balance, formatted_local_balance)
     |> Map.put(:formatted_remote_balance, formatted_remote_balance)
     |> Map.put(:formatted_balance_percent, formatted_balance_percent)
+    |> Map.put(:formatted_node_pub_key, formatted_node_pub_key)
   end
 end

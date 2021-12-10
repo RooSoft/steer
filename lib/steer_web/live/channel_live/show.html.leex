@@ -10,7 +10,7 @@
         </div>
     </div>
     <div class="text-xs mb-3">
-        <%= String.slice(@channel.node_pub_key, 0..19) %>
+        <%= @channel.formatted_node_pub_key %>
         <button @click.stop @click="event.preventDefault();$clipboard(pubKey);">
             <img src="/images/clipboard.svg">
         </button>
