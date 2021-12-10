@@ -28,8 +28,9 @@ defmodule Steer.Lnd.Subscriptions.Htlc do
   end
 
   def handle_info(%Routerrpc.HtlcEvent{event: {:settle_event, _}} = lnd_htlc_event, state) do
-    Steer.Lightning.sync
-    Steer.Lightning.update_cache
+    # Steer.Lightning.sync
+    # Steer.Lightning.update_cache
+    ### sync is being done on invoice settle instead
 
     htlc_event = lnd_htlc_event
     |> extract_htlc_event_map(:settle)

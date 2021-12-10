@@ -25,8 +25,13 @@ defmodule Steer.Lnd.Subscriptions.Invoice do
   end
 
   def handle_info(%Lnrpc.Invoice{state: :SETTLED} = invoice, state) do
+    Steer.Lightning.sync
+    Steer.Lightning.update_cache
+
     invoice
     |> broadcast(@invoice_topic, @paid_message)
+
+    Logger.info "#{invoice.amt_paid} sats has been settled"
 
     {:noreply, state}
   end
