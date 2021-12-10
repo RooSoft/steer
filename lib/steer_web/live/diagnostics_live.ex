@@ -7,6 +7,7 @@ defmodule SteerWeb.DiagnosticsLive do
   def mount(_params, _session, socket) do
     { :ok, socket
     |> assign(:messages, [])
+    |> assign(:node, Steer.Repo.get_local_node)
     |> set_connecting_flag(false) }
   end
 

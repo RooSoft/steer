@@ -11,7 +11,8 @@ module.exports = {
         fontFamily: {
           "branding": ["Krona One"],
           "username": ["Special Elite"],
-          "nodename": ["Maven Pro"]
+          "nodename": ["Maven Pro"],
+          "terminal": ["Work Sans"]
         },
         extend: {
             colors: {

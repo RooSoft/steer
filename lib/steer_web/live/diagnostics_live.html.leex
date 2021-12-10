@@ -1,5 +1,21 @@
 <div x-data="{ connecting: <%= @connecting %> }">
 
+  <div><%= @node.alias %></div>
+  <div><%= @node.pubkey %></div>
+  <div>testnet: <%=@node.is_testnet%></div>
+  <div class="mb-3">
+    <a href="https://amboss.space/node/<%= @node.pubkey %>">
+        <img src="/images/amboss.svg" width="140px">
+    </a>
+  </div>
+  <div class="mb-3">
+    <a href="https://terminal.lightning.engineering/#/<%= @node.pubkey %>" class="flex">
+      <img src="/images/terminal.svg" width="20px">
+      <span class="ml-2 text-2xl tracking-widest font-terminal">TERMINAL</span>
+    </a>
+  </div>
+
+
   <div class="flex w-100">
     <div class="">
       <div
