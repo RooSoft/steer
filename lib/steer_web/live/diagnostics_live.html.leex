@@ -1,5 +1,7 @@
 <div x-data="{ connecting: <%= @connecting %>, pubKey: '<%= @node.pubkey %>' }">
 
+  <div>Steer v<%= @version %></div>
+
   <div class="font-nodename text-4xl"><%= @node.alias %></div>
 
   <div class="text-xs mb-3">

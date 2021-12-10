@@ -5,7 +5,10 @@ defmodule SteerWeb.DiagnosticsLive do
   @impl true
   @spec mount(any, any, Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   def mount(_params, _session, socket) do
+    {:ok, vsn} = :application.get_key(:steer, :vsn)
+
     { :ok, socket
+    |> assign(:version, vsn)
     |> assign(:messages, [])
     |> assign(:node, Steer.Repo.get_local_node)
     |> set_connecting_flag(false) }
