@@ -7,9 +7,9 @@
     <button @click.stop @click="event.preventDefault();$clipboard(pubKey);">
         <img src="/images/clipboard.svg">
     </button>
+    <div><%= if @node.is_testnet do "testnet" else "mainnet" end %></div>
   </div>
 
-  <div>testnet: <%=@node.is_testnet%></div>
   <div class="mb-3">
     <a href="https://amboss.space/node/<%= @node.pubkey %>">
         <img src="/images/amboss.svg" width="140px">
