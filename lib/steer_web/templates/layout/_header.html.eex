@@ -13,7 +13,7 @@
             <div
               :class="css.getNodeStatusColor(is_lnd_node_online)"
               :title="css.getNodeStatusText(is_lnd_node_online)"
-              class="rounded-full ring-2 ring-black w-3.5 h-3.5 mt-3.5 mr-3.5">
+              class="rounded-full ring-2 ring-black w-3.5 h-3.5 mt-[15px] mr-3.5">
             </div>
           </a>
           <div class="pt-9 hidden">
