@@ -21,11 +21,12 @@ config :steer, SteerWeb.Endpoint,
   code_reloader: true,
   check_origin: false,
   watchers: [
-    node: [
-      "node_modules/webpack/bin/webpack.js",
-      "--mode",
-      "development",
-      "--watch-stdin",
+    npx: [
+      "tailwindcss",
+      "--input=css/app.css",
+      "--output=../priv/static/css/app.css",
+      "--postcss",
+      "--watch",
       cd: Path.expand("../assets", __DIR__)
     ]
   ]

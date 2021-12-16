@@ -16,7 +16,7 @@
                         <%= channel.alias %>
                     </div>
                 </div>
-                <div class="text-xs text-gray-500 w-auto">
+                <div class="text-xs text-gray-500 w-aut0">
                     <%= channel.formatted_node_pub_key %>
                     <template x-if="window.location.protocol === 'https:'">
                         <button @click.stop @click="event.preventDefault();$clipboard(pubKey);">
