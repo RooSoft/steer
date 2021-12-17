@@ -1,75 +1,75 @@
-<header class="bg-gradient-to-br from-green-500 to-purple-600">
+<header class="bg-gradient-to-br from-yellow-500 to-yellow-700">
   <nav class="mb-4 p-0.5">
-    <div class="px-3">
-      <div class="flex justify-between items-center">
-        <div class="flex">
-          <div class="mt-0.5 mr-4">
-            <img width="40" height="40" src="/images/steer.svg">
+    <div class="flex justify-between items-center">
+      <div class="text-gray-900 flex" x-data="{ show_menu: false }">
+        <div class="ml-1"
+          @click.prevent="show_menu = !show_menu"
+          @click.away="show_menu = false"
+          @keydown.escape.window="show_menu = false">
+          <div class="flex flex-col justify-center">
+            <div class="relative sm:max-w-xl mx-auto">
+              <button class="text-gray-900 w-10 h-10 relative focus:outline-none">
+                <span class="sr-only">Open main menu</span>
+                <div class="block w-5 absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                  <span aria-hidden="true" class="block absolute h-1 w-6 bg-current transform transition duration-500 ease-in-out" :class="{'rotate-45': show_menu,' -translate-y-2': !show_menu }"></span>
+                  <span aria-hidden="true" class="block absolute h-1 w-6 bg-current transform transition duration-500 ease-in-out" :class="{'opacity-0': show_menu } "></span>
+                  <span aria-hidden="true" class="block absolute h-1 w-6 bg-current transform transition duration-500 ease-in-out" :class="{'-rotate-45': show_menu, ' translate-y-2': !show_menu}"></span>
+                </div>
+              </button>
+            </div>
           </div>
-          <a class="mt-1 text-4xl text-gray-900 font-branding" href="/">Steer</a>
         </div>
-        <div class="text-gray-900 flex" x-data="{ show_menu: false }">
-          <a href = "/diagnostics">
-            <div
-              :class="css.getNodeStatusColor(is_lnd_node_online)"
-              :title="css.getNodeStatusText(is_lnd_node_online)"
-              class="rounded-full ring-2 ring-black w-3.5 h-3.5 mt-[15px] mr-3.5">
-            </div>
-          </a>
-          <div class="pt-9 hidden">
-            <img src="/images/notifications.svg">
-          </div>
-          <div class="-ml-2"
-            @click.prevent="show_menu = !show_menu"
-            @click.away="show_menu = false"
-            @keydown.escape.window="show_menu = false">
-            <div class="flex flex-col justify-center">
-              <div class="relative sm:max-w-xl mx-auto">
-                <button class="text-gray-900 w-10 h-10 relative focus:outline-none">
-                  <span class="sr-only">Open main menu</span>
-                  <div class="block w-5 absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                    <span aria-hidden="true" class="block absolute h-1 w-6 bg-current transform transition duration-500 ease-in-out" :class="{'rotate-45': show_menu,' -translate-y-2': !show_menu }"></span>
-                    <span aria-hidden="true" class="block absolute h-1 w-6 bg-current transform transition duration-500 ease-in-out" :class="{'opacity-0': show_menu } "></span>
-                    <span aria-hidden="true" class="block absolute h-1 w-6 bg-current transform transition duration-500 ease-in-out" :class="{'-rotate-45': show_menu, ' translate-y-2': !show_menu}"></span>
-                  </div>
-                </button>
-              </div>
-            </div>
-          </div>
-          <div class="origin-top-right absolute right-0 mt-12 mr-1 z-40
-            bg-gray-800 shadow-sm
-            border-gray-600 border rounded-lg"
-            x-show="show_menu"
-            x-cloak
-            x-transition:enter="transition ease-out duration-250"
-            x-transition:enter-start="transform opacity-0 scale-50"
-            x-transition:enter-end="transform opacity-100 scale-100"
-            x-transition:leave="transition ease-in duration-250"
-            x-transition:leave-start="transform opacity-100 scale-100"
-            x-transition:leave-end="transform opacity-0 scale-50">
-            <div class="text-sm">
-              <a href="/">
-                <div class="py-4 px-6 rounded-t-lg
-                  text-gray-300 font-bold hover:bg-purple-600
-                   border-b border-gray-600">
-                  Channels
-                </div>
-              </a>
-              <a href="/attempts">
-                <div class="pt-4 pb-4 px-6
-                  text-gray-300 font-bold hover:bg-purple-600
+        <div class="origin-top-left absolute left-0 mt-12 mr-1 z-40
+          bg-gray-800 shadow-sm
+          border-gray-600 border rounded-lg"
+          x-show="show_menu"
+          x-cloak
+          x-transition:enter="transition ease-out duration-250"
+          x-transition:enter-start="transform opacity-0 scale-50"
+          x-transition:enter-end="transform opacity-100 scale-100"
+          x-transition:leave="transition ease-in duration-250"
+          x-transition:leave-start="transform opacity-100 scale-100"
+          x-transition:leave-end="transform opacity-0 scale-50">
+          <div class="text-sm">
+            <a href="/">
+              <div class="py-4 px-6 rounded-t-lg
+                text-gray-300 font-bold hover:bg-purple-600
                   border-b border-gray-600">
-                  Forward attempts
-                </div>
-              </a>
-              <a href="/link_fails">
-                <div class="py-4 px-6 rounded-b-lg
-                  text-gray-300 font-bold hover:bg-purple-600">
-                  Link fails
-                </div>
-              </a>
-            </div>
+                Channels
+              </div>
+            </a>
+            <a href="/attempts">
+              <div class="pt-4 pb-4 px-6
+                text-gray-300 font-bold hover:bg-purple-600
+                border-b border-gray-600">
+                Forward attempts
+              </div>
+            </a>
+            <a href="/link_fails">
+              <div class="py-4 px-6 rounded-b-lg
+                text-gray-300 font-bold hover:bg-purple-600">
+                Link fails
+              </div>
+            </a>
           </div>
+        </div>
+      </div>
+      <div class="flex object-center -ml-8">
+        <div class="mt-0.5 mr-4">
+          <img width="40" height="40" src="/images/steer.svg">
+        </div>
+        <a class="mt-1 text-4xl text-gray-900 font-branding" href="/">Steer</a>
+      </div>
+      <div>
+        <a href = "/diagnostics">
+          <div
+            :class="css.getNodeStatusColor(is_lnd_node_online)"
+            :title="css.getNodeStatusText(is_lnd_node_online)"
+            class="rounded-full ring-2 ring-black w-3.5 h-3.5 mt-0.5 mr-3.5">
+          </div>
+        </a>
+        <div class="pt-9 hidden">
+          <img src="/images/notifications.svg">
         </div>
       </div>
     </div>
