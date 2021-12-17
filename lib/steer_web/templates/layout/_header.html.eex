@@ -1,4 +1,4 @@
-<header class="bg-gradient-to-br from-yellow-500 to-yellow-700">
+<header class="bg-gradient-to-br from-yellow-600 to-yellow-700">
   <nav class="mb-4 p-0.5">
     <div class="flex justify-between items-center">
       <div class="text-gray-900 flex" x-data="{ show_menu: false }">
