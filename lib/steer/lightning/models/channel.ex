@@ -32,10 +32,19 @@ defmodule Steer.Lightning.Models.Channel do
     |> Enum.map(&Models.Channel.format_balances/1)
   end
 
+  def format_balances nil do
+    nil
+  end
+
   def format_balances channel do
     capacity_in_sats = Integer.floor_div(channel.capacity, 1000)
     total_balance = channel.local_balance + channel.remote_balance
-    balance_percent = Integer.floor_div(channel.local_balance * 100, total_balance)
+
+    balance_percent = if total_balance == 0 do
+      0
+    else
+      Integer.floor_div(channel.local_balance * 100, total_balance)
+    end
 
     formatted_capacity = Number.SI.number_to_si(capacity_in_sats, unit: "", precision: 1)
     formatted_local_balance = Number.SI.number_to_si(channel.local_balance/1000, unit: "", precision: 1)
