@@ -1,0 +1,80 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik&family=Krona+One&family=Special+Elite&family=Maven+Pro:wght@500&family=Work+Sans:wght@400&display=swap');
+
+:root {
+  --background-color: #1A2238;
+  --text-color: #b9b9c2;
+  --header-color: #b9b9c2;
+  --header-backgroundcolor: rgb(52, 62, 94);
+  --sidebar-backgroundcolor: rgb(38, 46, 70);
+  --sidebar-bordercolor: #ffffff77;
+  --accent2-color: #CCBB85;
+  --accent3-color: #BD2258;
+
+  --sidebar-width: 12.5rem;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+a.text-link {
+  margin-top: 0.6em;
+  text-decoration-line: underline;
+  text-decoration-color: var(--accent2-color);
+}
+
+body {
+  color: var(--text-color);
+  background-color: var(--background-color);
+  font-size: 1em;
+  font-family: Rubik;
+}
+
+@media (max-width: 75em) {
+  body {
+    font-size: 1.3em;
+  }  
+}
+
+.link {
+  color: var(--accent2-color);
+}
+
+.highlight {
+  color: var(--accent3-color);
+}
+
+#lower {
+  display: flex;
+  flex-wrap: nowrap
+}
+
+#main {
+  width: 100%;
+  transition: opacity 0.5s ease-in-out;
+  transition: ease-in-out all .25s;
+}
+
+@media (max-width: 768px) {
+  #main {
+    width: 100%;
+    margin-left: -12.5rem;
+  }  
+}
+
+#main.sidebar-open {
+  opacity: 30%;
+}
+
+#content {
+  margin: 0.5em 0.3em 0 0.4em;
+  padding: 0.2em;
+}

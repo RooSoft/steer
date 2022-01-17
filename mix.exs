@@ -64,7 +64,6 @@ defmodule Steer.MixProject do
       {:timex, "~> 3.0"},
       {:ecto_enum, "~> 1.4"},
       {:observer_cli, "~> 1.7"},
-      {:tailwind, "~> 0.1", runtime: Mix.env() == :dev},
       {:lnd_client, git: "https://github.com/RooSoft/lnd_client.git", tag: "0.1.1"}
     ]
   end
@@ -80,8 +79,7 @@ defmodule Steer.MixProject do
       setup: ["deps.get", "ecto.setup", "cmd npm install --prefix assets"],
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
-      test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
-      "assets.deploy": ["tailwind default --minify", "phx.digest"]
+      test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"]
     ]
   end
 end

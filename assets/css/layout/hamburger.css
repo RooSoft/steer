@@ -1,0 +1,70 @@
+#hamburgerButton {
+  display: none;
+  position: relative;
+
+  width: 2.5rem;
+  height: 2.5rem;
+
+  color: var(--background-color);
+  background: var(--header-backgroundcolor);
+}
+
+@media (max-width: 768px) {
+  #hamburgerButton {
+    display: block;
+  }  
+}
+
+.enclosure {
+  display: block;
+  position: absolute;
+
+  width: 1.25rem;
+
+  left: 40%;
+  top: 40%;
+}
+
+.bar {
+  display: block;
+  position: absolute;
+
+  height: 0.25rem;
+  width: 1.5rem;
+
+  background-color: currentColor;
+}
+
+.high-bar {
+  transition-property: transform;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 500ms;
+
+  transform: translateY(-0.5rem);
+}
+
+.high-bar.active {
+  transform: rotate(45deg)
+}
+
+.mid-bar {
+  transition-property: opacity;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 500ms;
+}
+
+.mid-bar.active {
+  opacity: 0;
+}
+
+.low-bar {
+  transition-property: transform;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 500ms;
+
+  transform: translateY(0.5rem);
+}
+
+.low-bar.active {
+  transform: rotate(-45deg);
+}
