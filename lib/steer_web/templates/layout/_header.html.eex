@@ -12,12 +12,14 @@
   </div>
 
   <div id="branding">
-    <img src="images/steer.svg" width="40" height="40" id="logo" />
-    <span id="brandingText">Steer</span>
+    <a href="/" class="brandingLink">
+      <img src="/images/steer.svg" width="40" height="40" id="logo" />
+      <span id="brandingText">Steer</span>
+    </a>
   </div>
 
   <div class="header_right">
-    <img id="avatar" height="40" width="40" src="images/avatar.png" />
+    <img id="avatar" height="40" width="40" src="/images/avatar.png" />
   </div>
 
 </header>
