@@ -1,3 +1,7 @@
+// We import the CSS which is extracted to its own file by esbuild.
+// Remove this line if you add a your own CSS build pipeline (e.g postcss).
+//import "../css/app.css"
+
 // We need to import the CSS so that webpack will load it.
 // The MiniCssExtractPlugin is used to separate it out into
 // its own CSS file.
@@ -49,6 +53,7 @@ console.log('liveSocket should be connected')
 window.liveSocket = liveSocket
 
 import "./socket"
-import css  from "./css"
+import css from "./css"
 
 window.css = css
+

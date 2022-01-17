@@ -1,4 +1,4 @@
-let css = {
+let my_css = {
   getNodeStatusColor: (is_lnd_node_online) => {
     switch(is_lnd_node_online) {
       case true:
@@ -24,4 +24,4 @@ let css = {
   }
 }
 
-export default css
+export default my_css
