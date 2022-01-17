@@ -1,5 +1,5 @@
 <div class="text-gray-300 text-opacity-80"
-    x-data="{ active: <%= @channel.status == :active %>, pubKey: '<%= @channel.node_pub_key %>' }">
+    x-data={"{ active: #{@channel.status == :active}, pubKey: '#{@channel.node_pub_key}' }"}>
     <div class="flex">
         <div
             :class="active ? 'bg-green-600' : 'bg-red-500'"
@@ -18,19 +18,19 @@
 </div>
 
 <div class="mb-3">
-    <a href="https://amboss.space/node/<%= @channel.node_pub_key %>">
+    <a href="https://amboss.space/node/{@channel.node_pub_key}">
         <img src="/images/amboss.svg" width="140px">
     </a>
 </div>
 
 <div class="mb-3">
-    <a href="https://1ml.com/node/<%= @channel.node_pub_key %>">
+    <a href="https://1ml.com/node/{@channel.node_pub_key}">
         <img src="/images/1ml.png" width="50px">
     </a>
 </div>
 
 <div class="mb-3">
-    <a href="https://terminal.lightning.engineering/#/<%= @channel.node_pub_key %>" class="flex">
+    <a href="https://terminal.lightning.engineering/#/{@channel.node_pub_key}" class="flex">
         <img src="/images/terminal.svg" width="20px">
         <span class="ml-2 text-2xl tracking-widest font-terminal">TERMINAL</span>
     </a>
@@ -56,7 +56,6 @@
     </div>
 </div>
 
-<%= live_component @socket,
-    SteerWeb.ChannelLive.ForwardsComponent,
+<%= live_component SteerWeb.ChannelLive.ForwardsComponent,
     channel: @channel,
     forwards: @forwards %>

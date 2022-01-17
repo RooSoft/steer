@@ -1,4 +1,4 @@
-<div x-data="{ connecting: <%= @connecting %>, pubKey: '<%= @node.pubkey %>' }">
+<div x-data="{ connecting: {@connecting}, pubKey: '{@node.pubkey}' }">
 
   <div>Steer v<%= @version %></div>
 
@@ -13,19 +13,19 @@
   </div>
 
   <div class="mb-3">
-    <a href="https://amboss.space/node/<%= @node.pubkey %>">
+    <a href="https://amboss.space/node/{@node.pubkey}">
         <img src="/images/amboss.svg" width="140px">
     </a>
   </div>
 
   <div class="mb-3">
-    <a href="https://1ml.com/node/<%= @node.pubkey %>">
+    <a href="https://1ml.com/node/{@node.pubkey}">
         <img src="/images/1ml.png" width="50px">
     </a>
   </div>
 
   <div class="mb-3">
-    <a href="https://terminal.lightning.engineering/#/<%= @node.pubkey %>" class="flex">
+    <a href="https://terminal.lightning.engineering/#/{@node.pubkey}" class="flex">
       <img src="/images/terminal.svg" width="20px">
       <span class="text-2xl tracking-widest font-terminal">TERMINAL</span>
     </a>
@@ -58,7 +58,7 @@
           <div>
             <span class="text-yellow-600">
               <%= message.date %>
-            <span>
+            </span>
             <span class=" text-yellow-400">
               <%= message.time %>
             </span>

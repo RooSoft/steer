@@ -1,2 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Krona+One&family=Special+Elite&family=Maven+Pro:wght@500&family=Work+Sans:wght@200&display=swap');
+body {
+    background-color: #FFF;
+}
 
+.test {
+    background-color: #444;
+}

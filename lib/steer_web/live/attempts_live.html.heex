@@ -9,9 +9,9 @@
 <%= for attempt <- @attempts do %>
   <%= if attempt.is_last do %>
     <div
-      id="load-more-<%=attempt.htlc_id%>"
+      id="load-more-{attempt.htlc_id}"
       phx-hook="LoadMoreAttemptsHook"
-      x-intersect.once="requestMoreAttempts($el, <%=attempt.htlc_id%>)"
+      x-intersect.once="requestMoreAttempts($el, {attempt.htlc_id})"
       class="w-0">
     </div>
   <% end %>
@@ -22,13 +22,9 @@
         rounded-full
         justify-center items-center
         text-black text-xs font-bold
-        <%= if attempt.status == "settled" do %>
-            bg-green-400 border-green
-        <% else %>
-            bg-red-400 border-red
-        <% end %>"
+        bg-green-400"
       >
-        <%= attempt.status %>
+        <%= attempt.status %>*
       </div>
     </div>
     <div>

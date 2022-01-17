@@ -1,8 +1,7 @@
 <section>
   <div class="text-lg text-gray-400 mb-4"><%= Enum.count(@channels) %> channels</div>
 
-  <%= live_component @socket,
-    SteerWeb.ChannelLive.ListComponent,
+  <%= live_component SteerWeb.ChannelLive.ListComponent,
     channels: @channels,
     id: "channel_list",
     live_action: @live_action,
