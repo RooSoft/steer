@@ -1,0 +1,10 @@
+<aside id="sidebar" class="slide"
+  :class="isSidebarOpen && 'sidebar-open'"
+  @click.outside="isSidebarOpen = false;"
+  @keyup.escape.window="isSidebarOpen = false">
+  <ul>
+    <li><a href="/" class="sidebar-button selected">Channels</a></li>
+    <li><a href="/attempts" class="sidebar-button">Forward Attempts</a></li>
+    <li><a href="/link_fails" class="sidebar-button">Link Fails</a></li>
+  </ul>
+</aside>

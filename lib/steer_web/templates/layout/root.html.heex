@@ -16,9 +16,18 @@
     x-data="{ is_lnd_node_online: undefined, isSidebarOpen: false }"
     x-on:lnd-node-status.window="is_lnd_node_online = $event.detail.is_up">
     <%= render "_header.html", assigns %>
-    <div class="lower">
+    <div id="lower">
+
       <%= render "_sidebar.html", assigns %>
-      <%= @inner_content %>
+
+      <div id="main" class="slide" :class="isSidebarOpen && 'sidebar-open'">
+        <div id="content">
+
+          <%= @inner_content %>
+
+        </div>
+      </div>
+      
     </div>
   </body>
 </html>
