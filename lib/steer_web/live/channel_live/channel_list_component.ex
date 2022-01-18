@@ -1,4 +1,4 @@
-defmodule SteerWeb.ChannelLive.ListComponent do
+defmodule SteerWeb.ChannelLive.ChannelListComponent do
   use SteerWeb, :live_component
 
   import SteerWeb.Components.NodeStatusIndicatorComponent
