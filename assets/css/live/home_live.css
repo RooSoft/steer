@@ -1,0 +1,10 @@
+.home-live-channel-count {
+  margin-bottom: 1rem/* 16px */;
+
+  font-size: 1.125rem/* 18px */;
+  line-height: 1.75rem/* 28px */;
+}
+
+.home-live-channel-number {
+  color: var(--accent1-color);
+}
