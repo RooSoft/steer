@@ -57,3 +57,32 @@
 .channel-item-node-last-forward-date {
   color: var(--accent1-color);
 }
+
+.liquidity-metrics {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+
+  width: 3.5em;
+}
+
+.channel-item-capacity {
+  margin-right: 0.2em;
+  padding-top: 0.2em;
+
+  justify-self: end;
+
+  color: var(--accent1-color);
+
+  font-size: small;
+}
+
+.channel-item-balance-percent {
+  margin-right: 0.2em;
+  padding-top: 0.2em;
+
+  justify-self: end;
+
+  color: var(--accent1-color);
+
+  font-size: small;
+}

@@ -49,11 +49,11 @@ defmodule SteerWeb.ChannelLive.ChannelItemComponent do
 
         </div>
 
-        <div class="w-28 px-2">
+        <div>
 
-          <div class="flex flex-row">
-            <div class="text-right text-xs inline-block align-middle mr-1 pt-1 flex-none"><%= channel.formatted_capacity %></div>
-            <div class="text-right text-xs inline-block align-middle pt-1 flex-grow"><%= channel.formatted_balance_percent %>%</div>
+          <div class="liquidity-metrics">
+            <div class="channel-item-capacity"><%= channel.formatted_capacity %></div>
+            <div class="channel-item-balance-percent"><%= channel.formatted_balance_percent %>%</div>
           </div>
 
           <div class="w-full filter drop-shadow-sm">
