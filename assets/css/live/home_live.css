@@ -1,6 +1,6 @@
 @import './components/node_status_indicator.css';
 
-@import './channel_live/list_component.css';
+@import './channel_live/channel_list_component.css';
 
 .home-live-channel-count {
   margin-bottom: 1rem/* 16px */;
