@@ -2,8 +2,6 @@
   <%= for channel <- @channels do %>
     <%= live_patch to: Routes.channel_show_path(@socket, :show, channel.id) do %>
 
-      <div>yellow<div>
-
       <.channel_item channel={channel} />
 
     <% end %>
