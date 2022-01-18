@@ -6,10 +6,7 @@
         style={"border-color:#{channel.color}"}>
         <div class="w-max px-2">
           <div class="flex">
-            <div
-              :class="active ? 'active-indicator' : 'inactive-indicator'"
-              class="indicator">
-            </div>
+            <.node_status_indicator state={channel.status} />
             <div class="text-xl text-gray-300 text-opacity-80 w-auto font-nodename" phx-click="">
               <%= channel.alias %>
             </div>
