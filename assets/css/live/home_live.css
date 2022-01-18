@@ -1,4 +1,5 @@
-@import './components/indicators_components.css';
+@import './components/node_status_indicator.css';
+
 @import './channel_live/list_component.css';
 
 .home-live-channel-count {
