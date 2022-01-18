@@ -1,18 +1,1 @@
-.list-component-channel {
-  padding: 0.25rem;
-  margin-bottom: 0.25rem/* 4px */;
-
-  max-width: 640px;
-
-  color: rgb(156 163 175 / var(--tw-text-opacity));
-  background-color: rgb(31 41 55);
-
-  border-width: 0px;
-  border-radius: 0.75rem/* 12px */;
-  border-left-width: 2px;
-
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
 

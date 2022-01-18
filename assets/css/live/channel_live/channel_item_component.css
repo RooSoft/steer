@@ -1,0 +1,46 @@
+.channel-item {
+  padding: 0.25rem;
+  margin-bottom: 0.25rem/* 4px */;
+
+  max-width: 640px;
+
+  color: rgb(156 163 175 / var(--tw-text-opacity));
+  background-color: rgb(31 41 55);
+
+  border-width: 0px;
+  border-radius: 0.75rem/* 12px */;
+  border-left-width: 2px;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.channel-item-id {
+}
+
+.channel-item-node-status-indicator {
+  margin-bottom: 0.3rem;
+}
+
+.channel-item-alias {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-column-gap: 0.5rem;
+  align-items: center;
+
+  font-family: Maven Pro;
+  font-size: large;
+}
+
+.channel-item-node-pub-key {
+  margin-top: 0.2em;
+
+  font-size: small;
+}
+
+.channel-item-node-forwards {
+  margin-top: 0.2em;
+
+  font-size: small;
+}
