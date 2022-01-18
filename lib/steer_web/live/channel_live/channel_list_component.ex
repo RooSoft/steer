@@ -1,7 +1,7 @@
 defmodule SteerWeb.ChannelLive.ChannelListComponent do
   use SteerWeb, :live_component
 
-  import SteerWeb.Components.NodeStatusIndicatorComponent
+  import SteerWeb.ChannelLive.ChannelItemComponent
 
   def mount(_params, _session, socket) do
     {:ok,
