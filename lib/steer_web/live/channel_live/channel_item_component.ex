@@ -37,7 +37,10 @@ defmodule SteerWeb.ChannelLive.ChannelItemComponent do
             <span class="channel-item-node-forwards-count"><%= channel.forward_in_count + channel.forward_out_count %></span>
             <%= if channel.latest_forward_time != nil do %>
               <span>
-              forwards, latest <%= Timex.from_now(channel.latest_forward_time) %>
+              forwards, latest
+              </span>
+              <span class="channel-item-node-last-forward-date">
+                <%= Timex.from_now(channel.latest_forward_time) %>
               </span>
             <% else %>
               forwards
