@@ -2,14 +2,13 @@
   <%= for channel <- @channels do %>
     <%= live_patch to: Routes.channel_show_path(@socket, :show, channel.id) do %>
       <div x-data={"{ active: #{channel.status == :active}, pubKey: '#{channel.node_pub_key}' }"}
-        class="p-1 mb-1 max-w-screen-sm text-gray-400 rounded-xl flex flex-row justify-between
-        bg-gray-800 border-l-2 border-0"
+        class="list-component-channel"
         style={"border-color:#{channel.color}"}>
         <div class="w-max px-2">
           <div class="flex">
             <div
-              :class="active ? 'bg-green-600' : 'bg-red-500'"
-              class="rounded-full ring-2 ring-black w-2 h-2 mt-3 mr-2">
+              :class="active ? 'active-indicator' : 'inactive-indicator'"
+              class="indicator">
             </div>
             <div class="text-xl text-gray-300 text-opacity-80 w-auto font-nodename" phx-click="">
               <%= channel.alias %>
@@ -47,4 +46,4 @@
       </div>
     <% end %>
   <% end %>
-</div>`
+</div>
