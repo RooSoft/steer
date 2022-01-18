@@ -1,7 +1,7 @@
 <div>
   <%= for channel <- @channels do %>
     <%= live_patch to: Routes.channel_show_path(@socket, :show, channel.id) do %>
-      <div x-data={"{ active: #{channel.status == :active}, pubKey: '#{channel.node_pub_key}' }"}
+      <div x-data={"{ pubKey: '#{channel.node_pub_key}' }"}
         class="list-component-channel"
         style={"border-color:#{channel.color}"}>
         <div class="w-max px-2">
