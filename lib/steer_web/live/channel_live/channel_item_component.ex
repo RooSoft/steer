@@ -27,7 +27,7 @@ defmodule SteerWeb.ChannelLive.ChannelItemComponent do
           <div class="channel-item-node-pub-key">
             <%= channel.formatted_node_pub_key %>
             <template x-if="window.location.protocol === 'https:'">
-              <button @click.stop @click="event.preventDefault();$clipboard(pubKey);">
+              <button class="channel-item-node-pub-key-clipboard-icon" @click.stop @click="event.preventDefault();$clipboard(pubKey);">
                 <img src="/images/clipboard.svg">
               </button>
             </template>

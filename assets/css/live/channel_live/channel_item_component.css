@@ -39,6 +39,11 @@
   font-size: small;
 }
 
+.channel-item-node-pub-key-clipboard-icon {
+  display: inline-block;
+  background-color: #0000;
+}
+
 .channel-item-node-forwards {
   margin-top: 0.2em;
 
