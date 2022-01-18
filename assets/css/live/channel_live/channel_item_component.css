@@ -49,3 +49,10 @@
 
   font-size: small;
 }
+
+.channel-item-node-forwards-count {
+  color: var(--accent1-color);
+
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
