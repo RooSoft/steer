@@ -1,0 +1,16 @@
+.node-status-indicator {
+  display: inline-block;
+
+  width: 0.5rem;
+  height: 0.5rem;
+
+  border-radius: 9999px;
+}
+
+.active-node-status-indicator {
+  background-color: var(--active);
+}
+
+.inactive-node-status-indicator {
+  background-color: var(--inactive);
+}
