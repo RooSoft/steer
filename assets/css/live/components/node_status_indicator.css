@@ -8,9 +8,9 @@
 }
 
 .active-node-status-indicator {
-  background-color: rgb(22 163 74)
+  background-color: var(--active);
 }
 
 .inactive-node-status-indicator {
-  background-color: rgb(239 68 68);
+  background-color: var(--inactive);
 }

@@ -1,10 +1,10 @@
 let my_css = {
   getNodeStatusColor: (is_lnd_node_online) => {
-    switch(is_lnd_node_online) {
+    switch (is_lnd_node_online) {
       case true:
-        return 'bg-node-online';
+        return 'header-node-online';
       case false:
-        return 'bg-node-offline';
+        return 'header-node-offline';
       default:
         // undefined
         return '';
@@ -12,7 +12,7 @@ let my_css = {
   },
 
   getNodeStatusText: (is_lnd_node_online) => {
-    switch(is_lnd_node_online) {
+    switch (is_lnd_node_online) {
       case true:
         return 'online';
       case false:

@@ -97,3 +97,30 @@
   margin-right: 0.5em;
   border-radius: 25px;
 }
+
+.header-node-status-button {
+  align-self: center;
+}
+
+.header-node-status {
+  width: 1rem;
+  height: 1rem;
+
+  margin-right: 0.5em;
+
+  align-self: center;
+
+  border-radius: 25px;
+
+  background-color: #fff;
+
+  box-shadow: 0 0 0 2px #000;
+}
+
+.header-node-online {
+  background-color: var(--active);
+}
+
+.header-node.offline {
+  background-color: var(--inactive);
+}

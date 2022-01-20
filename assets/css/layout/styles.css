@@ -10,6 +10,10 @@
   --accent1-color: #CCBB85;
   --accent2-color: #BD2258;
 
+  --active: rgb(22 163 74);
+  --inactive: rgb(239 68 68);
+
+
   --sidebar-width: 12.5rem;
 }
 

@@ -19,6 +19,13 @@
   </div>
 
   <div class="header_right">
+    <a href = "/diagnostics" class="header-node-status-button">
+      <div
+        :class="css.getNodeStatusColor(is_lnd_node_online)"
+        :title="css.getNodeStatusText(is_lnd_node_online)"
+        class="header-node-status">
+      </div>
+    </a>
     <img id="avatar" height="40" width="40" src="/images/avatar.png" />
   </div>
 
