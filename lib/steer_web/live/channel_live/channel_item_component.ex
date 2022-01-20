@@ -2,6 +2,7 @@ defmodule SteerWeb.ChannelLive.ChannelItemComponent do
   use Phoenix.Component
 
   import SteerWeb.Components.NodeStatusIndicatorComponent
+  import SteerWeb.Components.LiquidityMeeter
 
   def channel_item(assigns) do
     %{channel: channel} = assigns
@@ -56,12 +57,7 @@ defmodule SteerWeb.ChannelLive.ChannelItemComponent do
             <div class="channel-item-balance-percent"><%= channel.formatted_balance_percent %>%</div>
           </div>
 
-          <div class="w-full filter drop-shadow-sm">
-            <div class="rounded-xl w-full bg-gray-500">
-              <div class="bg-green-600 rounded-xl py-1"
-                style="width: {channel.formatted_balance_percent}%"></div>
-            </div>
-          </div>
+          <.liquidity_meeter balance={channel.formatted_balance_percent} />
 
         </div>
       </div>
