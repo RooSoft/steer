@@ -20,7 +20,7 @@
 
       <%= render "_sidebar.html", assigns %>
 
-      <div id="main" class="slide" :class="isSidebarOpen && 'sidebar-open'">
+      <div id="main" :class="isSidebarOpen && 'sidebar-open'">
         <div id="content">
 
           <%= @inner_content %>
