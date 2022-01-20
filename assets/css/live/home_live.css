@@ -1,8 +1,8 @@
 @import '../../../lib/steer_web/live/components/node_status_indicator.css';
 @import '../../../lib/steer_web/live/components/liquidity_meeter.css';
 
-@import './channel_live/channel_list_component.css';
-@import './channel_live/channel_item_component.css';
+@import '../../../lib/steer_web/live/channel_live/channel_list_component.css';
+@import '../../../lib/steer_web/live/channel_live/channel_item_component.css';
 
 .home-live-channel-count {
   margin-bottom: 1rem/* 16px */;
