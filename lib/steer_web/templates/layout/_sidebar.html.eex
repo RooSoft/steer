@@ -2,9 +2,25 @@
   :class="isSidebarOpen && 'sidebar-open'"
   @click.outside="isSidebarOpen = false;"
   @keyup.escape.window="isSidebarOpen = false">
+
   <ul>
-    <li><a href="/" class="sidebar-button selected">Channels</a></li>
-    <li><a href="/attempts" class="sidebar-button">Forward Attempts</a></li>
-    <li><a href="/link_fails" class="sidebar-button">Link Fails</a></li>
+    <li>
+      <a href="/" class="sidebar-button" 
+        :class="location.pathname == '/' ? 'selected' : ''">
+        Channels
+      </a>
+    </li>
+    <li>
+      <a href="/attempts" class="sidebar-button" 
+        :class="location.pathname == '/attempts' ? 'selected' : ''">
+        Forward Attempts
+      </a>
+    </li>
+    <li>
+      <a href="/link_fails" class="sidebar-button"
+        :class="location.pathname == '/link_fails' ? 'selected' : ''">
+        Link Fails
+      </a>
+    </li>
   </ul>
 </aside>
