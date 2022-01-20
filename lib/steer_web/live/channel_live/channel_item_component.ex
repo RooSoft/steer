@@ -17,9 +17,11 @@ defmodule SteerWeb.ChannelLive.ChannelItemComponent do
         <div class="channel-item-id">
 
           <div class="channel-item-alias">
+          <!--
             <div class="channel-item-node-status-indicator">
               <.node_status_indicator status={channel.status} />
             </div>
+          -->
             <div phx-click="">
               <%= channel.alias %>
             </div>
@@ -57,7 +59,7 @@ defmodule SteerWeb.ChannelLive.ChannelItemComponent do
             <div class="channel-item-balance-percent"><%= channel.formatted_balance_percent %>%</div>
           </div>
 
-          <.liquidity_meeter balance={channel.formatted_balance_percent} />
+          <.liquidity_meeter balance={channel.formatted_balance_percent} status={channel.status} />
 
         </div>
       </div>

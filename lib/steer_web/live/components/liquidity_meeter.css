@@ -12,6 +12,12 @@
 
 .liquidity-meeter-value {
   height: 100%;
+}
 
-  background-color: rgb(70, 112, 77);
+.liquidity-meeter-active {
+  background-color: var(--active);
+}
+
+.liquidity-meeter-inactive {
+  background-color: var(--inactive);
 }

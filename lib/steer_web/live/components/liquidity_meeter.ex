@@ -4,8 +4,16 @@ defmodule SteerWeb.Components.LiquidityMeeter do
   def liquidity_meeter(assigns) do
     ~H"""
     <div class="liquidity-meeter">
-      <div class="liquidity-meeter-value" style={"width: #{assigns.balance}%;"}></div>
+      <div class={get_class(assigns.status)} style={"width: #{assigns.balance}%;"}></div>
     </div>
     """
+  end
+
+  def get_class(:active) do
+    "liquidity-meeter-value liquidity-meeter-active"
+  end
+
+  def get_class(_) do
+    "liquidity-meeter-value liquidity-meeter-inactive"
   end
 end
