@@ -6,19 +6,19 @@
   <ul>
     <li>
       <a href="/" class="sidebar-button" 
-        :class="location.pathname == '/' ? 'selected' : ''">
+        :class="location.pathname == '/' && 'selected'">
         Channels
       </a>
     </li>
     <li>
       <a href="/attempts" class="sidebar-button" 
-        :class="location.pathname == '/attempts' ? 'selected' : ''">
+        :class="location.pathname == '/attempts' && 'selected'">
         Forward Attempts
       </a>
     </li>
     <li>
       <a href="/link_fails" class="sidebar-button"
-        :class="location.pathname == '/link_fails' ? 'selected' : ''">
+        :class="location.pathname == '/link_fails' && 'selected'">
         Link Fails
       </a>
     </li>
