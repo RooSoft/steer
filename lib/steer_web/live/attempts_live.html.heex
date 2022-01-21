@@ -9,22 +9,16 @@
 <%= for attempt <- @attempts do %>
   <%= if attempt.is_last do %>
     <div
-      id="load-more-{attempt.htlc_id}"
+      id={"load-more-#{attempt.htlc_id}"}
       phx-hook="LoadMoreAttemptsHook"
-      x-intersect.once="requestMoreAttempts($el, {attempt.htlc_id})"
-      class="w-0">
+      x-intersect.once={"requestMoreAttempts($el, #{attempt.htlc_id})"}>
     </div>
   <% end %>
-  <div class="pb-2 pt-2 border-b border-gray-500">
-    <div class="flex items-center">
-      <div class="text-yellow-300 mr-2"><%= Timex.from_now(attempt.time) %></div>
-      <div class="mr-2 mt-1 px-2
-        rounded-full
-        justify-center items-center
-        text-black text-xs font-bold
-        bg-green-400"
-      >
-        <%= attempt.status %>*
+  <div class="attempt">
+    <div class="attempt-header">
+      <div class="attempt-time"><%= Timex.from_now(attempt.time) %></div>
+      <div class={"attempt-status #{attempt.status_class}"}>
+        <%= attempt.status %>
       </div>
     </div>
     <div>

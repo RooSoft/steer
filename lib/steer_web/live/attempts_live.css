@@ -1,0 +1,44 @@
+.attempt {
+  padding-bottom: 0.5rem/* 8px */;
+  padding-top: 0.5rem/* 8px */;
+
+  border-bottom-width: 1px;
+  border-color: rgb(107 114 128); 
+}
+
+.attempt-header {
+  display: flex;
+  align-items: center;    
+}
+
+.attempt-time {
+  color: var(--accent1-color);
+  margin-right: 0.5rem;
+}
+
+.attempt-status {
+  margin-right: 0.5rem/* 8px */;
+  margin-top: 0.25rem/* 4px */;
+  padding-left: 0.5rem/* 8px */;
+  padding-right: 0.5rem/* 8px */;
+  border-radius: 9999px;
+  justify-content: center;
+  align-items: center;
+
+  color: rgb(0 0 0);
+  font-size: 0.75rem/* 12px */;
+  line-height: 1rem/* 16px */;
+  font-weight: 700;
+}
+
+.status-failed {
+  background-color: rgb(228, 66, 66);
+}
+
+.status-settled {
+  background-color: rgb(74 222 128);
+}
+
+.status-unknown {
+  background-color: rgb(212, 222, 74);
+}
