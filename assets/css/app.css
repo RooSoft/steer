@@ -6,11 +6,11 @@
 
 @import './my.css';
 
-@import './layout/hamburger.css';
-@import './layout/header.css';
 @import './layout/reset.css';
 @import './layout/sidebar.css';
 @import './layout/styles.css';
+
+@import '../../lib/steer_web/templates/layout/_header.css';
 
 @import '../../lib/steer_web/live/components/node_status_indicator.css';
 @import '../../lib/steer_web/live/components/liquidity_meeter.css';
