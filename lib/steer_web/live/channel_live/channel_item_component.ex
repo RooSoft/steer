@@ -27,7 +27,7 @@ defmodule SteerWeb.ChannelLive.ChannelItemComponent do
             </div>
           </div>
 
-          <.short_pub_key channel={channel} />
+          <.short_pub_key pub_key={channel.node_pub_key} />
 
           <div class="channel-item-node-forwards">
             <span class="channel-item-node-forwards-count"><%= channel.forward_in_count + channel.forward_out_count %></span>

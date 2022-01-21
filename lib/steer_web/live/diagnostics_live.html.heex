@@ -1,15 +1,11 @@
-<div x-data="{ connecting: {@connecting}, pubKey: '{@node.pubkey}' }">
+<div x-data={"{ connecting: #{@connecting}, pubKey: '#{@node.pubkey}' }"}>
 
   <div>Steer v<%= @version %></div>
 
-  <div class="font-nodename text-4xl"><%= @node.alias %></div>
+  <div class="diagnostics-live-node-name"><%= @node.alias %></div>
 
-  <div class="text-xs mb-3">
-    <%= Steer.Formatting.Channel.compressed_pub_key(@node.pubkey) %>
-    <button @click.stop @click="event.preventDefault();$clipboard(pubKey);">
-        <img src="/images/clipboard.svg">
-    </button>
-    <div><%= if @node.is_testnet do "testnet" else "" end %></div>
+  <div class="diagnostics-live-pub-key">
+    <.short_pub_key pub_key={@node.pubkey} />
   </div>
 
   <div class="mb-3">
