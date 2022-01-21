@@ -6,7 +6,7 @@
 
 @import './my.css';
 
-@import './layout/reset.css';
+@import './reset.css';
 @import './layout/styles.css';
 
 @import '../../lib/steer_web/templates/layout/_header.css';
