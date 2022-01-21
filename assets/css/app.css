@@ -1,13 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Krona+One&family=Special+Elite&family=Maven+Pro:wght@500&family=Work+Sans:wght@200&display=swap');
 
-[x-cloak] {
-  display: none;
-}
-
 @import './my.css';
 
 @import './reset.css';
-@import './layout/styles.css';
+@import './styles.css';
 
 @import '../../lib/steer_web/templates/layout/_header.css';
 @import '../../lib/steer_web/templates/layout/_sidebar.css';
@@ -23,6 +19,10 @@
 @import '../../lib/steer_web/live/diagnostics_live.css';
 @import '../../lib/steer_web/live/attempts_live.css';
 @import '../../lib/steer_web/live/link_fails_live.css';
+
+[x-cloak] {
+  display: none;
+}
 
 .accent1 {
   color: var(--accent1-color);
