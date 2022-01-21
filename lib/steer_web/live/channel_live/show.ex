@@ -4,6 +4,8 @@ defmodule SteerWeb.ChannelLive.Show do
   alias SteerWeb.Endpoint
   alias SteerWeb.ChannelLive.ForwardsComponent
 
+  import SteerWeb.Components.ShortPubKey
+
   @htlc_event_topic "htlc_event"
   @settle_message "settle"
 

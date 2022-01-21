@@ -10,12 +10,7 @@
   </div>
 
   <div class="channel-show-node-pub-key">
-    <%= @channel.formatted_node_pub_key %>
-    <template x-if="window.location.protocol === 'https:'">
-      <button class="channel-item-node-pub-key-clipboard-icon" @click.stop @click="event.preventDefault();$clipboard(pubKey);">
-        <img src="/images/clipboard.svg">
-      </button>
-    </template>
+    <.short_pub_key channel={@channel} />
   </div>
 </div>
 
