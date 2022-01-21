@@ -12,11 +12,11 @@
       <%= link_fail.channel_out %>
     </div>
     <div>
-      amount: <%= link_fail.formatted_amount_out %> sats
+      amount: <span class="accent1"><%= link_fail.formatted_amount_out %></span> sats
     </div>
     <%= if link_fail.amount_in > 0 and link_fail.amount_out > 0 do %>
       <div>
-        fee: <%= link_fail.formatted_fees %> sats
+        fee: <span class="accent1"><%= link_fail.formatted_fees %></span> sats
       </div>
     <% end %>
   </div>

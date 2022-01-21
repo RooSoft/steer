@@ -23,6 +23,10 @@
 @import '../../lib/steer_web/live/attempts_live.css';
 @import '../../lib/steer_web/live/link_fails_live.css';
 
+.accent1 {
+  color: var(--accent1-color);
+}
+
 .text-xs {
   font-size: 0.75rem/* 12px */;
   line-height: 1rem/* 16px */;
