@@ -1,0 +1,20 @@
+.link_fail {
+  padding-bottom: 0.5rem/* 8px */;
+  padding-top: 0.5rem/* 8px */;
+
+  border-bottom-width: 1px;
+  border-color: rgb(107 114 128);
+}
+
+.link_fail_header {
+  display: flex;
+}
+
+.link_fail_time {
+  color: var(--accent1-color);
+  margin-right: 0.5rem;
+}
+
+.link_fail_detail {
+  margin-right: 0.5rem;
+}
