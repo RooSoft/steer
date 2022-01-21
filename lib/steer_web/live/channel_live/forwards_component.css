@@ -1,0 +1,44 @@
+.forwards-component-header {
+  font-size: 1.25rem/* 20px */;
+  line-height: 1.75rem/* 28px */;
+
+  margin-bottom: 0.5rem/* 8px */;
+
+}
+
+.forwards-component-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+
+  padding:0.25rem;
+  margin-bottom: 0.25rem;
+
+  max-width: 640px;
+
+  border-radius: 0.75rem/* 12px */;
+}
+
+.forwards-component-header-title {
+  text-align: right;
+  border-color: #0004;
+  border-bottom-width: 4px;
+}
+
+.forwards-component-time {
+  color: var(--accent1-color);  
+}
+
+.forwards-component-data-cell {
+  text-align: right;
+
+  color: var(--accent1-color);
+}
+
+.forwards-component-identity {
+  grid-column: span 3 / span 3;
+}
+
+.forwards-component-spacer {
+  grid-column: span 3 / span 3;
+  height: 1rem;
+}

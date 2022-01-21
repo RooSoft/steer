@@ -58,6 +58,8 @@
   </div>
 </div>
 
-<%= live_component SteerWeb.ChannelLive.ForwardsComponent,
-  channel: @channel,
-  forwards: @forwards %>
+<.live_component module={ForwardsComponent}, id="forwards"
+  content={%{ 
+    channel: @channel,
+    forwards: @forwards 
+  }} />

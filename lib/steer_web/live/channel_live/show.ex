@@ -2,6 +2,7 @@ defmodule SteerWeb.ChannelLive.Show do
   use SteerWeb, :live_view
 
   alias SteerWeb.Endpoint
+  alias SteerWeb.ChannelLive.ForwardsComponent
 
   @htlc_event_topic "htlc_event"
   @settle_message "settle"
