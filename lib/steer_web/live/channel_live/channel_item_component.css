@@ -33,17 +33,6 @@
   font-size: large;
 }
 
-.channel-item-node-pub-key {
-  margin-top: 0.2em;
-
-  font-size: small;
-}
-
-.channel-item-node-pub-key-clipboard-icon {
-  display: inline-block;
-  background-color: #0000;
-}
-
 .channel-item-node-forwards {
   margin-top: 0.2em;
 

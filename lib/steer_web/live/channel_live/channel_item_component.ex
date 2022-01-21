@@ -3,6 +3,7 @@ defmodule SteerWeb.ChannelLive.ChannelItemComponent do
 
   import SteerWeb.Components.NodeStatusIndicatorComponent
   import SteerWeb.Components.LiquidityMeeter
+  import SteerWeb.Components.ShortPubKey
 
   def channel_item(assigns) do
     %{channel: channel} = assigns
@@ -26,14 +27,7 @@ defmodule SteerWeb.ChannelLive.ChannelItemComponent do
             </div>
           </div>
 
-          <div class="channel-item-node-pub-key">
-            <%= channel.formatted_node_pub_key %>
-            <template x-if="window.location.protocol === 'https:'">
-              <button class="channel-item-node-pub-key-clipboard-icon" @click.stop @click="event.preventDefault();$clipboard(pubKey);">
-                <img src="/images/clipboard.svg">
-              </button>
-            </template>
-          </div>
+          <.short_pub_key channel={channel} />
 
           <div class="channel-item-node-forwards">
             <span class="channel-item-node-forwards-count"><%= channel.forward_in_count + channel.forward_out_count %></span>

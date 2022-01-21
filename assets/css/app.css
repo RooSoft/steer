@@ -12,8 +12,13 @@
 @import './layout/sidebar.css';
 @import './layout/styles.css';
 
+@import '../../lib/steer_web/live/components/node_status_indicator.css';
+@import '../../lib/steer_web/live/components/liquidity_meeter.css';
+@import '../../lib/steer_web/live/components/short_pub_key.css';
+
 @import './live/home_live.css';
 @import '../../lib/steer_web/live/channel_live/show.css';
+@import '../../lib/steer_web/live/diagnostics_live.css';
 
 .text-xs {
   font-size: 0.75rem/* 12px */;
