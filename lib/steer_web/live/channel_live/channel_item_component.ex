@@ -17,11 +17,10 @@ defmodule SteerWeb.ChannelLive.ChannelItemComponent do
         <div class="channel-item-id">
 
           <div class="channel-item-alias">
-          <!--
             <div class="channel-item-node-status-indicator">
               <.node_status_indicator status={channel.status} />
             </div>
-          -->
+
             <div phx-click="">
               <%= channel.alias %>
             </div>
