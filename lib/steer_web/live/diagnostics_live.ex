@@ -3,6 +3,7 @@ defmodule SteerWeb.DiagnosticsLive do
   require Logger
 
   import SteerWeb.Components.ShortPubKey
+  import SteerWeb.Components.ExternalLinks
 
   @impl true
   @spec mount(any, any, Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
