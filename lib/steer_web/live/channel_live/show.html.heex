@@ -1,43 +1,45 @@
-<div class="text-gray-300 text-opacity-80"
-  x-data={"{ active: #{@channel.status == :active}, pubKey: '#{@channel.node_pub_key}' }"}>
-  <div class="flex">
-    <div
-      :class="active ? 'bg-green-600' : 'bg-red-500'"
-      class="rounded-full ring-2 ring-black w-2 h-2 mt-4 mr-2">
+<div x-data={"{ active: #{@channel.status == :active}, pubKey: '#{@channel.node_pub_key}' }"}>
+  <div class="channel-item-alias">
+    <div class="channel-item-node-status-indicator">
+      <.node_status_indicator status={@channel.status} />
     </div>
-    <div class="text-3xl font-nodename">
+
+    <div phx-click="">
       <%= @channel.alias %>
     </div>
   </div>
-  <div class="text-xs mb-3">
+
+  <div class="channel-show-node-pub-key">
     <%= @channel.formatted_node_pub_key %>
-    <button @click.stop @click="event.preventDefault();$clipboard(pubKey);">
-      <img src="/images/clipboard.svg">
-    </button>
+    <template x-if="window.location.protocol === 'https:'">
+      <button class="channel-item-node-pub-key-clipboard-icon" @click.stop @click="event.preventDefault();$clipboard(pubKey);">
+        <img src="/images/clipboard.svg">
+      </button>
+    </template>
   </div>
 </div>
 
-<div class="mb-3">
+<div class="channel-show-external-link">
     <a href="https://amboss.space/node/{@channel.node_pub_key}">
         <img src="/images/amboss.svg" width="140px">
     </a>
 </div>
 
-<div class="mb-3">
+<div class="channel-show-external-link">
     <a href="https://1ml.com/node/{@channel.node_pub_key}">
         <img src="/images/1ml.png" width="50px">
     </a>
 </div>
 
-<div class="mb-3">
-    <a href="https://terminal.lightning.engineering/#/{@channel.node_pub_key}" class="flex">
+<div class="channel-show-external-link">
+    <a href="https://terminal.lightning.engineering/#/{@channel.node_pub_key}" class="channel-show-terminal-link">
         <img src="/images/terminal.svg" width="20px">
-        <span class="ml-2 text-2xl tracking-widest font-terminal">TERMINAL</span>
+        <span class="channel-show-terminal-link-caption">TERMINAL</span>
     </a>
 </div>
 
-<div class="mb-3">
-  <div class="text-xl mb-2 text-gray-300 text-opacity-80">
+<div class="channel-show-details">
+  <div class="channel-show-details-header">
     Details
   </div>
   <div>

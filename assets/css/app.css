@@ -12,4 +12,15 @@
 @import './layout/sidebar.css';
 @import './layout/styles.css';
 
-@import './live/home_live.css'
+@import './live/home_live.css';
+@import '../../lib/steer_web/live/channel_live/show.css';
+
+.text-xs {
+  font-size: 0.75rem/* 12px */;
+  line-height: 1rem/* 16px */;
+}
+
+.text-sm {
+  font-size: 0.875rem/* 14px */;
+  line-height: 1.25rem/* 20px */;
+}
