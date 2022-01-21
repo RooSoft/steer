@@ -16,6 +16,7 @@ defmodule SteerWeb.ChannelLive.Show do
   @inactive_message "inactive"
 
   import SteerWeb.Components.NodeStatusIndicatorComponent
+  import SteerWeb.Components.ExternalLinks
 
   @impl true
   def handle_params(%{"id" => channel_id_string}, _, socket) do

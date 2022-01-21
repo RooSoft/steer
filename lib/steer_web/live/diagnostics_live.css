@@ -1,0 +1,9 @@
+.diagnostics-live-node-name {
+  font-family: Maven Pro;
+  font-size: 2.25rem/* 36px */;
+  line-height: 2.5rem/* 40px */;
+}
+
+.diagnostics-live-pub-key {
+  margin-bottom: 0.75rem;
+}
