@@ -16,6 +16,7 @@
 @import '../../lib/steer_web/live/components/liquidity_meeter.css';
 @import '../../lib/steer_web/live/components/short_pub_key.css';
 @import '../../lib/steer_web/live/components/external_links.css';
+@import '../../lib/steer_web/live/components/hamburger_button.css';
 
 @import '../../lib/steer_web/live/home_live.css';
 @import '../../lib/steer_web/live/channel_live/show.css';
