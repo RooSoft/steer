@@ -19,7 +19,7 @@ defmodule Steer.Application do
       # {Steer.Worker, arg}
 
       Steer.Lightning,
-
+      Steer.GraphRepo,
       Steer.LndSyncTimer
     ]
 
