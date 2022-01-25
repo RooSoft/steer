@@ -64,7 +64,8 @@ defmodule Steer.MixProject do
       {:timex, "~> 3.0"},
       {:ecto_enum, "~> 1.4"},
       {:observer_cli, "~> 1.7"},
-      {:lnd_client, git: "https://github.com/RooSoft/lnd_client.git", tag: "0.1.1"}
+      {:lnd_client, git: "https://github.com/RooSoft/lnd_client.git", tag: "0.1.1"},
+      {:lightning_graph, git: "https://github.com/RooSoft/lightning_graph.git", tag: "0.1.9"}
     ]
   end
 

@@ -32,6 +32,12 @@ config :esbuild,
     env: %{"NODE_PATH" => Path.expand("../deps", __DIR__)}
   ]
 
+config :bolt_sips, Bolt,
+  url: "bolt://localhost:7687",
+  basic_auth: [username: "neo4j", password: "test"],
+  ssl: false,
+  timeout: 300_000
+
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
