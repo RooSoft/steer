@@ -10,6 +10,7 @@ defmodule SteerWeb.HomeLive do
 
   @htlc_event_topic "htlc_event"
   @settle_message "settle"
+  @forward_fail_message "forward_fail"
 
   @invoice_topic "invoice"
   @created_message "created"
@@ -24,9 +25,10 @@ defmodule SteerWeb.HomeLive do
   @impl true
   @spec mount(any, any, Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   def mount(_params, _session, socket) do
-    {:ok, socket
-      |> get_channels()
-      |> subscribe_to_events()}
+    {:ok,
+     socket
+     |> get_channels()
+     |> subscribe_to_events()}
   end
 
   defp get_channels(socket) do
@@ -46,121 +48,152 @@ defmodule SteerWeb.HomeLive do
   end
 
   @impl true
-  def handle_info(%{
-    topic: @uptime_event_topic,
-    event: @up_message,
-    payload: _payload
-  }, socket) do
-    { :noreply, socket
-      |> get_channels()
-      |> put_flash(:info, "The LND node is back up")}
+  def handle_info(
+        %{
+          topic: @uptime_event_topic,
+          event: @up_message,
+          payload: _payload
+        },
+        socket
+      ) do
+    {:noreply,
+     socket
+     |> get_channels()
+     |> put_flash(:info, "The LND node is back up")}
   end
 
   @impl true
-  def handle_info(%{
-    topic: @uptime_event_topic,
-    event: @down_message,
-    payload: _payload
-  }, socket) do
-    { :noreply, socket
-      |> put_flash(:info, "The LND node is down")}
+  def handle_info(
+        %{
+          topic: @uptime_event_topic,
+          event: @down_message,
+          payload: _payload
+        },
+        socket
+      ) do
+    {:noreply,
+     socket
+     |> put_flash(:info, "The LND node is down")}
   end
 
   @impl true
-  def handle_info(%{
-    topic: @htlc_event_topic,
-    event: @settle_message,
-    payload: _htlc_event
-  }, socket) do
+  def handle_info(
+        %{
+          topic: @htlc_event_topic,
+          event: @settle_message,
+          payload: _htlc_event
+        },
+        socket
+      ) do
+    write_in_blue("HTLC settle event received")
 
-    write_in_blue "HTLC settle event received"
-
-    { :noreply, socket
-      |> get_channels
-      |> put_flash(:info, "Some HTLC settle event happened")}
+    {:noreply,
+     socket
+     |> get_channels
+     |> put_flash(:info, "Some HTLC settle event happened")}
   end
 
   @impl true
-  def handle_info(%{ topic: @invoice_topic, event: @created_message }, socket) do
-    write_in_yellow "New invoice created"
+  def handle_info(
+        %{
+          topic: @htlc_event_topic,
+          event: @forward_fail_message,
+          payload: _htlc_event
+        },
+        socket
+      ) do
+    write_in_blue("HTLC forward fail event received")
+
+    {:noreply, socket}
+  end
+
+  @impl true
+  def handle_info(%{topic: @invoice_topic, event: @created_message}, socket) do
+    write_in_yellow("New invoice created")
 
     # nothing to be done, except maybe inform the user
 
-    { :noreply, socket }
+    {:noreply, socket}
   end
 
   @impl true
-  def handle_info(%{ topic: @invoice_topic, event: @paid_message }, socket) do
-    write_in_yellow "New paid invoice received"
-    write_in_yellow ".... updating channels ...."
+  def handle_info(%{topic: @invoice_topic, event: @paid_message}, socket) do
+    write_in_yellow("New paid invoice received")
+    write_in_yellow(".... updating channels ....")
 
     channels = Steer.Lightning.get_all_channels()
 
-    { :noreply, socket
-      |> assign(:channels, channels)
-      |> put_flash(:info, "New forward received")}
+    {:noreply,
+     socket
+     |> assign(:channels, channels)
+     |> put_flash(:info, "New forward received")}
   end
 
   @impl true
-  def handle_info(%{ topic: @channel_topic, event: @open_message, payload: channel }, socket) do
-    write_in_green "New channel opened with #{channel.alias}"
-    write_in_green ".... NOT updating channels until active ...."
+  def handle_info(%{topic: @channel_topic, event: @open_message, payload: channel}, socket) do
+    write_in_green("New channel opened with #{channel.alias}")
+    write_in_green(".... NOT updating channels until active ....")
 
     ### would be nice to refresh the graph at that point, but it seems
     ### a channel refresh poses a problem before the channel becomes active
     ### so we wait at that point...
 
-    { :noreply, socket }
+    {:noreply, socket}
   end
 
   @impl true
-  def handle_info(%{ topic: @channel_topic, event: @closed_message }, socket) do
-    write_in_green "A channel has been closed"
-    write_in_green ".... updating channels ...."
+  def handle_info(%{topic: @channel_topic, event: @closed_message}, socket) do
+    write_in_green("A channel has been closed")
+    write_in_green(".... updating channels ....")
 
     channels = Steer.Lightning.get_all_channels()
 
-    { :noreply, socket
-      |> assign(:channels, channels)
-      |> put_flash(:info, "A channel has been closed")}
+    {:noreply,
+     socket
+     |> assign(:channels, channels)
+     |> put_flash(:info, "A channel has been closed")}
   end
 
   @impl true
-  def handle_info(%{ topic: @channel_topic, event: @active_message, payload: channel }, socket) do
-    { :noreply, socket
-      |> assign(:channels, Steer.Lightning.get_all_channels())
-      |> put_flash(:info, "#{channel.alias} became active")}
+  def handle_info(%{topic: @channel_topic, event: @active_message, payload: channel}, socket) do
+    {:noreply,
+     socket
+     |> assign(:channels, Steer.Lightning.get_all_channels())
+     |> put_flash(:info, "#{channel.alias} became active")}
   end
 
   @impl true
-  def handle_info(%{ topic: @channel_topic, event: @inactive_message, payload: channel }, socket) do
-    socket = socket
+  def handle_info(%{topic: @channel_topic, event: @inactive_message, payload: channel}, socket) do
+    socket =
+      socket
       |> assign(:channels, Steer.Lightning.get_all_channels())
       |> put_flash(:info, "#{channel.alias} became inactive")
 
-    { :noreply, socket }
+    {:noreply, socket}
   end
 
   @impl true
   def handle_info(event, socket) do
-    write_in_red "Unknown event received"
+    write_in_red("Unknown event received")
 
-    IO.inspect event
+    IO.inspect(event)
 
-    { :noreply, socket}
+    {:noreply, socket}
   end
 
   @impl true
   def handle_params(params, _url, socket) do
-    {:noreply, socket
-      |> apply_action(socket.assigns.live_action, params)}
+    {:noreply,
+     socket
+     |> apply_action(socket.assigns.live_action, params)}
   end
 
   defp apply_action(socket, :show, %{"id" => id_string}) do
-    { id, _ } = Integer.parse(id_string)
+    {id, _} = Integer.parse(id_string)
 
-    channel = socket.assigns.channels
-    |> find_channel(id)
+    channel =
+      socket.assigns.channels
+      |> find_channel(id)
 
     socket
     |> assign(:channel, channel)
@@ -178,19 +211,19 @@ defmodule SteerWeb.HomeLive do
     end)
   end
 
-  defp write_in_blue message do
+  defp write_in_blue(message) do
     Logger.info(IO.ANSI.blue_background() <> IO.ANSI.black() <> message <> IO.ANSI.reset())
   end
 
-  defp write_in_yellow message do
+  defp write_in_yellow(message) do
     Logger.info(IO.ANSI.yellow_background() <> IO.ANSI.black() <> message <> IO.ANSI.reset())
   end
 
-  defp write_in_red message do
+  defp write_in_red(message) do
     Logger.info(IO.ANSI.red_background() <> IO.ANSI.black() <> message <> IO.ANSI.reset())
   end
 
-  defp write_in_green message do
+  defp write_in_green(message) do
     Logger.info(IO.ANSI.green_background() <> IO.ANSI.black() <> message <> IO.ANSI.reset())
   end
 end
