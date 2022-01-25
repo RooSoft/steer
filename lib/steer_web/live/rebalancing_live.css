@@ -6,22 +6,32 @@
 
 .rebalancing-channel-list {
   display: grid;
-  grid-template-columns: auto 1fr;
+  grid-template-columns: auto max-content 1fr;
   grid-column-gap: 0.5em;
+  justify-items: start;
 
   padding: 1em;
 }
 
-.rebalancing-channel-info {
+.rebalancing-channel {
+  display: contents;
+
+  cursor: pointer;
 }
 
 .rebalancing-selected-channel {
   color: black;
-  background-color: var(--accent1-color);
+  background-color: var(--accent1-color); 
+
+  width: 100%;
 }
 
 .rebalancing-balance-value {
   color: var(--accent1-color);
 
   justify-self: end;
+}
+
+.selected {
+
 }
