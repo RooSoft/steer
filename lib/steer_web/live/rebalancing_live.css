@@ -14,3 +14,14 @@
 
 .rebalancing-channel-info {
 }
+
+.rebalancing-selected-channel {
+  color: black;
+  background-color: var(--accent1-color);
+}
+
+.rebalancing-balance-value {
+  color: var(--accent1-color);
+
+  justify-self: end;
+}

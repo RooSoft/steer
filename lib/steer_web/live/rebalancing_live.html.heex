@@ -2,12 +2,12 @@
   Low liquidity channels
 </span>
 
-<ul class="rebalancing-channel-list">
+<div class="rebalancing-channel-list">
   <%= for channel <- @low_liquidity_channels do %>
-    <span><%= channel.formatted_balance_percent%>%</span>
+    <span class="rebalancing-balance-value"><%= channel.formatted_balance_percent%>%</span>
     <span><%= channel.alias %></span>
   <% end %>
-</ul>
+</div>
 
 <span class="rebalancing-header">
   High liquidity channels
@@ -15,7 +15,7 @@
 
 <div class="rebalancing-channel-list">
   <%= for channel <- @high_liquidity_channels do %>
-    <span><%= channel.formatted_balance_percent %>%</span>
+    <span class="rebalancing-balance-value"><%= channel.formatted_balance_percent %>%</span>
     <span><%= channel.alias %></span>
   <% end %>
 </div>
