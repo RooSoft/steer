@@ -22,6 +22,7 @@ defmodule SteerWeb.Router do
 
     live "/attempts", AttemptsLive, :index
     live "/link_fails", LinkFailsLive, :index
+    live "/rebalancing", RebalancingLive, :index
 
     live "/channel/:id", ChannelLive.Show, :show
   end
