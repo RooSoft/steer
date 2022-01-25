@@ -1,0 +1,16 @@
+.rebalancing-header {
+  margin-bottom: 200px;
+
+  font-size: 2em;
+}
+
+.rebalancing-channel-list {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-column-gap: 0.5em;
+
+  padding: 1em;
+}
+
+.rebalancing-channel-info {
+}

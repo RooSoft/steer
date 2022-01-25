@@ -17,6 +17,7 @@
 @import '../../lib/steer_web/live/diagnostics_live.css';
 @import '../../lib/steer_web/live/attempts_live.css';
 @import '../../lib/steer_web/live/link_fails_live.css';
+@import '../../lib/steer_web/live/rebalancing_live.css';
 
 [x-cloak] {
   display: none;

@@ -7,7 +7,8 @@ defmodule SteerWeb.RebalancingLive do
     {:ok,
      socket
      |> get_channels
-     |> add_source_channels_list}
+     |> add_low_liquidity_channels_list
+     |> add_high_liquidity_channels_list}
   end
 
   defp get_channels(socket) do
@@ -15,7 +16,23 @@ defmodule SteerWeb.RebalancingLive do
     |> assign(:channels, Steer.Lightning.get_all_channels())
   end
 
-  defp add_source_channels_list(%{assigns: %{channels: channels}} = socket) do
+  defp add_low_liquidity_channels_list(%{assigns: %{channels: channels}} = socket) do
+    low_liquidity_channels =
+      channels
+      |> Enum.filter(&(&1.balance_percent < 50))
+      |> Enum.sort_by(&(&1.balance_percent))
+
     socket
+    |> assign(:low_liquidity_channels, low_liquidity_channels)
+  end
+
+  defp add_high_liquidity_channels_list(%{assigns: %{channels: channels}} = socket) do
+    high_liquidity_channels =
+      channels
+      |> Enum.filter(&(&1.balance_percent > 50))
+      |> Enum.sort_by(&(-&1.balance_percent))
+
+    socket
+    |> assign(:high_liquidity_channels, high_liquidity_channels)
   end
 end
