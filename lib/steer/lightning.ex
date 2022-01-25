@@ -107,7 +107,7 @@ defmodule Steer.Lightning do
   end
 
   def handle_call(:get_all_channels, _from, state) do
-    %{assigns: %{channels: channels}} = state |> reload_channels
+    %{channels: channels} = state |> reload_channels
 
     {:reply, channels, state}
   end
