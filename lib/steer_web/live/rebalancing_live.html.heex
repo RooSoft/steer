@@ -6,20 +6,6 @@
 }">
 
   <span class="rebalancing-header">
-    Low liquidity channels
-  </span>
-
-  <div class="rebalancing-channel-list">
-    <%= for channel <- @low_liquidity_channels do %>
-      <div class="rebalancing-channel" @click={"selectedLowId=#{channel.id}; selectedLowAlias='#{channel.alias}'"}>
-        <span class="rebalancing-balance-value"><%= channel.formatted_balance_percent%>%</span>
-        <span :class={"selectedLowId == #{channel.id} ? 'rebalancing-selected-channel' : 'normal'"}><%= channel.alias %></span>
-        <span></span>
-      </div>
-    <% end %>
-  </div>
-
-  <span class="rebalancing-header">
     High liquidity channels
   </span>
 
@@ -34,11 +20,24 @@
   </div>
 
   <span class="rebalancing-header">
+    Low liquidity channels
+  </span>
+
+  <div class="rebalancing-channel-list">
+    <%= for channel <- @low_liquidity_channels do %>
+      <div class="rebalancing-channel" @click={"selectedLowId=#{channel.id}; selectedLowAlias='#{channel.alias}'"}>
+        <span class="rebalancing-balance-value"><%= channel.formatted_balance_percent%>%</span>
+        <span :class={"selectedLowId == #{channel.id} ? 'rebalancing-selected-channel' : 'normal'"}><%= channel.alias %></span>
+        <span></span>
+      </div>
+    <% end %>
+  </div>
+
+  <span class="rebalancing-header">
     Script will send from 
     <strong x-text="selectedHighAlias"></strong> 
     to 
     <strong x-text="selectedLowAlias"></strong> 
   </span>
-
 
 </div>
