@@ -2,7 +2,12 @@
 
 
 .channel-show-node-pub-key {
+}
+
+.channel-show-node-lnd-id {
   margin-bottom: 0.75rem;
+
+  font-size: small;
 }
 
 .channel-show-external-links {
