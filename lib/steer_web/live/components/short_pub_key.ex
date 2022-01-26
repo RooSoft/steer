@@ -8,9 +8,9 @@ defmodule SteerWeb.Components.ShortPubKey do
     <div class="short-pub-key" x-data={"{ pubKey: '#{assigns.pub_key}' }"}>
       <%= formatted_pub_key %>
       <template x-if="window.location.protocol === 'https:'">
-        <button class="short-pub-key-clipboard-icon" @click.stop="event.preventDefault();$clipboard(pubKey);">
+        <div class="short-pub-key-clipboard-icon" @click.stop="event.preventDefault();$clipboard(pubKey);">
           <img src="/images/clipboard.svg">
-        </button>
+        </div>
       </template>
     </div>
     """
