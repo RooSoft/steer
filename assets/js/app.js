@@ -4,7 +4,7 @@
 import "../css/app.css"
 
 import { LoadMoreAttemptsHook } from "./hooks/loadMoreAttempts"
-import { RebalancingGenerateIgniterHook } from "../../lib/steer_web/live/rebalancing_live_hooks"
+import { RebalancingGenerateIgniterHook } from "../../lib/steer_web/live/rebalancing_live"
 
 // webpack automatically bundles all modules in your
 // entry points. Those entry points can be configured
