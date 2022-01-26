@@ -4,11 +4,11 @@
   --background-color: #1A2238;
   --text-color: #b9b9c2;
   --header-color: #b9b9c2;
-  --header-backgroundcolor: rgb(52, 62, 94);
+  --header-backgroundcolor: #343E5E;
   --sidebar-backgroundcolor: rgb(38, 46, 70);
   --sidebar-bordercolor: #ffffff77;
   --accent1-color: #CCBB85;
-  --accent2-color: #BD2258;
+  --accent2-color: #5E492F;
 
   --active: rgb(22 163 74);
   --inactive: rgb(239 68 68);
@@ -84,4 +84,25 @@ body {
 #content {
   margin: 0.2em 0 0 0;
   padding: 0;
+}
+
+button {
+  padding: .75em 1.25em .75em 1.25em;
+  border-radius: 1em;
+
+  font-size: 1em;
+
+  color: var(--header-color);
+  background-color: var(--header-backgroundcolor);
+
+  transition: all 0.2s ease;
+}
+
+button:hover {
+  filter: brightness(115%);
+  transform: scale(1.1);
+}
+
+button:active {
+  transform: scale(1);
 }
