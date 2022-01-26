@@ -11,6 +11,15 @@ defmodule SteerWeb.RebalancingLive do
      |> add_high_liquidity_channels_list}
   end
 
+  @impl true
+  def handle_event("rebalancing-generate-igniter", data, socket) do
+    IO.puts("---------- will send igniter script ---------")
+    IO.inspect(data)
+    IO.puts("---------------------------------------------")
+
+    {:noreply, socket}
+  end
+
   defp get_channels(socket) do
     socket
     |> assign(:channels, Steer.Lightning.get_all_channels())
@@ -20,7 +29,7 @@ defmodule SteerWeb.RebalancingLive do
     low_liquidity_channels =
       channels
       |> Enum.filter(&(&1.balance_percent < 50))
-      |> Enum.sort_by(&(&1.balance_percent))
+      |> Enum.sort_by(& &1.balance_percent)
 
     socket
     |> assign(:low_liquidity_channels, low_liquidity_channels)

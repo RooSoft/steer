@@ -56,6 +56,7 @@ config :steer, SteerWeb.Endpoint,
       ~r"priv/gettext/.*(po)$",
       ~r"lib/steer_web/(live|views)/.*(ex)$",
       ~r"lib/steer_web/(live|views)/.*(css)$",
+      ~r"lib/steer_web/(live|views)/.*(js)$",
       ~r"lib/steer_web/templates/.*(eex)$"
     ]
   ]

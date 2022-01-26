@@ -41,7 +41,9 @@
   </span>
 
   <div class="rebalancing-button-zone">
-    <button phx-hook="rebalancing-generate-igniter">
+    <button id="rebalancing-generate-igniter"
+      phx-hook="RebalancingGenerateIgniterHook"
+      @click="$dispatch('rebalancing-generate-igniter', {selectedLowId, selectedHighId})">
       Generate igniter
     </button>
   </div>
