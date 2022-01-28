@@ -39,3 +39,11 @@
 .rebalancing-button-zone {
   margin-top: 1em;
 }
+
+.show {
+  display: block;
+}
+
+.hide {
+  display: none;
+}

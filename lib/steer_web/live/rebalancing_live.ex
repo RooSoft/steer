@@ -13,6 +13,7 @@ defmodule SteerWeb.RebalancingLive do
      |> add_low_liquidity_channels_list
      |> add_high_liquidity_channels_list
      |> assign_initial_rebalancing
+     |> assign_initial_step
      |> assign_initial_summary
      |> assign_changeset}
   end
@@ -48,7 +49,8 @@ defmodule SteerWeb.RebalancingLive do
   def handle_info({:channel_selected, channel}, socket) do
     {:noreply,
      socket
-     |> prepend_summary("The live view now knows that #{channel.alias} has been clicked")}
+     |> prepend_summary("The live view now knows that #{channel.alias} has been clicked")
+     |> go_to_step(2)}
   end
 
   defp get_channels(socket) do
@@ -106,6 +108,11 @@ defmodule SteerWeb.RebalancingLive do
     IO.puts("")
   end
 
+  defp assign_initial_step(socket) do
+    socket
+    |> go_to_step(1)
+  end
+
   defp assign_initial_summary(socket) do
     socket
     |> assign(:summary, [])
@@ -124,5 +131,10 @@ defmodule SteerWeb.RebalancingLive do
   defp prepend_summary(%{assigns: %{summary: summary}} = socket, info) do
     socket
     |> assign(:summary, [info | summary])
+  end
+
+  defp go_to_step(socket, step) do
+    socket
+    |> assign(:step, step)
   end
 end
