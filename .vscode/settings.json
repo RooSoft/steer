@@ -2,5 +2,9 @@
   "elixirLS.dialyzerWarnOpts": [
     "no_behaviours",
     "no_fail_call"
-  ]
+  ],
+  "[elixir]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "JakeBecker.elixir-ls"
+  }
 }

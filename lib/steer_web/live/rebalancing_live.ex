@@ -47,10 +47,12 @@ defmodule SteerWeb.RebalancingLive do
 
   @impl true
   def handle_info({:channel_selected, channel}, socket) do
-    {:noreply,
-     socket
-     |> prepend_summary("The live view now knows that #{channel.alias} has been clicked")
-     |> go_to_step(2)}
+    {
+      :noreply,
+      socket
+      |> prepend_summary("The live view now knows that #{channel.alias} has been clicked")
+      |> go_to_step(2)
+    }
   end
 
   defp get_channels(socket) do
