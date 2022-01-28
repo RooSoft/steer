@@ -48,7 +48,7 @@ defmodule SteerWeb.RebalancingLive do
   def handle_info({:channel_selected, channel}, socket) do
     {:noreply,
      socket
-     |> add_to_summary("The live view now knows that #{channel.alias} has been clicked")}
+     |> prepend_summary("The live view now knows that #{channel.alias} has been clicked")}
   end
 
   defp get_channels(socket) do
@@ -121,7 +121,7 @@ defmodule SteerWeb.RebalancingLive do
     |> assign(:changeset, Steer.Actions.Rebalancing.changeset(rebalancing, %{}))
   end
 
-  defp add_to_summary(%{assigns: %{summary: summary}} = socket, info) do
+  defp prepend_summary(%{assigns: %{summary: summary}} = socket, info) do
     socket
     |> assign(:summary, [info | summary])
   end
