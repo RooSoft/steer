@@ -1,1 +1,6 @@
-{}
+{
+  "elixirLS.dialyzerWarnOpts": [
+    "no_behaviours",
+    "no_fail_call"
+  ]
+}
