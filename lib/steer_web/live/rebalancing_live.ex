@@ -3,6 +3,9 @@ defmodule SteerWeb.RebalancingLive do
   require Logger
 
   alias Steer.Formatting.Sats
+  alias Steer.Actions.Rebalancing
+
+  import SteerWeb.RebalancingLive.ChannelSelector
 
   @impl true
   def mount(_params, _session, socket) do
@@ -10,7 +13,10 @@ defmodule SteerWeb.RebalancingLive do
      socket
      |> get_channels
      |> add_low_liquidity_channels_list
-     |> add_high_liquidity_channels_list}
+     |> add_high_liquidity_channels_list
+     |> assign_initial_rebalancing
+     |> assign_initial_summary
+     |> assign_changeset}
   end
 
   @impl true
@@ -38,6 +44,13 @@ defmodule SteerWeb.RebalancingLive do
     IO.puts("---------------------------------------------")
 
     {:noreply, socket}
+  end
+
+  @impl true
+  def handle_info({:channel_selected, channel}, socket) do
+    {:noreply,
+     socket
+     |> add_to_summary("The live view now knows that #{channel.alias} has been clicked")}
   end
 
   defp get_channels(socket) do
@@ -93,5 +106,25 @@ defmodule SteerWeb.RebalancingLive do
     IO.puts("")
     IO.puts("----------")
     IO.puts("")
+  end
+
+  defp assign_initial_summary(socket) do
+    socket
+    |> assign(:summary, [])
+  end
+
+  defp assign_initial_rebalancing(socket) do
+    socket
+    |> assign(:rebalancing, %Rebalancing{})
+  end
+
+  defp assign_changeset(%{assigns: %{rebalancing: rebalancing}} = socket) do
+    socket
+    |> assign(:changeset, Steer.Actions.Rebalancing.changeset(rebalancing, %{}))
+  end
+
+  defp add_to_summary(%{assigns: %{summary: summary}} = socket, info) do
+    socket
+    |> assign(:summary, [info | summary])
   end
 end

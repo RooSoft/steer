@@ -1,21 +1,11 @@
-<div x-data="{ 
-  selectedLowId: undefined, 
-  selectedLowAlias: '?', 
-  selectedHighId: undefined,
-  selectedHighAlias: '?'
-}">
-
+<div>
   <span class="rebalancing-header">
     High liquidity channels
   </span>
 
   <div class="rebalancing-channel-list">
     <%= for channel <- @high_liquidity_channels do %>
-      <div class="rebalancing-channel" @click={"selectedHighId=#{channel.id}; selectedHighAlias='#{channel.alias}'"}>
-        <span class="rebalancing-balance-value"><%= channel.formatted_balance_percent%>%</span>
-        <span :class={"selectedHighId == #{channel.id} ? 'rebalancing-selected-channel' : 'normal'"}><%= channel.alias %></span>
-        <span></span>
-      </div>
+      <%= live_component SteerWeb.RebalancingLive.ChannelSelector, id: channel.alias, channel: channel %>
     <% end %>
   </div>
 
@@ -25,27 +15,14 @@
 
   <div class="rebalancing-channel-list">
     <%= for channel <- @low_liquidity_channels do %>
-      <div class="rebalancing-channel" @click={"selectedLowId=#{channel.id}; selectedLowAlias='#{channel.alias}'"}>
-        <span class="rebalancing-balance-value"><%= channel.formatted_balance_percent%>%</span>
-        <span :class={"selectedLowId == #{channel.id} ? 'rebalancing-selected-channel' : 'normal'"}><%= channel.alias %></span>
-        <span></span>
-      </div>
+      <%= live_component SteerWeb.RebalancingLive.ChannelSelector, id: channel.alias, channel: channel %>
     <% end %>
   </div>
 
-  <span class="rebalancing-header">
-    Script will send from 
-    <strong x-text="selectedHighAlias"></strong> 
-    to 
-    <strong x-text="selectedLowAlias"></strong> 
-  </span>
-
-  <div class="rebalancing-button-zone">
-    <button id="rebalancing-generate-igniter"
-      phx-hook="RebalancingGenerateIgniterHook"
-      @click="$dispatch('rebalancing-generate-igniter', {selectedLowId, selectedHighId})">
-      Generate igniter
-    </button>
+  <div id="summary">
+    <%= for line <- @summary do %>
+      <div><%= line %></div>
+    <% end %>
   </div>
 
 </div>
