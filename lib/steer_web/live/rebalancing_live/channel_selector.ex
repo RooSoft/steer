@@ -16,7 +16,7 @@ defmodule SteerWeb.RebalancingLive.ChannelSelector do
   def handle_event("click", _, %{assigns: %{channel: channel}} = socket) do
     IO.puts("#{channel.alias} as been clicked ** from inside ChannelSelector")
 
-    send(self(), {:channel_selected, socket.assigns.channel})
+    send(self(), {socket.assigns.event, socket.assigns.channel})
 
     {:noreply, socket}
   end

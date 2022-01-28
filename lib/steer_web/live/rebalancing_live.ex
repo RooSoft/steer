@@ -15,7 +15,7 @@ defmodule SteerWeb.RebalancingLive do
      |> assign_initial_rebalancing
      |> assign_initial_step
      |> assign_initial_summary
-     |> assign_changeset}
+     |> assign_parameters}
   end
 
   @impl true
@@ -46,12 +46,24 @@ defmodule SteerWeb.RebalancingLive do
   end
 
   @impl true
-  def handle_info({:channel_selected, channel}, socket) do
+  def handle_info({:high_liquidity_channel_selected, channel}, socket) do
     {
       :noreply,
       socket
-      |> prepend_summary("The live view now knows that #{channel.alias} has been clicked")
+      |> select_high_liquidty_channel(channel)
+      |> prepend_summary("Selected #{channel.alias} as a high liquidity node")
       |> go_to_step(2)
+    }
+  end
+
+  @impl true
+  def handle_info({:low_liquidity_channel_selected, channel}, socket) do
+    {
+      :noreply,
+      socket
+      |> select_low_liquidty_channel(channel)
+      |> prepend_summary("Selected #{channel.alias} as a low liquidity node")
+      |> go_to_step(3)
     }
   end
 
@@ -125,9 +137,26 @@ defmodule SteerWeb.RebalancingLive do
     |> assign(:rebalancing, %Rebalancing{})
   end
 
-  defp assign_changeset(%{assigns: %{rebalancing: rebalancing}} = socket) do
+  defp assign_parameters(socket) do
     socket
-    |> assign(:changeset, Steer.Actions.Rebalancing.changeset(rebalancing, %{}))
+    |> assign(:parameters, %{
+      high_liquidity_channel: nil,
+      low_liquidity_channel: nil
+    })
+  end
+
+  defp select_high_liquidty_channel(socket, channel) do
+    parameters = socket.assigns.parameters |> Map.put(:high_liquidity_channel, channel)
+
+    socket
+    |> assign(:parameters, parameters)
+  end
+
+  defp select_low_liquidty_channel(socket, channel) do
+    parameters = socket.assigns.parameters |> Map.put(:low_liquidity_channel, channel)
+
+    socket
+    |> assign(:parameters, parameters)
   end
 
   defp prepend_summary(%{assigns: %{summary: summary}} = socket, info) do
