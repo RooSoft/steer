@@ -5,8 +5,6 @@ defmodule SteerWeb.RebalancingLive do
   alias Steer.Formatting.Sats
   alias Steer.Actions.Rebalancing
 
-  import SteerWeb.RebalancingLive.ChannelSelector
-
   @impl true
   def mount(_params, _session, socket) do
     {:ok,
