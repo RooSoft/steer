@@ -8,7 +8,7 @@ defmodule SteerWeb.RebalancingLive.Summary do
     </div>
 
     <div>
-      Will rebalance from
+      Trying to rebalance from
       <em><%= maybe_show_alias assigns.high_liquidity_channel%></em>
       to
       <em><%= maybe_show_alias assigns.low_liquidity_channel%></em>
