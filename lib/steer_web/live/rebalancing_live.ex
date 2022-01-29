@@ -5,6 +5,8 @@ defmodule SteerWeb.RebalancingLive do
   alias Steer.Formatting.Sats
   alias Steer.Actions.Rebalancing
 
+  import SteerWeb.RebalancingLive.Status
+
   @impl true
   def mount(_params, _session, socket) do
     {:ok,

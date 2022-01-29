@@ -46,12 +46,9 @@
       What's going to happen...
     </span>
 
-    <div>
-      Will rebalance from
-      <%= if @parameters.high_liquidity_channel != nil, do: @parameters.high_liquidity_channel.alias, else: "" %>
-      to
-      <%= if @parameters.low_liquidity_channel != nil, do: @parameters.low_liquidity_channel.alias, else: "" %>
-    </div>
+    <.status 
+      high_liquidity_channel={@parameters.high_liquidity_channel} 
+      low_liquidity_channel={@parameters.low_liquidity_channel} />
 
   </div>
 
