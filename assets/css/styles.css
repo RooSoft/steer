@@ -106,3 +106,7 @@ button:hover {
 button:active {
   transform: scale(1);
 }
+
+em {
+  color: var(--accent1-color);
+}

@@ -3,16 +3,24 @@ defmodule SteerWeb.RebalancingLive.Summary do
 
   def summary(assigns) do
     ~H"""
-    <span class="rebalancing-summary-header">
+    <div class="rebalancing-summary-header">
       What's going to happen...
-    </span>
+    </div>
 
     <div>
       Will rebalance from
-      <%= if assigns.high_liquidity_channel != nil, do: assigns.high_liquidity_channel.alias, else: "" %>
+      <em><%= maybe_show_alias assigns.high_liquidity_channel%></em>
       to
-      <%= if assigns.low_liquidity_channel != nil, do: assigns.low_liquidity_channel.alias, else: "" %>
+      <em><%= maybe_show_alias assigns.low_liquidity_channel%></em>
     </div>
     """
+  end
+
+  def maybe_show_alias(nil) do
+    ""
+  end
+
+  def maybe_show_alias(%{alias: channnel_alias}) do
+    channnel_alias
   end
 end
