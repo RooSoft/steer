@@ -7,8 +7,6 @@ defmodule Steer.Repo do
 
   import Ecto.Query
 
-  # use Steer.Repo.Queries.GetHtlcForwardsWithStatuses
-
   alias Steer.Lightning.Models, as: Models
 
   def init(_type, config) do
@@ -48,6 +46,7 @@ defmodule Steer.Repo do
         ],
         select: %{
           id: c.id,
+          lnd_id: c.lnd_id,
           alias: c.alias,
           color: c.color,
           capacity: c.capacity,

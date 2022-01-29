@@ -1,45 +1,58 @@
 <div>
 
-  <div id="get-high-liquidty-channel" class={case @step do 1 -> "show"; _ -> "hide" end}>
+  <%= case @step do %>
+    <% 1 -> %>
 
-    <span class="rebalancing-header">
-      High liquidity channels
-    </span>
+      <div id="get-high-liquidty-channel">
 
-    <div class="rebalancing-channel-list">
-      <%= for channel <- @high_liquidity_channels do %>
-        <%= live_component SteerWeb.RebalancingLive.ChannelSelector, 
-          id: channel.alias,
-          event: :high_liquidity_channel_selected,
-          channel: channel %>
-      <% end %>
-    </div>
+        <span class="rebalancing-header">
+          High liquidity channels
+        </span>
 
-  </div>
+        <div class="rebalancing-channel-list">
+          <%= for channel <- @high_liquidity_channels do %>
+            <%= live_component SteerWeb.RebalancingLive.ChannelSelector, 
+              id: channel.alias,
+              event: :high_liquidity_channel_selected,
+              channel: channel %>
+          <% end %>
+        </div>
+      </div>
 
-  <div id="get-low-liquidty-channel" class={case @step do 2 -> "show"; _ -> "hide" end}>
+    <% 2 -> %> 
 
-    <span class="rebalancing-header">
-      Low liquidity channels
-    </span>
+      <div id="get-low-liquidty-channel">
 
-    <div class="rebalancing-channel-list">
-      <%= for channel <- @low_liquidity_channels do %>
-        <%= live_component SteerWeb.RebalancingLive.ChannelSelector, 
-          id: channel.alias, 
-          event: :low_liquidity_channel_selected,
-          channel: channel %>
-      <% end %>
-    </div>
+        <span class="rebalancing-header">
+          Low liquidity channels
+        </span>
 
-  </div>
+        <div class="rebalancing-channel-list">
+          <%= for channel <- @low_liquidity_channels do %>
+            <%= live_component SteerWeb.RebalancingLive.ChannelSelector, 
+              id: channel.alias, 
+              event: :low_liquidity_channel_selected,
+              channel: channel %>
+          <% end %>
+        </div>
 
-  <div id="summary" class={case @step do 3 -> "show"; _ -> "hide" end}>
+      </div>
 
-    <.summary 
-      high_liquidity_channel={@parameters.high_liquidity_channel} 
-      low_liquidity_channel={@parameters.low_liquidity_channel} />
+    <% _ -> %>
 
-  </div>
+      <div id="summary">
+
+        <.summary 
+          high_liquidity_channel={@parameters.high_liquidity_channel} 
+          low_liquidity_channel={@parameters.low_liquidity_channel} />
+
+        <%= live_component SteerWeb.RebalancingLive.RouteSelector,
+          id: "route_selector",
+          high_liquidity_channel: @parameters.high_liquidity_channel,
+          low_liquidity_channel: @parameters.low_liquidity_channel %>
+
+      </div>
+
+  <% end %>
 
 </div>

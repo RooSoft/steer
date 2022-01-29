@@ -1,4 +1,5 @@
 @import './rebalancing_live/summary.css';
+@import './rebalancing_live/route_selector.css';
 
 #summary {
   margin-botom: 2em;
