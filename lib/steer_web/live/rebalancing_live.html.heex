@@ -1,11 +1,5 @@
 <div>
 
-  <div id="summary">
-    <%= for line <- @summary do %>
-      <div><%= line %></div>
-    <% end %>
-  </div>
-
   <div id="get-high-liquidty-channel" class={case @step do 1 -> "show"; _ -> "hide" end}>
 
     <span class="rebalancing-header">
@@ -40,13 +34,9 @@
 
   </div>
 
-  <div id="get-low-liquidty-channel" class={case @step do 3 -> "show"; _ -> "hide" end}>
+  <div id="status" class={case @step do 3 -> "show"; _ -> "hide" end}>
 
-    <span class="rebalancing-header">
-      What's going to happen...
-    </span>
-
-    <.status 
+    <.summary 
       high_liquidity_channel={@parameters.high_liquidity_channel} 
       low_liquidity_channel={@parameters.low_liquidity_channel} />
 

@@ -5,7 +5,7 @@ defmodule SteerWeb.RebalancingLive do
   alias Steer.Formatting.Sats
   alias Steer.Actions.Rebalancing
 
-  import SteerWeb.RebalancingLive.Status
+  import SteerWeb.RebalancingLive.Summary
 
   @impl true
   def mount(_params, _session, socket) do
@@ -16,7 +16,6 @@ defmodule SteerWeb.RebalancingLive do
      |> add_high_liquidity_channels_list
      |> assign_initial_rebalancing
      |> assign_initial_step
-     |> assign_initial_summary
      |> assign_parameters}
   end
 
@@ -53,7 +52,6 @@ defmodule SteerWeb.RebalancingLive do
       :noreply,
       socket
       |> select_high_liquidty_channel(channel)
-      |> prepend_summary("Selected #{channel.alias} as a high liquidity node")
       |> go_to_step(2)
     }
   end
@@ -64,7 +62,6 @@ defmodule SteerWeb.RebalancingLive do
       :noreply,
       socket
       |> select_low_liquidty_channel(channel)
-      |> prepend_summary("Selected #{channel.alias} as a low liquidity node")
       |> go_to_step(3)
     }
   end
@@ -129,11 +126,6 @@ defmodule SteerWeb.RebalancingLive do
     |> go_to_step(1)
   end
 
-  defp assign_initial_summary(socket) do
-    socket
-    |> assign(:summary, [])
-  end
-
   defp assign_initial_rebalancing(socket) do
     socket
     |> assign(:rebalancing, %Rebalancing{})
@@ -159,11 +151,6 @@ defmodule SteerWeb.RebalancingLive do
 
     socket
     |> assign(:parameters, parameters)
-  end
-
-  defp prepend_summary(%{assigns: %{summary: summary}} = socket, info) do
-    socket
-    |> assign(:summary, [info | summary])
   end
 
   defp go_to_step(socket, step) do
