@@ -11,6 +11,9 @@ defmodule SteerWeb.RebalancingLive.RouteSelector do
       </div>
 
       <div>
+        <%= if Enum.count(routes) == 0 do %>
+          <em>no routes</em>
+        <% end %>
         <%= for route <- routes do %>
           <pre>
     <%= get_igniter_config(assigns.high_liquidity_channel.lnd_id, route.pub_keys) %>
