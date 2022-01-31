@@ -4,7 +4,8 @@ defmodule Steer.GraphRepo do
   alias LightningGraph.Neo4j
   alias LightningGraph.Neo4j.Query
 
-  @graph_name "myGraph"
+  @graph_name "blahblahlbah"
+  @subgraph_name "blahblahlbah_subgraph"
 
   def start_link(_opts) do
     GenServer.start_link(__MODULE__, %{}, name: __MODULE__)
@@ -52,9 +53,13 @@ defmodule Steer.GraphRepo do
         _from,
         %{connection: connection} = state
       ) do
+    connection |> create_subgraph()
+
     paths =
       connection
-      |> Query.get_cheapest_routes(@graph_name, route_count, node1_pub_key, node2_pub_key)
+      |> Query.get_cheapest_routes(@subgraph_name, route_count, node1_pub_key, node2_pub_key)
+
+    connection |> delete_subgraph()
 
     {:reply, paths, state}
   end
@@ -62,5 +67,15 @@ defmodule Steer.GraphRepo do
   defp add_connection(state) do
     state
     |> Map.put(:connection, Neo4j.get_connection())
+  end
+
+  defp create_subgraph(connection) do
+    Neo4j.Graph.create(connection, @graph_name)
+    Neo4j.Subgraph.create(connection, @graph_name, @subgraph_name, is_failing: false)
+  end
+
+  defp delete_subgraph(connection) do
+    Neo4j.Graph.delete(connection, @subgraph_name)
+    Neo4j.Graph.delete(connection, @graph_name)
   end
 end

@@ -65,7 +65,7 @@ defmodule Steer.MixProject do
       {:ecto_enum, "~> 1.4"},
       {:observer_cli, "~> 1.7"},
       {:lnd_client, git: "https://github.com/RooSoft/lnd_client.git", tag: "0.1.2"},
-      {:lightning_graph, git: "https://github.com/RooSoft/lightning_graph.git", tag: "0.1.9"}
+      {:lightning_graph, git: "https://github.com/RooSoft/lightning_graph.git", tag: "0.1.11"}
     ]
   end
 
