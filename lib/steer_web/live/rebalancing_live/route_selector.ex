@@ -4,8 +4,6 @@ defmodule SteerWeb.RebalancingLive.RouteSelector do
   def render(assigns) do
     routes = get_routes(10, assigns.high_liquidity_channel, assigns.low_liquidity_channel)
 
-    IO.inspect(assigns.high_liquidity_channel)
-
     ~H"""
     <div>
       <div class="rebalancing-route-selector-header">
