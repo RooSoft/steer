@@ -15,10 +15,10 @@ defmodule SteerWeb.RebalancingLive.RouteSelector do
           <em>no routes</em>
         <% end %>
         <%= for route <- routes do %>
-          <pre>
-    <%= get_igniter_config(assigns.high_liquidity_channel.lnd_id, route.pub_keys) %>
-    ----------------
-          </pre>
+          <%= live_component SteerWeb.RebalancingLive.Route,
+            id: "route_#{route.index}",
+            starting_channel_id: assigns.high_liquidity_channel.lnd_id,
+            pub_keys: route.pub_keys %>
         <% end %>
       </div>
     </div>
@@ -31,17 +31,5 @@ defmodule SteerWeb.RebalancingLive.RouteSelector do
       high_liquidity_channel.node_pub_key,
       low_liquidity_channel.node_pub_key
     )
-  end
-
-  defp get_igniter_config(lnd_id, pub_keys) do
-    """
-    AMOUNT=10000
-    MAX_FEE=100
-    OUTGOING_CHAN_ID=#{lnd_id}
-    declare pub_keys=(
-      #{Enum.join(pub_keys, "\n  ")}
-      037b6d303c95b4faf2f62a214cc32c78aa0ded8ab5bd7a11aaa4883bbe292a4764
-    )
-    """
   end
 end
