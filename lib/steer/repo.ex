@@ -26,50 +26,9 @@ defmodule Steer.Repo do
     one(from(c in Models.LocalNode))
   end
 
-  def get_all_channels(_ \\ %{include_closed: false})
-
-  def get_all_channels(%{include_closed: false}) do
-    all(
-      from c in Models.Channel,
-        join: fi in subquery(forwards_in_subquery()),
-        on: c.id == fi.channel_id,
-        join: fo in subquery(forwards_out_subquery()),
-        on: c.id == fo.channel_id,
-        where: c.status != :closed,
-        order_by: [
-          desc:
-            fragment(
-              "SELECT coalesce(Max(v), '2000-01-01') FROM (VALUES (?), (?)) AS value(v)",
-              fi.latest_timestamp,
-              fo.latest_timestamp
-            )
-        ],
-        select: %{
-          id: c.id,
-          lnd_id: c.lnd_id,
-          alias: c.alias,
-          color: c.color,
-          capacity: c.capacity,
-          local_balance: c.local_balance,
-          remote_balance: c.remote_balance,
-          node_pub_key: c.node_pub_key,
-          forward_in_count: fi.forward_count,
-          forward_out_count: fo.forward_count,
-          latest_forward_in_time: fi.latest_timestamp,
-          latest_forward_out_time: fo.latest_timestamp,
-          latest_forward_time:
-            fragment(
-              "SELECT Max(v) FROM (VALUES (?), (?)) AS value(v)",
-              fi.latest_timestamp,
-              fo.latest_timestamp
-            ),
-          status: c.status
-        }
-    )
-  end
-
-  def get_all_channels(%{include_closed: true}) do
-    all(from(c in Models.Channel))
+  def get_all_channels(options \\ []) do
+    Steer.Repo.Queries.GetAllChannels.get_query(options)
+    |> all
   end
 
   def get_channel(id) do
@@ -132,7 +91,8 @@ defmodule Steer.Repo do
   end
 
   def get_htlc_forwards_with_statuses(options \\ []) do
-    all(Steer.Repo.Queries.GetHtlcForwardsWithStatuses.get_query(options))
+    Steer.Repo.Queries.GetHtlcForwardsWithStatuses.get_query(options)
+    |> all
   end
 
   def get_link_fails do
@@ -221,27 +181,5 @@ defmodule Steer.Repo do
     {:ok, htlc_link_fail} = insert(changeset)
 
     htlc_link_fail
-  end
-
-  defp forwards_in_subquery() do
-    from c in Models.Channel,
-      left_join: f in assoc(c, :forwards_in),
-      group_by: c.id,
-      select: %{
-        channel_id: c.id,
-        forward_count: count(f.id),
-        latest_timestamp: max(f.time)
-      }
-  end
-
-  defp forwards_out_subquery() do
-    from c in Models.Channel,
-      left_join: f in assoc(c, :forwards_out),
-      group_by: c.id,
-      select: %{
-        channel_id: c.id,
-        forward_count: count(f.id),
-        latest_timestamp: max(f.time)
-      }
   end
 end
