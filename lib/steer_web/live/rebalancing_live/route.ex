@@ -2,12 +2,34 @@ defmodule SteerWeb.RebalancingLive.Route do
   use Phoenix.LiveComponent
 
   def render(assigns) do
+    igniter_config = get_igniter_config(assigns.starting_channel_id, assigns.pub_keys)
+    nodes = get_nodes(assigns.pub_keys)
+
     ~H"""
-    <pre>
-    <%= get_igniter_config(assigns.starting_channel_id, assigns.pub_keys) %>
-    ----------------
-    </pre>
+    <div>
+      <div class='route-details'>
+        <%= for node <- nodes do %>
+          <div>
+            <%= node %>
+          </div>
+        <% end %>
+      </div>
+      <pre>
+    <%= igniter_config %>
+      ----------------
+      </pre>
+    </div>
     """
+  end
+
+  defp get_nodes(pub_keys) do
+    pub_keys
+    |> Enum.map(fn pub_key ->
+      case LndClient.get_node_info(pub_key) do
+        {:ok, node} -> node.node.alias
+        {_, _} -> "--UNKNOWN--"
+      end
+    end)
   end
 
   defp get_igniter_config(lnd_id, pub_keys) do
