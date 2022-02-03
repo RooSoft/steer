@@ -34,7 +34,6 @@ defmodule SteerWeb.HomeLive do
 
   defp subscribe_to_events(socket) do
     if connected?(socket) do
-      #      Endpoint.subscribe(@uptime_event_topic)
       Endpoint.subscribe(@htlc_event_topic)
       Endpoint.subscribe(@invoice_topic)
       Endpoint.subscribe(@channel_topic)
