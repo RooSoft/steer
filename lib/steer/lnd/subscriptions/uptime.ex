@@ -9,7 +9,7 @@ defmodule Steer.Lnd.Subscriptions.Uptime do
   @down_message "down"
 
   def start() do
-    { :ok, subscription } = GenServer.start(__MODULE__, nil, name: __MODULE__)
+    {:ok, subscription} = GenServer.start(__MODULE__, nil, name: __MODULE__)
 
     Process.monitor(subscription)
   end
@@ -23,26 +23,42 @@ defmodule Steer.Lnd.Subscriptions.Uptime do
 
     send(self(), :up)
 
-    { :ok, nil }
+    {:ok, %{is_up: true}}
+  end
+
+  def is_up() do
+    GenServer.call(__MODULE__, :is_up)
+  end
+
+  def handle_call(:is_up, _from, %{is_up: is_up} = state) do
+    {:reply, is_up, state}
   end
 
   def handle_info(:up, state) do
     %{}
     |> broadcast(@uptime_event_topic, @up_message)
 
-    {:noreply, state}
+    {
+      :noreply,
+      state
+      |> Map.put(:is_up, true)
+    }
   end
 
   def handle_info(:down, state) do
     %{}
     |> broadcast(@uptime_event_topic, @down_message)
 
-    {:noreply, state}
+    {
+      :noreply,
+      state
+      |> Map.put(:is_up, false)
+    }
   end
 
-  def handle_info({ :DOWN, _ref, :process, _subscription, reason}, state) do
+  def handle_info({:DOWN, _ref, :process, _subscription, reason}, state) do
     Logger.error("Uptime subscription is DOWN and shouldn't be")
-    IO.inspect reason
+    IO.inspect(reason)
     Logger.info("Restarting uptime subscription")
 
     start()
@@ -51,16 +67,16 @@ defmodule Steer.Lnd.Subscriptions.Uptime do
   end
 
   def handle_info(_event, state) do
-    write_in_yellow "--------- got an unknown state event"
+    write_in_yellow("--------- got an unknown state event")
 
     {:noreply, state}
   end
 
-  defp write_in_yellow message do
+  defp write_in_yellow(message) do
     Logger.info(IO.ANSI.yellow_background() <> IO.ANSI.black() <> message <> IO.ANSI.reset())
   end
 
-  defp broadcast payload, topic, message do
+  defp broadcast(payload, topic, message) do
     Endpoint.broadcast(topic, message, payload)
 
     payload
