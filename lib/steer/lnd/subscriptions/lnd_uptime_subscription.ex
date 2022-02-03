@@ -27,9 +27,6 @@ defmodule Steer.Lnd.Subscriptions.Uptime do
   end
 
   def handle_info(:up, state) do
-    Steer.Lightning.sync()
-    Steer.Lightning.update_cache()
-
     %{}
     |> broadcast(@uptime_event_topic, @up_message)
 
