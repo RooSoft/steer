@@ -7,8 +7,8 @@ defmodule Steer.Sync.Channel do
   @unable_to_find_node_code 5
 
   def sync() do
-    { :ok, channels } = LndClient.get_channels()
-    { :ok, closed_channels } = LndClient.get_closed_channels()
+    {:ok, channels} = LndClient.get_channels()
+    {:ok, closed_channels} = LndClient.get_closed_channels()
 
     channels.channels
     |> Enum.each(&upsert_channel/1)
@@ -17,61 +17,67 @@ defmodule Steer.Sync.Channel do
     |> Enum.each(&upsert_closed_channel/1)
   end
 
-  defp upsert_channel channel do
+  defp upsert_channel(channel) do
     channel
     |> convert_channel_to_map
     |> filter_already_closed_channels
     |> maybe_upsert_channel_map()
   end
 
-  defp filter_already_closed_channels nil do
+  defp filter_already_closed_channels(nil) do
     nil
   end
 
-  defp filter_already_closed_channels channel_map do
-    case Repo.get_channel_by_channel_point(channel_map.channel_point) do
-      %{ status: :closed } = channel ->
-        Logger.info "Skipping sync of #{channel.alias} cause it's already closed"
+  defp filter_already_closed_channels(channel_map) do
+    case Steer.Lightning.get_channel(channel_point: channel_map.channel_point) do
+      %{status: :closed} = channel ->
+        Logger.info("Skipping sync of #{channel.alias} cause it's already closed")
         nil
+
       _ ->
         channel_map
     end
   end
 
-  defp upsert_closed_channel closed_channel do
+  defp upsert_closed_channel(closed_channel) do
     closed_channel
     |> convert_closed_channel_to_map
     |> maybe_upsert_channel_map
   end
 
-  defp maybe_upsert_channel_map nil do
-    Logger.info "No channel to upsert"
+  defp maybe_upsert_channel_map(nil) do
+    Logger.info("No channel to upsert")
   end
 
-  defp maybe_upsert_channel_map map do
-    changeset = Models.Channel.changeset(
-      %Models.Channel{},
-      map
-    )
+  defp maybe_upsert_channel_map(map) do
+    changeset =
+      Models.Channel.changeset(
+        %Models.Channel{},
+        map
+      )
 
-    { :ok, _ } = Repo.insert(
-      changeset,
-      on_conflict: [set: [
-        alias: map.alias,
-        color: map.color,
-        local_balance: map.local_balance,
-        remote_balance: map.remote_balance,
-        status: map.status
-      ]],
-      conflict_target: :channel_point
-    )
+    {:ok, _} =
+      Repo.insert(
+        changeset,
+        on_conflict: [
+          set: [
+            alias: map.alias,
+            color: map.color,
+            local_balance: map.local_balance,
+            remote_balance: map.remote_balance,
+            status: map.status
+          ]
+        ],
+        conflict_target: :channel_point
+      )
   end
 
-  defp convert_channel_to_map channel do
+  defp convert_channel_to_map(channel) do
     case LndClient.get_node_info(channel.remote_pubkey) do
       {:error, %GRPC.RPCError{status: @unable_to_find_node_code}} ->
         nil
-      { :ok, node_info } ->
+
+      {:ok, node_info} ->
         node = node_info.node
 
         %{
@@ -88,16 +94,18 @@ defmodule Steer.Sync.Channel do
     end
   end
 
-  defp convert_closed_channel_to_map channel do
-    node = case LndClient.get_node_info(channel.remote_pubkey) do
-      { :ok, node_info } ->
-        node_info.node
-      { :error, _ } ->
-        %{
-          alias: "--UNKNOWN--",
-          color: "#000000"
-        }
-    end
+  defp convert_closed_channel_to_map(channel) do
+    node =
+      case LndClient.get_node_info(channel.remote_pubkey) do
+        {:ok, node_info} ->
+          node_info.node
+
+        {:error, _} ->
+          %{
+            alias: "--UNKNOWN--",
+            color: "#000000"
+          }
+      end
 
     %{
       lnd_id: channel.chan_id,

@@ -49,8 +49,8 @@ defmodule Steer.Lightning do
     GenServer.call(__MODULE__, {:get_channel, %{node_alias: node_alias}})
   end
 
-  def get_channel_by_channel_point(channel_point) do
-    GenServer.call(__MODULE__, {:get_channel_by_channel_point, channel_point})
+  def get_channel([{:channel_point, channel_point}]) do
+    GenServer.call(__MODULE__, {:get_channel, %{channel_point: channel_point}})
   end
 
   def update_channel(channel, struct) do
@@ -142,7 +142,7 @@ defmodule Steer.Lightning do
     {:reply, channel, state}
   end
 
-  def handle_call({:get_channel_by_channel_point, channel_point}, _from, state) do
+  def handle_call({:get_channel, %{channel_point: channel_point}}, _from, state) do
     Logger.info("Getting channel #{channel_point}")
 
     channel =
