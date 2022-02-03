@@ -4,10 +4,6 @@ defmodule SteerWeb.HomeLive do
 
   alias SteerWeb.Endpoint
 
-  @uptime_event_topic "uptime"
-  @up_message "up"
-  @down_message "down"
-
   @htlc_event_topic "htlc_event"
   @settle_message "settle"
   @forward_fail_message "forward_fail"
@@ -38,42 +34,13 @@ defmodule SteerWeb.HomeLive do
 
   defp subscribe_to_events(socket) do
     if connected?(socket) do
-      Endpoint.subscribe(@uptime_event_topic)
+      #      Endpoint.subscribe(@uptime_event_topic)
       Endpoint.subscribe(@htlc_event_topic)
       Endpoint.subscribe(@invoice_topic)
       Endpoint.subscribe(@channel_topic)
     end
 
     socket
-  end
-
-  @impl true
-  def handle_info(
-        %{
-          topic: @uptime_event_topic,
-          event: @up_message,
-          payload: _payload
-        },
-        socket
-      ) do
-    {:noreply,
-     socket
-     |> get_channels()
-     |> put_flash(:info, "The LND node is back up")}
-  end
-
-  @impl true
-  def handle_info(
-        %{
-          topic: @uptime_event_topic,
-          event: @down_message,
-          payload: _payload
-        },
-        socket
-      ) do
-    {:noreply,
-     socket
-     |> put_flash(:info, "The LND node is down")}
   end
 
   @impl true
