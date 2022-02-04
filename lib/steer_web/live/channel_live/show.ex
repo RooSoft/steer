@@ -2,7 +2,6 @@ defmodule SteerWeb.ChannelLive.Show do
   use SteerWeb, :live_view
 
   alias Steer.Lnd.Subscriptions
-  alias SteerWeb.Endpoint
   alias SteerWeb.ChannelLive.ForwardsComponent
 
   import SteerWeb.Components.ShortPubKey
@@ -10,11 +9,11 @@ defmodule SteerWeb.ChannelLive.Show do
   @htlc_pubsub_topic inspect(Subscriptions.Htlc)
   @htlc_pubsub_settle_message :settle
 
-  @channel_topic "channel"
-  # @open_message "open"
-  # @closed_message "closed"
-  @active_message "active"
-  @inactive_message "inactive"
+  @channel_pubsub_topic inspect(Subscriptions.Channel)
+  # @channel_pubsub_open_message :open_message
+  # @channel_pubsub_closed_message :closed_message
+  @channel_pubsub_active_message :active_message
+  @channel_pubsub_inactive_message :inactive_message
 
   import SteerWeb.Components.NodeStatusIndicatorComponent
   import SteerWeb.Components.ExternalLinks
@@ -44,7 +43,7 @@ defmodule SteerWeb.ChannelLive.Show do
   end
 
   @impl true
-  def handle_info(%{topic: @channel_topic, event: @active_message, payload: channel}, socket) do
+  def handle_info({@channel_pubsub_topic, @channel_pubsub_active_message, channel}, socket) do
     {:noreply,
      socket
      |> update_socket
@@ -52,7 +51,7 @@ defmodule SteerWeb.ChannelLive.Show do
   end
 
   @impl true
-  def handle_info(%{topic: @channel_topic, event: @inactive_message, payload: channel}, socket) do
+  def handle_info({@channel_pubsub_topic, @channel_pubsub_inactive_message, channel}, socket) do
     socket =
       socket
       |> update_socket
@@ -62,7 +61,7 @@ defmodule SteerWeb.ChannelLive.Show do
   end
 
   @impl true
-  def handle_info(%{topic: @channel_topic, event: _, payload: _channel}, socket) do
+  def handle_info({@channel_pubsub_topic, _message, _payload}, socket) do
     # ingnore all other events
 
     {:noreply, socket}
@@ -82,7 +81,7 @@ defmodule SteerWeb.ChannelLive.Show do
   defp subscribe_to_events(socket) do
     if connected?(socket) do
       Subscriptions.Htlc.subscribe()
-      Endpoint.subscribe(@channel_topic)
+      Subscriptions.Channel.subscribe()
     end
 
     socket

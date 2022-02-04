@@ -12,11 +12,11 @@ defmodule SteerWeb.HomeLive do
   @created_message "created"
   @paid_message "paid"
 
-  @channel_topic "channel"
-  @open_message "open"
-  @closed_message "closed"
-  @active_message "active"
-  @inactive_message "inactive"
+  @channel_pubsub_topic inspect(Subscriptions.Channel)
+  @channel_pubsub_open_message :open_message
+  @channel_pubsub_closed_message :closed_message
+  @channel_pubsub_active_message :active_message
+  @channel_pubsub_inactive_message :inactive_message
 
   @impl true
   @spec mount(any, any, Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
@@ -36,7 +36,7 @@ defmodule SteerWeb.HomeLive do
     if connected?(socket) do
       Subscriptions.Htlc.subscribe()
       Endpoint.subscribe(@invoice_topic)
-      Endpoint.subscribe(@channel_topic)
+      Subscriptions.Channel.subscribe()
     end
 
     socket
@@ -75,7 +75,7 @@ defmodule SteerWeb.HomeLive do
   end
 
   @impl true
-  def handle_info(%{topic: @channel_topic, event: @open_message, payload: channel}, socket) do
+  def handle_info({@channel_pubsub_topic, @channel_pubsub_open_message, channel}, socket) do
     write_in_green("New channel opened with #{channel.alias}")
     write_in_green(".... NOT updating channels until active ....")
 
@@ -87,7 +87,7 @@ defmodule SteerWeb.HomeLive do
   end
 
   @impl true
-  def handle_info(%{topic: @channel_topic, event: @closed_message}, socket) do
+  def handle_info({@channel_pubsub_topic, @channel_pubsub_closed_message, _channel}, socket) do
     write_in_green("A channel has been closed")
     write_in_green(".... updating channels ....")
 
@@ -100,7 +100,7 @@ defmodule SteerWeb.HomeLive do
   end
 
   @impl true
-  def handle_info(%{topic: @channel_topic, event: @active_message, payload: channel}, socket) do
+  def handle_info({@channel_pubsub_topic, @channel_pubsub_active_message, channel}, socket) do
     {:noreply,
      socket
      |> assign(:channels, Steer.Lightning.get_all_channels())
@@ -108,7 +108,7 @@ defmodule SteerWeb.HomeLive do
   end
 
   @impl true
-  def handle_info(%{topic: @channel_topic, event: @inactive_message, payload: channel}, socket) do
+  def handle_info({@channel_pubsub_topic, @channel_pubsub_inactive_message, channel}, socket) do
     socket =
       socket
       |> assign(:channels, Steer.Lightning.get_all_channels())

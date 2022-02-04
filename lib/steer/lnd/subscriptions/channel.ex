@@ -2,15 +2,15 @@ defmodule Steer.Lnd.Subscriptions.Channel do
   use GenServer
   require Logger
 
-  alias SteerWeb.Endpoint
+  @pubsub %{
+    topic: inspect(__MODULE__),
+    open_message: :open_message,
+    closed_message: :closed_message,
+    active_message: :active_message,
+    inactive_message: :inactive_message
+  }
 
   @max_number_of_node_call_attempts 10
-
-  @channel_topic "channel"
-  @open_message "open"
-  @closed_message "closed"
-  @active_message "active"
-  @inactive_message "inactive"
 
   def start() do
     {:ok, subscription} = GenServer.start_link(__MODULE__, nil, name: __MODULE__)
@@ -65,7 +65,7 @@ defmodule Steer.Lnd.Subscriptions.Channel do
     Steer.Lightning.get_channel(channel_point: channel_point)
     |> Steer.Lightning.update_channel(%{status: :closed})
     |> write_status_change("closed")
-    |> broadcast(@channel_topic, @closed_message)
+    |> broadcast(@pubsub.closed_message)
 
     {:noreply, state}
   end
@@ -82,7 +82,7 @@ defmodule Steer.Lnd.Subscriptions.Channel do
     Steer.Lightning.get_channel(channel_point: channel_point)
     |> Steer.Lightning.update_channel(%{status: :active})
     |> write_status_change("active")
-    |> broadcast(@channel_topic, @active_message)
+    |> broadcast(@pubsub.active_message)
 
     {:noreply, state}
   end
@@ -101,7 +101,7 @@ defmodule Steer.Lnd.Subscriptions.Channel do
       channel
       |> Steer.Lightning.update_channel(%{status: :inactive})
       |> write_status_change("inactive")
-      |> broadcast(@channel_topic, @inactive_message)
+      |> broadcast(@pubsub.inactive_message)
     end
 
     {:noreply, state}
@@ -124,18 +124,22 @@ defmodule Steer.Lnd.Subscriptions.Channel do
     {:noreply, state}
   end
 
+  def subscribe do
+    Phoenix.PubSub.subscribe(Steer.PubSub, @pubsub.topic)
+  end
+
+  defp broadcast(payload, message) do
+    Phoenix.PubSub.broadcast(Steer.PubSub, @pubsub.topic, {@pubsub.topic, message, payload})
+
+    payload
+  end
+
   defp write_status_change(channel, status) do
     Logger.info(
       IO.ANSI.green_background() <>
         IO.ANSI.black() <>
         "#{channel.alias} became #{status}" <> IO.ANSI.reset()
     )
-
-    channel
-  end
-
-  defp broadcast(channel, topic, message) do
-    Endpoint.broadcast(topic, message, channel)
 
     channel
   end
@@ -198,6 +202,6 @@ defmodule Steer.Lnd.Subscriptions.Channel do
 
     Steer.Lightning.get_channel(lnd_id: chan_id)
     |> write_status_change("open")
-    |> broadcast(@channel_topic, @open_message)
+    |> broadcast(@pubsub.open_message)
   end
 end
