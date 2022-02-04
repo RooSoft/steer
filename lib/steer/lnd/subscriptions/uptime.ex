@@ -69,15 +69,15 @@ defmodule Steer.Lnd.Subscriptions.Uptime do
     {:noreply, state}
   end
 
-  defp write_in_yellow(message) do
-    Logger.info(IO.ANSI.yellow_background() <> IO.ANSI.black() <> message <> IO.ANSI.reset())
-  end
-
   def subscribe do
     Phoenix.PubSub.subscribe(Steer.PubSub, @topic)
   end
 
   defp broadcast(message) do
     Phoenix.PubSub.broadcast(Steer.PubSub, @topic, {:uptime, message})
+  end
+
+  defp write_in_yellow(message) do
+    Logger.info(IO.ANSI.yellow_background() <> IO.ANSI.black() <> message <> IO.ANSI.reset())
   end
 end
