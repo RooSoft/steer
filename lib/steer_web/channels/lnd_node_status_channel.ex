@@ -3,15 +3,12 @@ defmodule SteerWeb.LndNodeStatusChannel do
 
   require Logger
 
-  alias SteerWeb.Endpoint
-
-  @uptime_event_topic "uptime"
-  @up_message "up"
-  @down_message "down"
+  @up_message :up
+  @down_message :down
 
   @impl true
   def join("lnd_node_status:status", _payload, socket) do
-    Endpoint.subscribe(@uptime_event_topic)
+    Steer.Lnd.Subscriptions.Uptime.subscribe()
 
     send(self(), :after_join)
 
@@ -29,36 +26,20 @@ defmodule SteerWeb.LndNodeStatusChannel do
   end
 
   @impl true
-  def handle_info(%{
-    topic: @uptime_event_topic,
-    event: @up_message,
-    payload: _payload
-  }, socket) do
+  def handle_info({:uptime, @up_message}, socket) do
     socket |> broadcast("lnd_node_status:status", %{status: "UP"})
 
-    { :noreply, socket }
+    IO.puts("GOT A UP MESSAGE")
+
+    {:noreply, socket}
   end
 
   @impl true
-  def handle_info(%{
-    topic: @uptime_event_topic,
-    event: @down_message,
-    payload: _payload
-  }, socket) do
+  def handle_info({:uptime, @down_message}, socket) do
     socket |> broadcast("lnd_node_status:status", %{status: "DOWN"})
 
-    { :noreply, socket }
-  end
+    IO.puts("GOT A DOWN MESSAGE")
 
-
-  @impl true
-  def handle_info(%{
-    topic: topic,
-    event: event,
-    payload: _payload
-  }, socket) do
-    Logger.warn "--- abnormal uptime event topic: #{topic} #{event} ---"
-
-    { :noreply, socket }
+    {:noreply, socket}
   end
 end

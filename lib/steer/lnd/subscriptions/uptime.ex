@@ -2,11 +2,10 @@ defmodule Steer.Lnd.Subscriptions.Uptime do
   use GenServer
   require Logger
 
-  alias SteerWeb.Endpoint
+  @topic inspect(__MODULE__)
 
-  @uptime_event_topic "uptime"
-  @up_message "up"
-  @down_message "down"
+  @up_message :up
+  @down_message :down
 
   def start() do
     {:ok, subscription} = GenServer.start(__MODULE__, nil, name: __MODULE__)
@@ -35,8 +34,7 @@ defmodule Steer.Lnd.Subscriptions.Uptime do
   end
 
   def handle_info(:up, state) do
-    %{}
-    |> broadcast(@uptime_event_topic, @up_message)
+    broadcast(@up_message)
 
     {
       :noreply,
@@ -46,8 +44,7 @@ defmodule Steer.Lnd.Subscriptions.Uptime do
   end
 
   def handle_info(:down, state) do
-    %{}
-    |> broadcast(@uptime_event_topic, @down_message)
+    broadcast(@down_message)
 
     {
       :noreply,
@@ -76,9 +73,11 @@ defmodule Steer.Lnd.Subscriptions.Uptime do
     Logger.info(IO.ANSI.yellow_background() <> IO.ANSI.black() <> message <> IO.ANSI.reset())
   end
 
-  defp broadcast(payload, topic, message) do
-    Endpoint.broadcast(topic, message, payload)
+  def subscribe do
+    Phoenix.PubSub.subscribe(Steer.PubSub, @topic)
+  end
 
-    payload
+  defp broadcast(message) do
+    Phoenix.PubSub.broadcast(Steer.PubSub, @topic, {:uptime, message})
   end
 end
