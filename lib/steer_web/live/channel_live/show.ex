@@ -1,13 +1,14 @@
 defmodule SteerWeb.ChannelLive.Show do
   use SteerWeb, :live_view
 
+  alias Steer.Lnd.Subscriptions
   alias SteerWeb.Endpoint
   alias SteerWeb.ChannelLive.ForwardsComponent
 
   import SteerWeb.Components.ShortPubKey
 
-  @htlc_event_topic "htlc_event"
-  @settle_message "settle"
+  @htlc_pubsub_topic inspect(Subscriptions.Htlc)
+  @htlc_pubsub_settle_message :settle
 
   @channel_topic "channel"
   # @open_message "open"
@@ -29,30 +30,16 @@ defmodule SteerWeb.ChannelLive.Show do
   end
 
   @impl true
-  def handle_info(
-        %{
-          topic: @htlc_event_topic,
-          event: @settle_message,
-          payload: _htlc_event
-        },
-        socket
-      ) do
+  def handle_info({@htlc_pubsub_topic, @htlc_pubsub_settle_message, _htlc_event}, socket) do
     {:noreply,
      socket
      |> update_socket
      |> put_flash(:info, "Some HTLC settle event happened")}
   end
 
-  def handle_info(
-        %{
-          topic: @htlc_event_topic,
-          event: _message,
-          payload: _htlc_event
-        },
-        socket
-      ) do
-    # ignore these message types
-
+  @impl true
+  def handle_info({@htlc_pubsub_topic, _message, _htlc_event}, socket) do
+    IO.puts("-----------GOT A HTLC-------")
     {:noreply, socket}
   end
 
@@ -94,7 +81,7 @@ defmodule SteerWeb.ChannelLive.Show do
 
   defp subscribe_to_events(socket) do
     if connected?(socket) do
-      Endpoint.subscribe(@htlc_event_topic)
+      Subscriptions.Htlc.subscribe()
       Endpoint.subscribe(@channel_topic)
     end
 

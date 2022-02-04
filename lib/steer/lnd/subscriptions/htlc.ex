@@ -2,13 +2,13 @@ defmodule Steer.Lnd.Subscriptions.Htlc do
   use GenServer
   require Logger
 
-  alias SteerWeb.Endpoint
-
-  @htlc_event_topic "htlc_event"
-  @forward_message "forward"
-  @forward_fail_message "forward_fail"
-  @settle_message "settle"
-  @link_fail_message "link_fail"
+  @pubsub %{
+    topic: inspect(__MODULE__),
+    forward_message: :forward,
+    forward_fail_message: :forward_fail,
+    settle_message: :settle,
+    link_fail_message: :link_fail
+  }
 
   def start() do
     {:ok, subscription} = GenServer.start_link(__MODULE__, nil, name: __MODULE__)
@@ -32,7 +32,7 @@ defmodule Steer.Lnd.Subscriptions.Htlc do
       lnd_htlc_event
       |> extract_htlc_event_map(:settle)
       |> Steer.Lightning.insert_htlc_event()
-      |> broadcast(@htlc_event_topic, @settle_message)
+      |> broadcast(@pubsub.settle_message)
 
     Logger.info("HTLC settle event \##{htlc_event.id}")
 
@@ -53,7 +53,7 @@ defmodule Steer.Lnd.Subscriptions.Htlc do
       |> extract_forward_event_map()
       |> Map.put(:htlc_event_id, htlc_event.id)
       |> Steer.Lightning.insert_htlc_forward()
-      |> broadcast(@htlc_event_topic, @forward_message)
+      |> broadcast(@pubsub.forward_message)
 
     Logger.info("HTLC forward event \##{forward_event.id}")
 
@@ -65,7 +65,7 @@ defmodule Steer.Lnd.Subscriptions.Htlc do
       lnd_htlc_event
       |> extract_htlc_event_map(:forward_fail)
       |> Steer.Lightning.insert_htlc_event()
-      |> broadcast(@htlc_event_topic, @forward_fail_message)
+      |> broadcast(@pubsub.forward_fail_message)
 
     Logger.info("HTLC forward fail event \##{htlc_event.id}")
 
@@ -86,7 +86,7 @@ defmodule Steer.Lnd.Subscriptions.Htlc do
       |> extract_link_fail_event_map()
       |> Map.put(:htlc_event_id, htlc_event.id)
       |> Steer.Lightning.insert_htlc_link_fail()
-      |> broadcast(@htlc_event_topic, @link_fail_message)
+      |> broadcast(@pubsub.link_fail_message)
 
     Logger.info("HTLC link fail event \##{link_fail_event.id}")
 
@@ -116,6 +116,16 @@ defmodule Steer.Lnd.Subscriptions.Htlc do
     IO.inspect(event)
 
     {:noreply, state}
+  end
+
+  def subscribe do
+    Phoenix.PubSub.subscribe(Steer.PubSub, @pubsub.topic)
+  end
+
+  defp broadcast(payload, message) do
+    Phoenix.PubSub.broadcast(Steer.PubSub, @pubsub.topic, {@pubsub.topic, message, payload})
+
+    payload
   end
 
   defp extract_htlc_event_map(htlc_event, type) do
@@ -181,11 +191,5 @@ defmodule Steer.Lnd.Subscriptions.Htlc do
       failure_string: failure_string,
       wire_failure: Atom.to_string(wire_failure)
     }
-  end
-
-  defp broadcast(htlc_event, topic, message) do
-    Endpoint.broadcast(topic, message, htlc_event)
-
-    htlc_event
   end
 end

@@ -2,11 +2,12 @@ defmodule SteerWeb.HomeLive do
   use SteerWeb, :live_view
   require Logger
 
+  alias Steer.Lnd.Subscriptions
   alias SteerWeb.Endpoint
 
-  @htlc_event_topic "htlc_event"
-  @settle_message "settle"
-  @forward_fail_message "forward_fail"
+  @htlc_pubsub_topic inspect(Subscriptions.Htlc)
+  @htlc_pubsub_settle_message :settle
+  @htlc_pubsub_forward_fail_message :forward_fail
 
   @invoice_topic "invoice"
   @created_message "created"
@@ -34,7 +35,7 @@ defmodule SteerWeb.HomeLive do
 
   defp subscribe_to_events(socket) do
     if connected?(socket) do
-      Endpoint.subscribe(@htlc_event_topic)
+      Subscriptions.Htlc.subscribe()
       Endpoint.subscribe(@invoice_topic)
       Endpoint.subscribe(@channel_topic)
     end
@@ -43,34 +44,13 @@ defmodule SteerWeb.HomeLive do
   end
 
   @impl true
-  def handle_info(
-        %{
-          topic: @htlc_event_topic,
-          event: @settle_message,
-          payload: _htlc_event
-        },
-        socket
-      ) do
+  def handle_info({@htlc_pubsub_topic, @htlc_pubsub_settle_message, _payload}, socket) do
     write_in_blue("HTLC settle event received")
 
     {:noreply,
      socket
      |> get_channels
      |> put_flash(:info, "Some HTLC settle event happened")}
-  end
-
-  @impl true
-  def handle_info(
-        %{
-          topic: @htlc_event_topic,
-          event: @forward_fail_message,
-          payload: _htlc_event
-        },
-        socket
-      ) do
-    write_in_blue("HTLC forward fail event received")
-
-    {:noreply, socket}
   end
 
   @impl true

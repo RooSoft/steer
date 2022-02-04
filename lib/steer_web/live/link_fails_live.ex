@@ -2,44 +2,33 @@ defmodule SteerWeb.LinkFailsLive do
   use SteerWeb, :live_view
   require Logger
 
-  alias SteerWeb.Endpoint
+  alias Steer.Lnd.Subscriptions
 
-  @htlc_event_topic "htlc_event"
-  @link_fail_message "link_fail"
+  @htlc_pubsub_topic inspect(Subscriptions.Htlc)
+  @htlc_pubsub_link_fail_message :link_fail
 
   @impl true
   @spec mount(any, any, Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   def mount(_params, _session, socket) do
     {:ok,
-      socket
-      |> load
-      |> subscribe_to_events
-    }
+     socket
+     |> load
+     |> subscribe_to_events}
   end
 
   @impl true
-  def handle_info(%{
-    topic: @htlc_event_topic,
-    event: @link_fail_message,
-    payload: _htlc_event
-  }, socket) do
-
-    { :noreply,
-      socket
-      |> load
-      |> put_flash(:info, "New Link Fail")}
+  def handle_info({@htlc_pubsub_topic, @htlc_pubsub_link_fail_message, _payload}, socket) do
+    {:noreply,
+     socket
+     |> load
+     |> put_flash(:info, "New Link Fail")}
   end
 
   @impl true
-  def handle_info(%{
-    topic: @htlc_event_topic,
-    event: _,
-    payload: _htlc_event
-  }, socket) do
-
+  def handle_info({@htlc_pubsub_topic, _, _payload}, socket) do
     # ignore what's not a link fail
 
-    { :noreply, socket }
+    {:noreply, socket}
   end
 
   defp load(socket) do
@@ -51,7 +40,7 @@ defmodule SteerWeb.LinkFailsLive do
 
   defp subscribe_to_events(socket) do
     if connected?(socket) do
-      Endpoint.subscribe(@htlc_event_topic)
+      Subscriptions.Htlc.subscribe()
     end
 
     socket
@@ -62,34 +51,36 @@ defmodule SteerWeb.LinkFailsLive do
     |> assign(:link_fails, Steer.Lightning.get_link_fails())
   end
 
-  defp format_channels(%{ assigns: %{ link_fails: link_fails } } = socket) do
-    new_link_fails = link_fails
-    |> Enum.map(&format_local_node/1)
+  defp format_channels(%{assigns: %{link_fails: link_fails}} = socket) do
+    new_link_fails =
+      link_fails
+      |> Enum.map(&format_local_node/1)
 
     socket
     |> assign(:link_fails, new_link_fails)
   end
 
-  defp format_local_node %{ channel_in_id: nil } = link_fails do
+  defp format_local_node(%{channel_in_id: nil} = link_fails) do
     link_fails
     |> Map.put(:channel_in, "Me")
   end
 
-  defp format_local_node link_fails do
+  defp format_local_node(link_fails) do
     link_fails
   end
 
-  defp format_amounts(%{ assigns: %{ link_fails: link_fails } } = socket) do
-    new_link_fails = link_fails
-    |> Enum.map(&format_amount/1)
+  defp format_amounts(%{assigns: %{link_fails: link_fails}} = socket) do
+    new_link_fails =
+      link_fails
+      |> Enum.map(&format_amount/1)
 
     socket
     |> assign(:link_fails, new_link_fails)
   end
 
   defp format_amount(link_fail) do
-    amount_in_sats = link_fail.amount_in/1000
-    amount_out_sats = link_fail.amount_out/1000
+    amount_in_sats = link_fail.amount_in / 1000
+    amount_out_sats = link_fail.amount_out / 1000
     fees = amount_in_sats - amount_out_sats
 
     link_fail
@@ -105,5 +96,5 @@ defmodule SteerWeb.LinkFailsLive do
       :formatted_fees,
       Number.SI.number_to_si(fees, unit: "", precision: 0)
     )
-    end
+  end
 end

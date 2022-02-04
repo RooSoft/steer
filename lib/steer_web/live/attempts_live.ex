@@ -2,11 +2,11 @@ defmodule SteerWeb.AttemptsLive do
   use SteerWeb, :live_view
   require Logger
 
-  alias SteerWeb.Endpoint
+  alias Steer.Lnd.Subscriptions
 
   @attempts_per_page 20
 
-  @htlc_event_topic "htlc_event"
+  @htlc_pubsub_topic inspect(Subscriptions.Htlc)
 
   @impl true
   @spec mount(any, any, Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
@@ -28,14 +28,7 @@ defmodule SteerWeb.AttemptsLive do
   end
 
   @impl true
-  def handle_info(
-        %{
-          topic: @htlc_event_topic,
-          event: event,
-          payload: htlc_event
-        },
-        socket
-      ) do
+  def handle_info({@htlc_pubsub_topic, message, htlc_event}, socket) do
     {:noreply,
      socket
      |> prepend_attempt(htlc_event.id)
@@ -43,7 +36,7 @@ defmodule SteerWeb.AttemptsLive do
      |> format_statuses
      |> format_amounts
      |> flag_last
-     |> put_flash(:info, "Some HTLC settle event happened: #{event}")}
+     |> put_flash(:info, "Some HTLC settle event happened: #{message}")}
   end
 
   defp init_attempts(socket) do
@@ -73,7 +66,7 @@ defmodule SteerWeb.AttemptsLive do
 
   defp subscribe_to_events(socket) do
     if connected?(socket) do
-      Endpoint.subscribe(@htlc_event_topic)
+      Subscriptions.Htlc.subscribe()
     end
 
     socket
