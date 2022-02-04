@@ -7,7 +7,6 @@ defmodule SteerWeb.HomeLive do
 
   @htlc_pubsub_topic inspect(Subscriptions.Htlc)
   @htlc_pubsub_settle_message :settle
-  @htlc_pubsub_forward_fail_message :forward_fail
 
   @invoice_topic "invoice"
   @created_message "created"
