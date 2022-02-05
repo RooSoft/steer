@@ -2,14 +2,14 @@ defmodule Steer.Lnd.Subscriptions.Invoice do
   use GenServer
   require Logger
 
-  alias SteerWeb.Endpoint
-
-  @invoice_topic "invoice"
-  @created_message "created"
-  @paid_message "paid"
+  @pubsub %{
+    topic: inspect(__MODULE__),
+    created_message: :created_message,
+    paid_message: :paid_message
+  }
 
   def start() do
-    { :ok, subscription } = GenServer.start(__MODULE__, nil, name: __MODULE__)
+    {:ok, subscription} = GenServer.start(__MODULE__, nil, name: __MODULE__)
 
     Process.monitor(subscription)
   end
@@ -21,31 +21,31 @@ defmodule Steer.Lnd.Subscriptions.Invoice do
   def init(_) do
     LndClient.subscribe_invoices(%{pid: self()})
 
-    { :ok, nil }
+    {:ok, nil}
   end
 
   def handle_info(%Lnrpc.Invoice{state: :SETTLED} = invoice, state) do
-    Steer.Lightning.sync
-    Steer.Lightning.update_cache
+    Steer.Lightning.sync()
+    Steer.Lightning.update_cache()
 
     invoice
-    |> broadcast(@invoice_topic, @paid_message)
+    |> broadcast(@pubsub.paid_message)
 
-    Logger.info "#{invoice.amt_paid} sats has been settled"
+    Logger.info("#{invoice.amt_paid} sats has been settled")
 
     {:noreply, state}
   end
 
   def handle_info(%Lnrpc.Invoice{state: :OPEN} = invoice, state) do
     invoice
-    |> broadcast(@invoice_topic, @created_message)
+    |> broadcast(@pubsub.created_message)
 
     {:noreply, state}
   end
 
-  def handle_info({ :DOWN, _ref, :process, _subscription, reason}, state) do
+  def handle_info({:DOWN, _ref, :process, _subscription, reason}, state) do
     Logger.error("Invoice subscription is DOWN and shouldn't be")
-    IO.inspect reason
+    IO.inspect(reason)
     Logger.info("Restarting invoice subscription")
 
     start()
@@ -54,18 +54,22 @@ defmodule Steer.Lnd.Subscriptions.Invoice do
   end
 
   def handle_info(_event, state) do
-    write_in_yellow "--------- got an unknown invoice event"
+    write_in_yellow("--------- got an unknown invoice event")
 
     {:noreply, state}
   end
 
-  defp write_in_yellow message do
-    Logger.info(IO.ANSI.yellow_background() <> IO.ANSI.black() <> message <> IO.ANSI.reset())
+  def subscribe do
+    Phoenix.PubSub.subscribe(Steer.PubSub, @pubsub.topic)
   end
 
-  defp broadcast channel, topic, message do
-    Endpoint.broadcast(topic, message, channel)
+  defp broadcast(payload, message) do
+    Phoenix.PubSub.broadcast(Steer.PubSub, @pubsub.topic, {@pubsub.topic, message, payload})
 
-    channel
+    payload
+  end
+
+  defp write_in_yellow(message) do
+    Logger.info(IO.ANSI.yellow_background() <> IO.ANSI.black() <> message <> IO.ANSI.reset())
   end
 end

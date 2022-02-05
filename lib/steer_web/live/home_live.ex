@@ -3,14 +3,13 @@ defmodule SteerWeb.HomeLive do
   require Logger
 
   alias Steer.Lnd.Subscriptions
-  alias SteerWeb.Endpoint
 
   @htlc_pubsub_topic inspect(Subscriptions.Htlc)
   @htlc_pubsub_settle_message :settle
 
-  @invoice_topic "invoice"
-  @created_message "created"
-  @paid_message "paid"
+  @invoice_pubsub_topic inspect(Subscriptions.Invoice)
+  @invoice_pubsub_created_message :created_message
+  @invoice_pubsub_paid_message :paid_message
 
   @channel_pubsub_topic inspect(Subscriptions.Channel)
   @channel_pubsub_open_message :open_message
@@ -35,7 +34,7 @@ defmodule SteerWeb.HomeLive do
   defp subscribe_to_events(socket) do
     if connected?(socket) do
       Subscriptions.Htlc.subscribe()
-      Endpoint.subscribe(@invoice_topic)
+      Subscriptions.Invoice.subscribe()
       Subscriptions.Channel.subscribe()
     end
 
@@ -53,7 +52,7 @@ defmodule SteerWeb.HomeLive do
   end
 
   @impl true
-  def handle_info(%{topic: @invoice_topic, event: @created_message}, socket) do
+  def handle_info({@invoice_pubsub_topic, @invoice_pubsub_created_message, _payload}, socket) do
     write_in_yellow("New invoice created")
 
     # nothing to be done, except maybe inform the user
@@ -62,7 +61,7 @@ defmodule SteerWeb.HomeLive do
   end
 
   @impl true
-  def handle_info(%{topic: @invoice_topic, event: @paid_message}, socket) do
+  def handle_info({@invoice_pubsub_topic, @invoice_pubsub_paid_message, _payload}, socket) do
     write_in_yellow("New paid invoice received")
     write_in_yellow(".... updating channels ....")
 
