@@ -18,8 +18,24 @@ defmodule Steer.Lightning.Models.Forward do
 
   def changeset(struct, params) do
     struct
-    |> cast(params, [:amount_in, :amount_out, :fee, :channel_in_id, :channel_out_id, :time, :timestamp_ns])
-    |> validate_required([:amount_in, :amount_out, :fee, :channel_in_id, :channel_out_id, :time, :timestamp_ns])
+    |> cast(params, [
+      :amount_in,
+      :amount_out,
+      :fee,
+      :channel_in_id,
+      :channel_out_id,
+      :time,
+      :timestamp_ns
+    ])
+    |> validate_required([
+      :amount_in,
+      :amount_out,
+      :fee,
+      :channel_in_id,
+      :channel_out_id,
+      :time,
+      :timestamp_ns
+    ])
   end
 
   def format_balances(forwards) when is_list(forwards) do
@@ -42,15 +58,15 @@ defmodule Steer.Lightning.Models.Forward do
     |> Map.put(:formatted_fee, formatted_fee)
   end
 
-  def amount_in_in_sats forward do
+  def amount_in_in_sats(forward) do
     Integer.floor_div(forward.amount_in, 1000)
   end
 
-  def amount_out_in_sats forward do
+  def amount_out_in_sats(forward) do
     Integer.floor_div(forward.amount_out, 1000)
   end
 
-  def fee_in_sats forward do
+  def fee_in_sats(forward) do
     Integer.floor_div(forward.fee, 1000)
   end
 
@@ -71,9 +87,9 @@ defmodule Steer.Lightning.Models.Forward do
 
   defp get_direction(forward, channel) do
     if forward.channel_in_id == channel.id do
-      "to"
-    else
       "from"
+    else
+      "to"
     end
   end
 
