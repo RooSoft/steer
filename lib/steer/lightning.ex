@@ -29,6 +29,10 @@ defmodule Steer.Lightning do
     GenServer.call(__MODULE__, :update_cache)
   end
 
+  def get_info do
+    GenServer.call(__MODULE__, :get_info)
+  end
+
   def get_node_status() do
     GenServer.call(__MODULE__, :get_node_status)
   end
@@ -90,6 +94,12 @@ defmodule Steer.Lightning do
 
   def get_link_fails do
     GenServer.call(__MODULE__, :get_link_fails)
+  end
+
+  def handle_call(:get_info, _from, state) do
+    {:ok, info} = LndClient.get_info()
+
+    {:reply, info, state}
   end
 
   def handle_call(:get_node_status, _from, state) do
