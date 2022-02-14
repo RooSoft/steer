@@ -11,7 +11,28 @@
   <.external_links pub_key={@node.pubkey} />
 
   <div class="diagnostics-info">
-    Connected to <em><%= @info.version %></em>
+    <div class="diagnostics-info-version">
+      LND Version <em><%= @info.version %></em>
+    </div>
+    <div class="diagnostics-info-uris">
+      <div class="diagnostics-info-uris-title">
+        URI list
+      </div>
+      <ul>
+        <%= for uri <- @info.uris do %>
+          <li class="diagnostics-info-uri" x-data={"{ uri: '#{uri}' }"}>
+            <div class="diagnostics-info-uri-string">
+              <%= uri %>
+            </div>
+            <template x-if="window.location.protocol === 'https:'">
+              <div class="uri-clipboard-icon" @click.stop="event.preventDefault();$clipboard(uri);">
+                <img src="/images/clipboard.svg">
+              </div>
+            </template>
+          </li>
+        <% end %>
+      </ul>
+    </div>
   </div>
 
   <div class="flex w-100">
