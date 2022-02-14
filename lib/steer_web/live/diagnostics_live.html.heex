@@ -33,6 +33,14 @@
         <% end %>
       </ul>
     </div>
+    <div class="diagnostics-info-chains">
+      <div class="diagnostics-info-chains-title">
+        Chain: 
+      </div>
+      <%= for chain <- @info.chains do %>
+        <%= chain.chain %> <%= chain.network %>
+      <% end %>
+    </div>
   </div>
 
   <div class="flex w-100">

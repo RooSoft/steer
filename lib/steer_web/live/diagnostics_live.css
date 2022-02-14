@@ -33,3 +33,13 @@
   overflow-y: hidden;
   white-space: nowrap;
 }
+
+.diagnostics-info-chains {
+  margin-bottom: 0.75rem;
+  display: flex;
+}
+
+.diagnostics-info-chains-title {
+  margin-bottom: 0.25rem;
+  margin-right: 0.25rem;
+}
