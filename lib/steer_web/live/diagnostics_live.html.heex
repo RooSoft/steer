@@ -3,6 +3,12 @@
   <div>Steer v<%= @version %></div>
 
   <div class="diagnostics-live-node-name"><%= @node.alias %></div>
+  <div class="diagnostics-info-chains">
+    <%= for chain <- @info.chains do %>
+      <%= chain.chain %> <%= chain.network %>
+    <% end %>
+  </div>
+
 
   <div class="diagnostics-live-pub-key">
     <.short_pub_key pub_key={@node.pubkey} />
@@ -32,14 +38,6 @@
           </li>
         <% end %>
       </ul>
-    </div>
-    <div class="diagnostics-info-chains">
-      <div class="diagnostics-info-chains-title">
-        Chain: 
-      </div>
-      <%= for chain <- @info.chains do %>
-        <%= chain.chain %> <%= chain.network %>
-      <% end %>
     </div>
   </div>
 
