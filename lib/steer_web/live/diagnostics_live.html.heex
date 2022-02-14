@@ -3,15 +3,15 @@
   <div>Steer v<%= @version %></div>
 
   <div class="diagnostics-live-node-name"><%= @node.alias %></div>
+
+  <div class="diagnostics-live-pub-key">
+    <.short_pub_key pub_key={@node.pubkey} />
+  </div>
+
   <div class="diagnostics-info-chains">
     <%= for chain <- @info.chains do %>
       <%= chain.chain %> <%= chain.network %>
     <% end %>
-  </div>
-
-
-  <div class="diagnostics-live-pub-key">
-    <.short_pub_key pub_key={@node.pubkey} />
   </div>
 
   <.external_links pub_key={@node.pubkey} />
