@@ -14,8 +14,6 @@
     <% end %>
   </div>
 
-  <.external_links pub_key={@node.pubkey} />
-
   <div class="diagnostics-info">
     <div class="diagnostics-info-version">
       LND Version <em><%= @info.version %></em>
@@ -40,6 +38,8 @@
       </ul>
     </div>
   </div>
+
+  <.external_links pub_key={@node.pubkey} />
 
   <div class="flex w-100">
     <div class="">
