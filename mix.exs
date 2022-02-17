@@ -31,8 +31,8 @@ defmodule Steer.MixProject do
 
   defp releases() do
     [
-      standard: [
-        version: "0.0.1",
+      steer: [
+        version: "0.2.1",
         applications: [
           steer: :permanent
         ]
