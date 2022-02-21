@@ -10,7 +10,7 @@ use Mix.Config
 # which you should run after static files are built and
 # before starting your production server.
 config :steer, SteerWeb.Endpoint,
-  url: [host: "127.0.0.1", port: 4001],
+  url: [host: "0.0.0.0", port: 4001],
   check_origin: false,
   cache_static_manifest: "priv/static/cache_manifest.json",
   server: true
