@@ -6,7 +6,6 @@ on:
     - '*'
 
 env:
-  MIX_ENV: prod
   DATABASE_URL: ecto://postgres:postgres@localhost:5432/steer
   SECRET_KEY_BASE: ${{ secrets.SECRET_KEY_BASE }}
 
@@ -40,11 +39,11 @@ jobs:
     - name: Phoenix digest
       run: mix phx.digest
     - name: Compile
-      run: mix compile
+      run: MIX_ENV=prod mix compile
     - name: Phoenix release
       run: mix phx.gen.release
     - name: Release
-      run: mix release --overwrite
+      run: MIX_ENV=prod mix release --overwrite
     - name: Create tarball
       shell: bash
       run: |
