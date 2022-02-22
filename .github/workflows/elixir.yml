@@ -39,6 +39,8 @@ jobs:
       run: cd assets && npm install && cd ..
     - name: Compile
       run: mix compile
+    - name: Deploy assets
+      run: mix assets.deploy
     - name: Phoenix digest
       run: mix phx.digest
     - name: Phoenix release
