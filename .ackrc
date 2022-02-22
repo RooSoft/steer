@@ -1,6 +1,10 @@
 --ignore-dir=deps
 --ignore-dir=_build
 --ignore-dir=.elixir_ls
---ignore-dir=priv/static/js
+--ignore-dir=priv/static
 --ignore-file=is:package-lock.json
 --ignore-dir=is:priv/static/css
+--ignore-dir=rel
+--ignore-dir=.github
+--ignore-dir=assets/static/images
+--ignore-file=is:mix.lock

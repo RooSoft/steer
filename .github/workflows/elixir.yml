@@ -1,6 +1,9 @@
 name: Build a Steer Release
 
-on: [push]
+on: 
+  push:
+    tags:
+    - '*'
 
 env:
   MIX_ENV: prod
@@ -42,4 +45,3 @@ jobs:
       with:
         artifacts: "release.tgz,foo/*.txt"
         token: ${{ secrets.GITHUB_TOKEN }}
-        tag: 0.0.1
