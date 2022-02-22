@@ -47,5 +47,5 @@ jobs:
         tar zcvf $RELEASE_FILENAME _build/prod
     - uses: ncipollo/release-action@v1
       with:
-        artifacts: "$RELEASE_FILENAME"
+        artifacts: "${{ env.RELEASE_FILENAME }}"
         token: ${{ secrets.GITHUB_TOKEN }}
