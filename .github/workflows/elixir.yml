@@ -42,3 +42,4 @@ jobs:
       with:
         artifacts: "release.tar.gz,foo/*.txt"
         token: ${{ secrets.GITHUB_TOKEN }}
+        tag: 0.0.1
