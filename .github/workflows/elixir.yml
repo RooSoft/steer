@@ -40,6 +40,6 @@ jobs:
         tar zcvf release.tgz _build/prod
     - uses: ncipollo/release-action@v1
       with:
-        artifacts: "release.tar.gz,foo/*.txt"
+        artifacts: "release.tgz,foo/*.txt"
         token: ${{ secrets.GITHUB_TOKEN }}
         tag: 0.0.1
