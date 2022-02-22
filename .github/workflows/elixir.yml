@@ -33,9 +33,9 @@ jobs:
     - name: Release
       run: mix release --overwrite
     - name: Create tarball
-        shell: bash
-        run: |
-          tar zcvf release.tgz _build/prod
+      shell: bash
+      run: |
+        tar zcvf release.tgz _build/prod
     - uses: ncipollo/release-action@v1
       with:
         artifacts: "release.tar.gz,foo/*.txt"
