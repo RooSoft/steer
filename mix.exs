@@ -4,7 +4,7 @@ defmodule Steer.MixProject do
   def project do
     [
       app: :steer,
-      version: "0.2.2",
+      version: "0.2.3",
       elixir: "~> 1.7",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
@@ -32,7 +32,7 @@ defmodule Steer.MixProject do
   defp releases() do
     [
       steer: [
-        version: "0.2.2",
+        version: "0.2.3",
         applications: [
           steer: :permanent
         ]
