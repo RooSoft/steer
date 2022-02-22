@@ -5,6 +5,7 @@ on: [push]
 env:
   MIX_ENV: prod
   DATABASE_URL: ecto://postgres:postgres@localhost:5432/steer
+  SECRET_KEY_BASE: ${{ secrets.SECRET_KEY_BASE }}
 
 jobs:
   build:
