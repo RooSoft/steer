@@ -35,6 +35,10 @@ jobs:
         restore-keys: ${{ runner.os }}-mix-
     - name: Install dependencies
       run: mix deps.get
+    - name: Install assets
+      run: npm install --prefix assets
+    - name: Phoenix digest
+      run: mix phx.digest
     - name: Compile
       run: mix compile
     - name: Phoenix release
