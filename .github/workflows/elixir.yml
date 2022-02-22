@@ -2,6 +2,9 @@ name: Build a Steer Release
 
 on: [push]
 
+env:
+  MIX_ENV: prod
+
 jobs:
   build:
 
@@ -29,3 +32,11 @@ jobs:
       run: mix phx.gen.release
     - name: Release
       run: mix release --overwrite
+    - name: Create tarball
+        shell: bash
+        run: |
+          tar zcvf release.tgz _build/prod
+    - uses: ncipollo/release-action@v1
+      with:
+        artifacts: "release.tar.gz,foo/*.txt"
+        token: ${{ secrets.GITHUB_TOKEN }}
