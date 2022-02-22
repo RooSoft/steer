@@ -36,10 +36,10 @@ jobs:
       run: mix deps.get --only prod
     - name: Install assets
       run: cd assets && npm install && cd ..
-    - name: Phoenix digest
-      run: mix phx.digest
     - name: Compile
       run: MIX_ENV=prod mix compile
+    - name: Phoenix digest
+      run: MIX_ENV=prod mix phx.digest
     - name: Phoenix release
       run: mix phx.gen.release
     - name: Release
