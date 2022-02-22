@@ -36,13 +36,11 @@ jobs:
     - name: Install dependencies
       run: mix deps.get --only prod
     - name: Install assets
-      run: npm install --prefix assets
+      run: cd assets && npm install && cd ..
     - name: Phoenix digest
       run: mix phx.digest
     - name: Compile
       run: mix compile
-    - name: Deploy assets
-      run: mix assets.deploy
     - name: Phoenix release
       run: mix phx.gen.release
     - name: Release
