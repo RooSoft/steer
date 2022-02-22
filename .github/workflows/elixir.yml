@@ -18,6 +18,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: Set release version environment variable
+      run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+    - name: Set release filename environment variable
+      run: echo "RELEASE_FILENAME=steer-${RELEASE_VERSION}.tgz" >> $GITHUB_ENV
     - name: Set up Elixir
       uses: erlef/setup-beam@988e02bfe678367a02564f65ca2e37726dc0268f
       with:
@@ -40,8 +44,8 @@ jobs:
     - name: Create tarball
       shell: bash
       run: |
-        tar zcvf release.tgz _build/prod
+        tar zcvf ${{ RELEASE_FILENAME }} _build/prod
     - uses: ncipollo/release-action@v1
       with:
-        artifacts: "release.tgz,foo/*.txt"
+        artifacts: "${{ RELEASE_FILENAME }}"
         token: ${{ secrets.GITHUB_TOKEN }}
