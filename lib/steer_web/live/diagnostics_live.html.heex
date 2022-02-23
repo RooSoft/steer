@@ -44,15 +44,15 @@
   <div class="flex w-100">
     <div class="">
       <div
-        :title="css.getNodeStatusText(is_lnd_node_online)"
-        :class="css.getNodeStatusColor(is_lnd_node_online)"
-        class="rounded-full ring-2 ring-black w-16 h-16 flex-none ml-4">
+        :title="is_lnd_node_online ? 'online' : 'offline'"
+        :class="is_lnd_node_online ? 'header-node-online' : 'header-node-offline'"
+        class="diagnostics-status-icon">
       </div>
 
       <button phx-click="connect"
-        :class="connecting ? 'bg-red-900 hover:bg-red-900' : 'bg-green-900 hover:bg-green-700'"
+        :class="css.getNodeStatusColor(connecting)"
         :hidden="is_lnd_node_online"
-        class="text-white font-bold mt-4 py-2 px-4 rounded"
+        class="diagnostics-connect-button"
         :name="connecting ? 'working' : 'connect'"
         :style="connecting ? 'cursor: wait' : 'cursor: pointer'"
         :disabled="connecting">
@@ -61,17 +61,17 @@
     </div>
 
     <div class="mx-4 flex-1">
-      <span class="text-2xl mb-6 border-b-2">Log</span>
-      <div class="mt-4">
+      <span class="diagnostics-log-title">Log</span>
+      <div class="diagnostics-connect-button">
         <%= for message <- Enum.reverse @messages do %>
           <div>
-            <span class="text-yellow-600">
+            <span class="diagnostics-logs-date">
               <%= message.date %>
             </span>
-            <span class=" text-yellow-400">
+            <span class="diagnostics-logs-time">
               <%= message.time %>
             </span>
-            <span class=" text-yellow-200">
+            <span class="diagnostics-logs-text">
               <%= message.text %>
             </span>
           </div>

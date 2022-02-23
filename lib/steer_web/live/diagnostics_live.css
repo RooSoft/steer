@@ -38,3 +38,45 @@
   margin-bottom: 0.75rem;
   display: flex;
 }
+
+.diagnostics-status-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+
+  margin-right: 0.5em;
+  margin-bottom: 0.5em;
+
+  align-self: center;
+
+  border-radius: 25px;
+
+  box-shadow: 0 0 0 2px #000;
+}
+
+.diagnostics-log-title {
+  font-size: x-large;
+  margin-bottom: 0.75em;
+  border-bottom: 2px solid gray;
+}
+
+.diagnostics-connect-button {
+  color: white;
+  font-weight: bold;
+
+  margin-top: 1em;
+  padding-right: .5em;
+  padding-left: .5em;
+  padding-top: .25em .5em .25em .5em;
+}
+
+.diagnostics-logs-date {
+  color: var(--accent1-color);
+}
+
+.diagnostics-logs-time {
+  color: var(--accent1-color);
+}
+
+.diagnostics-logs-text {
+  color: var(--text-color);
+}
