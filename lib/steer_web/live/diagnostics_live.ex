@@ -15,7 +15,7 @@ defmodule SteerWeb.DiagnosticsLive do
     {:ok,
      socket
      |> assign(:version, vsn)
-     |> assign(:messages, [%{text: "yo", date: "asdfa", time: "asdfa"}])
+     |> assign(:messages, [])
      |> assign(:info, Steer.Lightning.get_info())
      |> assign(:node, Steer.Repo.get_local_node())
      |> set_connecting_flag(false)}
