@@ -1,18 +1,11 @@
-
-.diagnostics-connect-button {
-  color: white;
-  font-weight: bold;
-
-  margin-top: 1em;
-  padding-right: .5em;
-  padding-left: .5em;
-  padding-top: .25em .5em .25em .5em;
-}
-
 .diagnostics-log-title {
   font-size: x-large;
   margin-bottom: 0.75em;
   border-bottom: 2px solid gray;
+}
+
+.diagnostics-logs-details{
+  margin-top: 0.5em;
 }
 
 .diagnostics-logs-date {

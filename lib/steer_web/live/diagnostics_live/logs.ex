@@ -5,7 +5,7 @@ defmodule SteerWeb.DiagnosticsLive.Logs do
     ~H"""
     <div class="mx-4 flex-1">
       <span class="diagnostics-log-title">Log</span>
-      <div class="diagnostics-connect-button">
+      <div class="diagnostics-logs-details">
         <%= for message <- Enum.reverse assigns.messages do %>
           <div>
             <span class="diagnostics-logs-date">
