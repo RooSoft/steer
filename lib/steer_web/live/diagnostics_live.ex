@@ -5,6 +5,7 @@ defmodule SteerWeb.DiagnosticsLive do
   import SteerWeb.Components.ShortPubKey
   import SteerWeb.Components.ExternalLinks
   import SteerWeb.DiagnosticsLive.Logs
+  import SteerWeb.DiagnosticsLive.StatusIndicator
 
   @impl true
   @spec mount(any, any, Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}

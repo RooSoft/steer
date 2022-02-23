@@ -42,24 +42,7 @@
   <.external_links pub_key={@node.pubkey} />
 
   <div class="flex w-100">
-    <div class="">
-      <div
-        :title="is_lnd_node_online ? 'online' : 'offline'"
-        :class="is_lnd_node_online ? 'header-node-online' : 'header-node-offline'"
-        class="diagnostics-status-icon">
-      </div>
-
-      <button phx-click="connect"
-        :class="css.getNodeStatusColor(connecting)"
-        :hidden="is_lnd_node_online"
-        class="diagnostics-connect-button"
-        :name="connecting ? 'working' : 'connect'"
-        :style="connecting ? 'cursor: wait' : 'cursor: pointer'"
-        :disabled="connecting">
-        <%= case @connecting do true -> "connecting..."; false -> "connect" end  %>
-      </button>
-    </div>
-
+    <.status_indicator connecting={@connecting} />
     <.logs messages={@messages} />
   </div>
 </div>
