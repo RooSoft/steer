@@ -4,6 +4,7 @@ defmodule SteerWeb.DiagnosticsLive do
 
   import SteerWeb.Components.ShortPubKey
   import SteerWeb.Components.ExternalLinks
+  import SteerWeb.DiagnosticsLive.Logs
 
   @impl true
   @spec mount(any, any, Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
@@ -13,7 +14,7 @@ defmodule SteerWeb.DiagnosticsLive do
     {:ok,
      socket
      |> assign(:version, vsn)
-     |> assign(:messages, [])
+     |> assign(:messages, [%{text: "yo", date: "asdfa", time: "asdfa"}])
      |> assign(:info, Steer.Lightning.get_info())
      |> assign(:node, Steer.Repo.get_local_node())
      |> set_connecting_flag(false)}

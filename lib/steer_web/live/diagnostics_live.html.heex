@@ -41,43 +41,25 @@
 
   <.external_links pub_key={@node.pubkey} />
 
-  <div class="flex w-100">
-    <div class="">
-      <div
-        :title="is_lnd_node_online ? 'online' : 'offline'"
-        :class="is_lnd_node_online ? 'header-node-online' : 'header-node-offline'"
-        class="diagnostics-status-icon">
+    <div class="flex w-100">
+      <div class="">
+        <div
+          :title="is_lnd_node_online ? 'online' : 'offline'"
+          :class="is_lnd_node_online ? 'header-node-online' : 'header-node-offline'"
+          class="diagnostics-status-icon">
+        </div>
+
+        <button phx-click="connect"
+          :class="css.getNodeStatusColor(connecting)"
+          :hidden="is_lnd_node_online"
+          class="diagnostics-connect-button"
+          :name="connecting ? 'working' : 'connect'"
+          :style="connecting ? 'cursor: wait' : 'cursor: pointer'"
+          :disabled="connecting">
+          <%= case @connecting do true -> "connecting..."; false -> "connect" end  %>
+        </button>
       </div>
 
-      <button phx-click="connect"
-        :class="css.getNodeStatusColor(connecting)"
-        :hidden="is_lnd_node_online"
-        class="diagnostics-connect-button"
-        :name="connecting ? 'working' : 'connect'"
-        :style="connecting ? 'cursor: wait' : 'cursor: pointer'"
-        :disabled="connecting">
-        <%= case @connecting do true -> "connecting..."; false -> "connect" end  %>
-      </button>
+      <.logs messages={@messages} />
     </div>
-
-    <div class="mx-4 flex-1">
-      <span class="diagnostics-log-title">Log</span>
-      <div class="diagnostics-connect-button">
-        <%= for message <- Enum.reverse @messages do %>
-          <div>
-            <span class="diagnostics-logs-date">
-              <%= message.date %>
-            </span>
-            <span class="diagnostics-logs-time">
-              <%= message.time %>
-            </span>
-            <span class="diagnostics-logs-text">
-              <%= message.text %>
-            </span>
-          </div>
-        <% end %>
-      </div>
-    </div>
-  </div>
-
 </div>
