@@ -70,12 +70,16 @@ defmodule Steer.GraphRepo do
   end
 
   defp create_subgraph(connection) do
-    Neo4j.Graph.create(connection, @graph_name)
-    Neo4j.Subgraph.create(connection, @graph_name, @subgraph_name, is_failing: false)
+    connection
+    |> Neo4j.Graph.delete(@graph_name)
+    |> Neo4j.Graph.delete(@subgraph_name)
+    |> Neo4j.Graph.create(@graph_name)
+    |> Neo4j.Subgraph.create(@graph_name, @subgraph_name, is_failing: false)
   end
 
   defp delete_subgraph(connection) do
-    Neo4j.Graph.delete(connection, @subgraph_name)
-    Neo4j.Graph.delete(connection, @graph_name)
+    connection
+    |> Neo4j.Graph.delete(@subgraph_name)
+    |> Neo4j.Graph.delete(@graph_name)
   end
 end
