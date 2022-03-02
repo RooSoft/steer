@@ -3,8 +3,7 @@ defmodule SteerWeb.DiagnosticsLive do
   require Logger
 
   import SteerWeb.DiagnosticsLive.About
-  import SteerWeb.DiagnosticsLive.Logs
-  import SteerWeb.DiagnosticsLive.StatusIndicator
+  import SteerWeb.DiagnosticsLive.Lnd
 
   @impl true
   @spec mount(any, any, Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}

@@ -11,16 +11,7 @@
   </div>
   
   <div x-show="tab == 'lnd'">
-    <div class="diagnostics-info">
-      <div class="diagnostics-info-version">
-        Version <em><%= @info.version %></em>
-      </div>
-    </div>
-
-    <div class="diagnostics-status-and-logs">
-      <.status_indicator connecting={@connecting} />
-      <.logs messages={@messages} />
-    </div>
+    <.lnd info={@info} connecting={@connecting} messages={@messages}/>
   </div>
 
   <div x-show="tab == 'graph'">

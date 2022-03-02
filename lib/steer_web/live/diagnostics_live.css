@@ -1,6 +1,5 @@
 @import './diagnostics_live/about.css';
-@import './diagnostics_live/logs.css';
-@import './diagnostics_live/status_indicator.css';
+@import './diagnostics_live/lnd.css';
 
 #diagnostics-tabs {
   display: flex;
@@ -13,8 +12,4 @@
 
 .diagnostics-tab.selected {
   background-color: var(--header-backgroundcolor);
-}
-
-.diagnostics-status-and-logs {
-  display: flex;
 }
