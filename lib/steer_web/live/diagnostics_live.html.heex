@@ -1,10 +1,10 @@
 <div x-data={"{ connecting: #{@connecting}, pubKey: '#{@node.pubkey}', tab: 'about' }"}>
 
-  <div id="diagnostics-tabs">
+  <nav id="diagnostics-tabs">
     <div class="diagnostics-tab" :class="tab == 'about' && 'selected'" x-on:click="tab = 'about'">About</div>
     <div class="diagnostics-tab" :class="tab == 'lnd' && 'selected'" x-on:click="tab = 'lnd'">LND</div>
     <div class="diagnostics-tab" :class="tab == 'graph' && 'selected'" x-on:click="tab = 'graph'">Graph</div>
-  </div>
+  </nav>
 
   <div x-show="tab == 'about'">
     <.about version={@version} node={@node} info={@info} />
