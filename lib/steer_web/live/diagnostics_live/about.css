@@ -1,0 +1,40 @@
+.diagnostics-about-live-node-name {
+  font-family: Maven Pro;
+  font-size: 2.25rem/* 36px */;
+  line-height: 2.5rem/* 40px */;
+}
+
+.diagnostics-about-live-pub-key {
+  margin-bottom: 0.75rem;
+}
+
+.diagnostics-about-info-version {
+  margin-bottom: 0.5rem;
+}
+
+.diagnostics-about-info-chains {
+  margin-bottom: 0.75rem;
+  display: flex;
+}
+
+.diagnostics-about-info-uris {
+  margin-bottom: 0.75rem;
+}
+
+.diagnostics-about-info-uris-title {
+  margin-bottom: 0.25rem;
+}
+
+.diagnostics-about-info-uri {
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+.diagnostics-about-info-uri-string {
+  font-size: 0.5rem;
+  width: 300px;
+  margin-right: 0.25rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+}

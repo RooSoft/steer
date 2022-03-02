@@ -1,3 +1,4 @@
+@import './diagnostics_live/about.css';
 @import './diagnostics_live/logs.css';
 @import './diagnostics_live/status_indicator.css';
 
@@ -12,47 +13,6 @@
 
 .diagnostics-tab.selected {
   background-color: var(--header-backgroundcolor);
-}
-
-.diagnostics-live-node-name {
-  font-family: Maven Pro;
-  font-size: 2.25rem/* 36px */;
-  line-height: 2.5rem/* 40px */;
-}
-
-.diagnostics-live-pub-key {
-  margin-bottom: 0.75rem;
-}
-
-.diagnostics-info-version {
-  margin-bottom: 0.5rem;
-}
-
-.diagnostics-info-uris {
-  margin-bottom: 0.75rem;
-}
-
-.diagnostics-info-uris-title {
-  margin-bottom: 0.25rem;
-}
-
-.diagnostics-info-uri {
-  display: flex;
-  flex-wrap: nowrap;
-}
-
-.diagnostics-info-uri-string {
-  font-size: 0.5rem;
-  width: 300px;
-  margin-right: 0.25rem;
-  overflow-x: auto;
-  overflow-y: hidden;
-  white-space: nowrap;
-}
-
-.diagnostics-info-chains {
-  margin-bottom: 0.75rem;
-  display: flex;
 }
 
 .diagnostics-status-and-logs {

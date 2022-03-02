@@ -2,8 +2,7 @@ defmodule SteerWeb.DiagnosticsLive do
   use SteerWeb, :live_view
   require Logger
 
-  import SteerWeb.Components.ShortPubKey
-  import SteerWeb.Components.ExternalLinks
+  import SteerWeb.DiagnosticsLive.About
   import SteerWeb.DiagnosticsLive.Logs
   import SteerWeb.DiagnosticsLive.StatusIndicator
 
