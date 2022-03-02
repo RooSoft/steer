@@ -1,6 +1,19 @@
 @import './diagnostics_live/logs.css';
 @import './diagnostics_live/status_indicator.css';
 
+#diagnostics-tabs {
+  display: flex;
+  margin-bottom: 1em;
+}
+
+.diagnostics-tab {
+  padding: .25em 1em .25em 1em;
+}
+
+.diagnostics-tab.selected {
+  background-color: var(--header-backgroundcolor);
+}
+
 .diagnostics-live-node-name {
   font-family: Maven Pro;
   font-size: 2.25rem/* 36px */;

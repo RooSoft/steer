@@ -1,23 +1,26 @@
-<div x-data={"{ connecting: #{@connecting}, pubKey: '#{@node.pubkey}' }"}>
+<div x-data={"{ connecting: #{@connecting}, pubKey: '#{@node.pubkey}', tab: 'about' }"}>
 
-  <div>Steer v<%= @version %></div>
-
-  <div class="diagnostics-live-node-name"><%= @node.alias %></div>
-
-  <div class="diagnostics-live-pub-key">
-    <.short_pub_key pub_key={@node.pubkey} />
+  <div id="diagnostics-tabs">
+    <div class="diagnostics-tab" :class="tab == 'about' && 'selected'" x-on:click="tab = 'about'">About</div>
+    <div class="diagnostics-tab" :class="tab == 'lnd' && 'selected'" x-on:click="tab = 'lnd'">LND</div>
+    <div class="diagnostics-tab" :class="tab == 'graph' && 'selected'" x-on:click="tab = 'graph'">Graph</div>
   </div>
 
-  <div class="diagnostics-info-chains">
-    <%= for chain <- @info.chains do %>
-      <%= chain.chain %> <%= chain.network %>
-    <% end %>
-  </div>
+  <div x-show="tab == 'about'">
+    <div>Steer v<%= @version %></div>
 
-  <div class="diagnostics-info">
-    <div class="diagnostics-info-version">
-      LND Version <em><%= @info.version %></em>
+    <div class="diagnostics-live-node-name"><%= @node.alias %></div>
+
+    <div class="diagnostics-live-pub-key">
+      <.short_pub_key pub_key={@node.pubkey} />
     </div>
+
+    <div class="diagnostics-info-chains">
+      <%= for chain <- @info.chains do %>
+        <%= chain.chain %> <%= chain.network %>
+      <% end %>
+    </div>
+
     <div class="diagnostics-info-uris">
       <div class="diagnostics-info-uris-title">
         URI list
@@ -37,12 +40,25 @@
         <% end %>
       </ul>
     </div>
+
+    <.external_links pub_key={@node.pubkey} />
+  </div>
+  
+  <div x-show="tab == 'lnd'">
+    <div class="diagnostics-info">
+      <div class="diagnostics-info-version">
+        Version <em><%= @info.version %></em>
+      </div>
+    </div>
+
+    <div class="diagnostics-status-and-logs">
+      <.status_indicator connecting={@connecting} />
+      <.logs messages={@messages} />
+    </div>
   </div>
 
-  <.external_links pub_key={@node.pubkey} />
-
-  <div class="diagnostics-status-and-logs">
-    <.status_indicator connecting={@connecting} />
-    <.logs messages={@messages} />
+  <div x-show="tab == 'graph'">
+    Nothing yet
   </div>
+
 </div>
