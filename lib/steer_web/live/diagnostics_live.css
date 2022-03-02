@@ -1,4 +1,5 @@
 @import './diagnostics_live/about.css';
+@import './diagnostics_live/graph.css';
 @import './diagnostics_live/lnd.css';
 
 #diagnostics-tabs {

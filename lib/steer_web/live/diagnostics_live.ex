@@ -3,6 +3,7 @@ defmodule SteerWeb.DiagnosticsLive do
   require Logger
 
   import SteerWeb.DiagnosticsLive.About
+  import SteerWeb.DiagnosticsLive.Graph
   import SteerWeb.DiagnosticsLive.Lnd
 
   @impl true
