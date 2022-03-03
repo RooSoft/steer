@@ -15,6 +15,10 @@ defmodule Steer.GraphRepo do
     {:ok, state |> add_connection}
   end
 
+  def get_number_of_nodes do
+    GenServer.call(__MODULE__, {:get_number_of_nodes})
+  end
+
   def get_node_by_alias(node_alias) do
     GenServer.call(__MODULE__, {:get_node_by_alias, %{node_alias: node_alias}})
   end
@@ -29,6 +33,16 @@ defmodule Steer.GraphRepo do
          node2_pub_key: node2_pub_key
        }}
     )
+  end
+
+  def handle_call(
+        {:get_number_of_nodes},
+        _from,
+        %{connection: connection} = state
+      ) do
+    number = connection |> Query.get_number_of_nodes()
+
+    {:reply, number, state}
   end
 
   def handle_call(
