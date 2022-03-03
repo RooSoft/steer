@@ -7,9 +7,13 @@ defmodule SteerWeb.DiagnosticsLive.Graph do
     node_count = GraphRepo.get_number_of_nodes()
 
     ~H"""
-    <div class="diagnostics-graph-nothing-yet">
+    <div class="diagnostics-graph-info">
       <%= node_count %> nodes
     </div>
+
+    <button>
+      refresh
+    </button>
     """
   end
 end
