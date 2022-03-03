@@ -11,7 +11,7 @@ defmodule SteerWeb.DiagnosticsLive.Graph do
       <%= node_count %> nodes
     </div>
 
-    <button>
+    <button phx-click="refresh_graph">
       refresh
     </button>
     """

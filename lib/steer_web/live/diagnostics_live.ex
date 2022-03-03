@@ -28,6 +28,13 @@ defmodule SteerWeb.DiagnosticsLive do
   end
 
   @impl true
+  def handle_event("refresh_graph", _value, socket) do
+    IO.puts("refresh_graph")
+
+    {:noreply, socket}
+  end
+
+  @impl true
   def handle_info({:node_connection, {:connected, message}}, socket) do
     Logger.info(message)
 
