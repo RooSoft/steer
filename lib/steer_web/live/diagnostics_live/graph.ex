@@ -11,6 +11,10 @@ defmodule SteerWeb.DiagnosticsLive.Graph do
       <%= node_count %> nodes
     </div>
 
+    <div class="diagnostics-graph-status">
+      Graph status: <em><%= assigns.status %></em>
+    </div>
+
     <button phx-click="refresh_graph">
       refresh
     </button>
