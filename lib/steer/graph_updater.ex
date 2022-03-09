@@ -1,7 +1,8 @@
 defmodule Steer.GraphUpdater do
   use GenServer
 
-  alias LightningGraph.Lnd.GraphDownloader
+  alias LightningGraph.Lnd
+  alias LightningGraph.Neo4j
 
   @pubsub %{
     topic: inspect(__MODULE__),
@@ -18,6 +19,7 @@ defmodule Steer.GraphUpdater do
     GenServer.start_link(__MODULE__, %{}, name: __MODULE__)
   end
 
+  @impl true
   def init(state) do
     {:ok, state}
   end
@@ -26,10 +28,11 @@ defmodule Steer.GraphUpdater do
     GenServer.cast(__MODULE__, {:download})
   end
 
-  def handle_cast({:download}, _from, state) do
+  @impl true
+  def handle_cast({:download}, state) do
     broadcast(@pubsub.downloading, "downloading")
 
-    GraphDownloader.get(
+    Lnd.GraphDownloader.get(
       "/home/boss/.lnd/lnd.cert",
       "/home/boss/.lnd/readonly.macaroon",
       "https://umbrel:8080/v1/graph",
@@ -38,6 +41,30 @@ defmodule Steer.GraphUpdater do
     )
 
     broadcast(@pubsub.downloaded, "downloaded")
+
+    connection = Neo4j.get_connection()
+
+    broadcast(@pubsub.importing, "importing")
+
+    connection
+    |> Neo4j.BulkImporter.cleanup()
+    |> Neo4j.BulkImporter.import_graph("nodes.csv", "channels.csv")
+
+    broadcast(@pubsub.imported, "imported")
+
+    broadcast(@pubsub.analyzing, "analyzing")
+
+    connection
+    |> Neo4j.Aggregate.add_channel_count()
+    |> Neo4j.Aggregate.add_channel_capacity()
+    |> Neo4j.DataAnalyzer.create_is_local("roosoft")
+    |> Neo4j.DataAnalyzer.delete_graph()
+    |> Neo4j.DataAnalyzer.create_graph()
+    |> Neo4j.DataAnalyzer.add_community_ids()
+    |> Neo4j.DataAnalyzer.add_betweenness_score()
+
+    broadcast(@pubsub.analyzed, "analyzed")
+    broadcast(@pubsub.ready, "ready")
 
     {:noreply, state}
   end

@@ -18,6 +18,7 @@ defmodule Steer.Application do
       # Start a worker by calling: Steer.Worker.start_link(arg)
       # {Steer.Worker, arg}
 
+      Steer.GraphUpdater,
       Steer.Lightning,
       Steer.GraphRepo,
       Steer.LndSyncTimer

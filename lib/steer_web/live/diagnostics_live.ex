@@ -6,9 +6,16 @@ defmodule SteerWeb.DiagnosticsLive do
   import SteerWeb.DiagnosticsLive.Graph
   import SteerWeb.DiagnosticsLive.Lnd
 
+  alias Steer.GraphUpdater
+
+  @graph_updater_pubsub_topic inspect(GraphUpdater)
+  @graph_updater_pubsub_ready :ready
+
   @impl true
   @spec mount(any, any, Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   def mount(_params, _session, socket) do
+    GraphUpdater.subscribe()
+
     {:ok, vsn} = :application.get_key(:steer, :vsn)
 
     {:ok,
@@ -30,6 +37,22 @@ defmodule SteerWeb.DiagnosticsLive do
   @impl true
   def handle_event("refresh_graph", _value, socket) do
     IO.puts("refresh_graph")
+
+    GraphUpdater.download()
+
+    {:noreply, socket}
+  end
+
+  @impl true
+  def handle_info({@graph_updater_pubsub_topic, @graph_updater_pubsub_ready, _payload}, socket) do
+    IO.puts("Graph ready")
+
+    {:noreply, socket}
+  end
+
+  @impl true
+  def handle_info({@graph_updater_pubsub_topic, _message, payload}, socket) do
+    IO.inspect(payload)
 
     {:noreply, socket}
   end
