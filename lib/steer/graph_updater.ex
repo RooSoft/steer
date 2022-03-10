@@ -30,6 +30,24 @@ defmodule Steer.GraphUpdater do
 
   @impl true
   def handle_cast({:refresh}, state) do
+    download()
+    batch_import()
+    analyze()
+
+    {:noreply, state}
+  end
+
+  def subscribe do
+    Phoenix.PubSub.subscribe(Steer.PubSub, @pubsub.topic)
+  end
+
+  defp broadcast(payload, message) do
+    Phoenix.PubSub.broadcast(Steer.PubSub, @pubsub.topic, {@pubsub.topic, message, payload})
+
+    payload
+  end
+
+  defp download do
     broadcast(@pubsub.downloading, "downloading")
 
     Lnd.GraphDownloader.get(
@@ -41,7 +59,9 @@ defmodule Steer.GraphUpdater do
     )
 
     broadcast(@pubsub.downloaded, "downloaded")
+  end
 
+  defp batch_import do
     connection = Neo4j.get_connection()
 
     broadcast(@pubsub.importing, "importing")
@@ -51,6 +71,10 @@ defmodule Steer.GraphUpdater do
     |> Neo4j.BulkImporter.import_graph("nodes.csv", "channels.csv")
 
     broadcast(@pubsub.imported, "imported")
+  end
+
+  defp analyze do
+    connection = Neo4j.get_connection()
 
     broadcast(@pubsub.analyzing, "analyzing")
 
@@ -65,17 +89,5 @@ defmodule Steer.GraphUpdater do
 
     broadcast(@pubsub.analyzed, "analyzed")
     broadcast(@pubsub.ready, "ready")
-
-    {:noreply, state}
-  end
-
-  def subscribe do
-    Phoenix.PubSub.subscribe(Steer.PubSub, @pubsub.topic)
-  end
-
-  defp broadcast(payload, message) do
-    Phoenix.PubSub.broadcast(Steer.PubSub, @pubsub.topic, {@pubsub.topic, message, payload})
-
-    payload
   end
 end
