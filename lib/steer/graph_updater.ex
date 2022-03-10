@@ -24,12 +24,12 @@ defmodule Steer.GraphUpdater do
     {:ok, state}
   end
 
-  def download do
-    GenServer.cast(__MODULE__, {:download})
+  def refresh do
+    GenServer.cast(__MODULE__, {:refresh})
   end
 
   @impl true
-  def handle_cast({:download}, state) do
+  def handle_cast({:refresh}, state) do
     broadcast(@pubsub.downloading, "downloading")
 
     Lnd.GraphDownloader.get(

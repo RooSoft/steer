@@ -37,12 +37,14 @@ defmodule SteerWeb.DiagnosticsLive do
 
   @impl true
   def handle_event("refresh_graph", _value, socket) do
-    GraphUpdater.download()
+    GraphUpdater.refresh()
 
     {:noreply, socket}
   end
 
   @impl true
+  @spec handle_info({:node_connection, {any, any}} | {<<_::144>>, any, any}, map) ::
+          {:noreply, map}
   def handle_info({@graph_updater_pubsub_topic, @graph_updater_pubsub_ready, _payload}, socket) do
     {
       :noreply,
