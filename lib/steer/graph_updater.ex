@@ -1,93 +1,31 @@
 defmodule Steer.GraphUpdater do
-  use GenServer
+  use Supervisor
 
-  alias LightningGraph.Lnd
-  alias LightningGraph.Neo4j
+  alias Steer.GraphUpdater.Manager
 
-  @pubsub %{
-    topic: inspect(__MODULE__),
-    downloading: :downloading,
-    downloaded: :downloaded,
-    importing: :importing,
-    imported: :imported,
-    analyzing: :analyzing,
-    analyzed: :analyzed,
-    ready: :ready
-  }
-
-  def start_link(_opts) do
-    GenServer.start_link(__MODULE__, %{}, name: __MODULE__)
+  def start_link(init_arg) do
+    Supervisor.start_link(__MODULE__, init_arg, name: __MODULE__)
   end
 
   @impl true
-  def init(state) do
-    {:ok, state}
+  def init(_init_arg) do
+    children = [
+      Steer.GraphUpdater.Manager,
+      Steer.GraphUpdater.Runner
+    ]
+
+    Supervisor.init(children, strategy: :one_for_one)
+  end
+
+  def get_status do
+    Manager.get_status()
   end
 
   def refresh do
-    GenServer.cast(__MODULE__, {:refresh})
-  end
-
-  @impl true
-  def handle_cast({:refresh}, state) do
-    download()
-    batch_import()
-    analyze()
-
-    {:noreply, state}
+    Manager.refresh()
   end
 
   def subscribe do
-    Phoenix.PubSub.subscribe(Steer.PubSub, @pubsub.topic)
-  end
-
-  defp broadcast(payload, message) do
-    Phoenix.PubSub.broadcast(Steer.PubSub, @pubsub.topic, {@pubsub.topic, message, payload})
-
-    payload
-  end
-
-  defp download do
-    broadcast(@pubsub.downloading, "downloading")
-
-    Lnd.GraphDownloader.get(
-      "/home/boss/.lnd/lnd.cert",
-      "/home/boss/.lnd/readonly.macaroon",
-      "https://umbrel:8080/v1/graph",
-      "/home/boss/neo4j/import/nodes.csv",
-      "/home/boss/neo4j/import/channels.csv"
-    )
-
-    broadcast(@pubsub.downloaded, "downloaded")
-  end
-
-  defp batch_import do
-    connection = Neo4j.get_connection()
-
-    broadcast(@pubsub.importing, "importing")
-
-    connection
-    |> Neo4j.BulkImporter.cleanup()
-    |> Neo4j.BulkImporter.import_graph("nodes.csv", "channels.csv")
-
-    broadcast(@pubsub.imported, "imported")
-  end
-
-  defp analyze do
-    connection = Neo4j.get_connection()
-
-    broadcast(@pubsub.analyzing, "analyzing")
-
-    connection
-    |> Neo4j.Aggregate.add_channel_count()
-    |> Neo4j.Aggregate.add_channel_capacity()
-    |> Neo4j.DataAnalyzer.create_is_local("roosoft")
-    |> Neo4j.DataAnalyzer.delete_graph()
-    |> Neo4j.DataAnalyzer.create_graph()
-    |> Neo4j.DataAnalyzer.add_community_ids()
-    |> Neo4j.DataAnalyzer.add_betweenness_score()
-
-    broadcast(@pubsub.analyzed, "analyzed")
-    broadcast(@pubsub.ready, "ready")
+    Manager.subscribe()
   end
 end

@@ -24,7 +24,7 @@ defmodule SteerWeb.DiagnosticsLive do
      |> assign(:messages, [])
      |> assign(:info, Steer.Lightning.get_info())
      |> assign(:node, Steer.Repo.get_local_node())
-     |> assign(:graph_status, :ready)
+     |> assign(:graph_status, GraphUpdater.get_status())
      |> set_connecting_flag(false)}
   end
 
@@ -45,7 +45,7 @@ defmodule SteerWeb.DiagnosticsLive do
   @impl true
   @spec handle_info({:node_connection, {any, any}} | {<<_::144>>, any, any}, map) ::
           {:noreply, map}
-  def handle_info({@graph_updater_pubsub_topic, @graph_updater_pubsub_ready, _payload}, socket) do
+  def handle_info({@graph_updater_pubsub_topic, @graph_updater_pubsub_ready}, socket) do
     {
       :noreply,
       socket
@@ -54,8 +54,8 @@ defmodule SteerWeb.DiagnosticsLive do
   end
 
   @impl true
-  def handle_info({@graph_updater_pubsub_topic, message, payload}, socket) do
-    IO.inspect(payload)
+  def handle_info({@graph_updater_pubsub_topic, message}, socket) do
+    IO.inspect(message)
 
     {:noreply, socket |> assign(:graph_status, message)}
   end
