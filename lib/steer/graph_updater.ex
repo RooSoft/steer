@@ -10,6 +10,7 @@ defmodule Steer.GraphUpdater do
   @impl true
   def init(_init_arg) do
     children = [
+      LightningGraph.Neo4j.Lnd.GraphUpdater,
       Steer.GraphUpdater.Manager,
       Steer.GraphUpdater.Runner
     ]

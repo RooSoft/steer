@@ -25,6 +25,8 @@ defmodule Steer.GraphUpdater.Manager do
 
   @impl true
   def init(state) do
+    LightningGraph.Neo4j.Lnd.GraphUpdater.subscribe()
+
     {:ok, state}
   end
 
@@ -50,6 +52,13 @@ defmodule Steer.GraphUpdater.Manager do
       state
       |> update_status(@statuses.downloading)
     }
+  end
+
+  @impl true
+  def handle_info({:graph_updater, topic, payload}, state) do
+    IO.puts("#{topic} #{inspect(payload)}")
+
+    {:noreply, state}
   end
 
   @impl true
