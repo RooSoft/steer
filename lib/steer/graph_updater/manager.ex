@@ -1,6 +1,8 @@
 defmodule Steer.GraphUpdater.Manager do
   use GenServer
 
+  require Logger
+
   alias Steer.GraphUpdater.Runner
 
   @pubsub %{
@@ -55,8 +57,22 @@ defmodule Steer.GraphUpdater.Manager do
   end
 
   @impl true
-  def handle_info({:graph_updater, topic, payload}, state) do
-    IO.puts("#{topic} #{inspect(payload)}")
+  def handle_info({:graph_updater, :channel_update, _payload}, state) do
+    #    Logger.info("CHANNEL UPDATE #{inspect(payload)}")
+
+    {:noreply, state}
+  end
+
+  @impl true
+  def handle_info({:graph_updater, :closed_channel, payload}, state) do
+    Logger.info("CHANNEL CLOSED #{inspect(payload)}")
+
+    {:noreply, state}
+  end
+
+  @impl true
+  def handle_info({:graph_updater, :node_update, payload}, state) do
+    Logger.info("NODE UPDATE #{inspect(payload)}")
 
     {:noreply, state}
   end
