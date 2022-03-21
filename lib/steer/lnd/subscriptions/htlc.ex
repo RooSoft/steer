@@ -34,6 +34,9 @@ defmodule Steer.Lnd.Subscriptions.Htlc do
       |> Steer.Lightning.insert_htlc_event()
       |> broadcast(@pubsub.settle_message)
 
+    Steer.Sync.Channel.sync()
+    Steer.Sync.Forward.sync()
+
     Logger.info("HTLC settle event \##{htlc_event.id}")
 
     {:noreply, state}
