@@ -22,4 +22,16 @@ services:
     - "5444:5432"
     volumes:
     - ${HOME}/postgres-steer:/var/lib/postgresql/data
+
+  graphdb:
+    image: neo4j:4.4.4-community
+    container_name: neo4j
+    environment:
+      NEO4J_AUTH: neo4j/test
+    ports:
+    - "7474:7474"
+    - "7687:7687"
+    restart: always
+    volumes:
+    - $HOME/neo4j/data:/data
   
