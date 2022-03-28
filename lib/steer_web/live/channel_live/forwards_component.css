@@ -38,6 +38,14 @@
   grid-column: span 3 / span 3;
 }
 
+.forwards-component-direction {
+  font-size: smaller;
+}
+
+.forwards-component-alias {
+  font-size: larger;
+}
+
 .forwards-component-spacer {
   grid-column: span 3 / span 3;
   height: 1rem;
