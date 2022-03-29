@@ -1,27 +1,17 @@
-@import './forwards_component.css';
+@import './components/about.css';
+@import './components/forwards.css';
+@import './components/liquidity.css';
 
-
-.channel-show-node-pub-key {
+#channel-tabs {
+  display: flex;
+  margin-bottom: 1em;
 }
 
-.channel-show-node-lnd-id {
-  margin-bottom: 0.75rem;
-
-  font-size: small;
+.channel-tab {
+  padding: .25em 1em .25em 1em;
 }
 
-.channel-show-external-links {
-  margin-bottom: 0.75rem;
-}
-
-.channel-show-details {
-  margin-bottom: 1rem;
-}
-
-.channel-show-details-header {
-  margin-bottom: 0.5rem/* 8px */;
-
-  font-size: 1.25rem/* 20px */;
-  line-height: 1.75rem/* 28px */;
+.channel-tab.selected {
+  background-color: var(--header-backgroundcolor);
 }
 

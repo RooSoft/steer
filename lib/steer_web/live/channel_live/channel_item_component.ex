@@ -1,9 +1,10 @@
 defmodule SteerWeb.ChannelLive.ChannelItemComponent do
   use Phoenix.Component
 
-  import SteerWeb.Components.NodeStatusIndicatorComponent
   import SteerWeb.Components.LiquidityMeeter
   import SteerWeb.Components.ShortPubKey
+
+  import SteerWeb.Components.ChannelId
 
   def channel_item(assigns) do
     %{channel: channel} = assigns
@@ -16,17 +17,7 @@ defmodule SteerWeb.ChannelLive.ChannelItemComponent do
         style={"border-color:#{channel.color}"}>
 
         <div class="channel-item-id">
-
-          <div class="channel-item-alias">
-            <div class="channel-item-node-status-indicator">
-              <.node_status_indicator status={channel.status} />
-            </div>
-
-            <div phx-click="">
-              <%= channel.alias %>
-            </div>
-          </div>
-
+          <.channel_id channel={channel} />
           <.short_pub_key pub_key={channel.node_pub_key} />
 
           <div class="channel-item-node-forwards">

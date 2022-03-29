@@ -1,49 +1,45 @@
-<div x-data={"{ active: #{@channel.status == :active}, pubKey: '#{@channel.node_pub_key}' }"}>
-  <div class="channel-item-alias">
-    <div class="channel-item-node-status-indicator">
-      <.node_status_indicator status={@channel.status} />
-    </div>
+<div x-data={"{ 
+  tab: window.location.hash ? window.location.hash.substring(1) : 'forwards'
+}"}>
 
-    <div phx-click="">
-      <%= @channel.alias %>
-    </div>
+  <.channel_id channel={@channel} />
+
+  <nav id="channel-tabs">
+    <a href="#"
+      class="channel-tab"
+      :class="tab == 'forwards' && 'selected'" 
+      @click.prevent="tab = 'forwards'; window.location.hash = 'forwards'" >
+      Forwards
+    </a>
+
+    <a href="#"
+      class="channel-tab"
+      :class="tab == 'liquidity' && 'selected'" 
+      @click.prevent="tab = 'liquidity'; window.location.hash = 'liquidity'" >
+      Liquidity
+    </a>
+
+    <a href="#"
+      class="channel-tab"
+      :class="tab == 'about' && 'selected'" 
+      @click.prevent="tab = 'about'; window.location.hash = 'about'" >
+      About
+    </a>
+  </nav>
+
+  <div x-cloak x-show="tab == 'forwards'">
+    <.forwards channel={@channel} forwards={@forwards}/>
   </div>
 
-  <div class="channel-show-node-pub-key">
-    <.short_pub_key pub_key={@channel.node_pub_key} />
+  <div x-cloak x-show="tab == 'liquidity'">
+    <.liquidity channel={@channel} />
   </div>
 
-  <div class="channel-show-node-lnd-id">
-    Channel id: <%= @channel.lnd_id %>
+  <div x-cloak x-show="tab == 'about'">
+    <.about channel={@channel} />
   </div>
+  
 </div>
 
-<div class="channel-show-external-links">
-  <.external_links pub_key={@channel.node_pub_key} />
-</div>
 
-<div class="channel-show-details">
-  <div class="channel-show-details-header">
-    Details
-  </div>
-  <div>
-    <%= @channel.formatted_capacity %>
-    <span class="text-xs">sats, </span>
-    <%= @channel.formatted_balance_percent %>%
-    <span class="text-xs">local</span>
-  </div>
-  <div>
-    <%= @channel.formatted_local_balance %>
-    <span class="text-xs">sats local</span>
-  </div>
-  <div>
-    <%= @channel.formatted_remote_balance %>
-    <span class="text-xs">sats remote</span>
-  </div>
-</div>
 
-<.live_component module={ForwardsComponent}, id="forwards"
-  content={%{ 
-    channel: @channel,
-    forwards: @forwards 
-  }} />

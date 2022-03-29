@@ -1,3 +1,5 @@
+@import '../components/channel_id.css';
+
 .channel-item {
   padding: 0.2rem 0.5rem 0.5rem 0.5rem;
   margin-bottom: 0.25rem;
@@ -17,20 +19,6 @@
 }
 
 .channel-item-id {
-}
-
-.channel-item-node-status-indicator {
-  margin-bottom: 0.3rem;
-}
-
-.channel-item-alias {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  grid-column-gap: 0.5rem;
-  align-items: center;
-
-  font-family: Maven Pro;
-  font-size: large;
 }
 
 .channel-item-node-forwards {

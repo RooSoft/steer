@@ -2,9 +2,10 @@ defmodule SteerWeb.ChannelLive.Show do
   use SteerWeb, :live_view
 
   alias Steer.Lnd.Subscriptions
-  alias SteerWeb.ChannelLive.ForwardsComponent
 
-  import SteerWeb.Components.ShortPubKey
+  import SteerWeb.Components.ChannelId
+
+  import SteerWeb.ChannelLive.Components.{Forwards, Liquidity, About}
 
   @htlc_pubsub_topic inspect(Subscriptions.Htlc)
   @htlc_pubsub_settle_message :settle
@@ -14,9 +15,6 @@ defmodule SteerWeb.ChannelLive.Show do
   # @channel_pubsub_closed_message :closed_message
   @channel_pubsub_active_message :active_message
   @channel_pubsub_inactive_message :inactive_message
-
-  import SteerWeb.Components.NodeStatusIndicatorComponent
-  import SteerWeb.Components.ExternalLinks
 
   @impl true
   def handle_params(%{"id" => channel_id_string}, _, socket) do

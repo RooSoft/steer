@@ -1,0 +1,13 @@
+.channel-id-alias {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-column-gap: 0.5rem;
+  align-items: center;
+
+  font-family: Maven Pro;
+  font-size: large;
+}
+
+.channel-id-node-status-indicator {
+  margin-bottom: 0.3rem;
+}
