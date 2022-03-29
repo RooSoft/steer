@@ -71,9 +71,15 @@ defmodule SteerWeb.ChannelLive.Show do
   end
 
   defp update_socket(socket, channel_id) do
+    channel = Steer.Lightning.get_channel(id: channel_id)
+    {:ok, lnd_edge} = LndClient.get_channel(channel.lnd_id)
+
+    IO.inspect(lnd_edge)
+
     socket
-    |> assign(:channel, Steer.Lightning.get_channel(id: channel_id))
+    |> assign(:channel, channel)
     |> assign(:forwards, Steer.Lightning.get_channel_forwards(%{channel_id: channel_id}))
+    |> assign(:lnd_edge, lnd_edge)
   end
 
   defp subscribe_to_events(socket) do
