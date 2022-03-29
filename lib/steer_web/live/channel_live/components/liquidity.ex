@@ -2,9 +2,6 @@ defmodule SteerWeb.ChannelLive.Components.Liquidity do
   use Phoenix.Component
 
   def liquidity(assigns) do
-    channel = assigns.channel
-    lnd_edge = assigns.lnd_edge
-
     ~H"""
     <div class="channel-liquidity-details">
       <div>
@@ -24,13 +21,13 @@ defmodule SteerWeb.ChannelLive.Components.Liquidity do
     </div>
 
     <div class="channel-liquidity-fees">
-      <div>pub key1: <%= lnd_edge.node1_pub %></div>
-      <div>base1: <%= lnd_edge.node1_policy.fee_base_msat / 1000 %> sats</div>
-      <div>rate1: <%= lnd_edge.node1_policy.fee_rate_milli_msat %> PPM</div>
+      <div>pub key1: <%= @lnd_edge.node1_pub %></div>
+      <div>base1: <%= @lnd_edge.node1_policy.fee_base_msat / 1000 %> sats</div>
+      <div>rate1: <%= @lnd_edge.node1_policy.fee_rate_milli_msat %> PPM</div>
 
-      <div>pub key2: <%= lnd_edge.node2_pub %></div>
-      <div>base2: <%= lnd_edge.node2_policy.fee_base_msat / 1000 %> sats</div>
-      <div>rate2: <%= lnd_edge.node2_policy.fee_rate_milli_msat %> PPM</div>
+      <div>pub key2: <%= @lnd_edge.node2_pub %></div>
+      <div>base2: <%= @lnd_edge.node2_policy.fee_base_msat / 1000 %> sats</div>
+      <div>rate2: <%= @lnd_edge.node2_policy.fee_rate_milli_msat %> PPM</div>
     </div>
     """
   end
