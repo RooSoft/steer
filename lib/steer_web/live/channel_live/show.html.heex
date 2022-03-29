@@ -2,7 +2,9 @@
   tab: window.location.hash ? window.location.hash.substring(1) : 'forwards'
 }"}>
 
-  <.channel_id channel={@channel} />
+  <div class="channel-show-id">
+    <.channel_id channel={@channel} />
+  </div>
 
   <nav id="channel-tabs">
     <a href="#"

@@ -2,6 +2,11 @@
 @import './components/forwards.css';
 @import './components/liquidity.css';
 
+
+.channel-show-id {
+  margin-bottom: 0.5em;
+}
+
 #channel-tabs {
   display: flex;
   margin-bottom: 1em;
