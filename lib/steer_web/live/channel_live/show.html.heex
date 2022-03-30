@@ -34,7 +34,7 @@
   </div>
 
   <div x-cloak x-show="tab == 'liquidity'">
-    <.liquidity channel={@channel} lnd_edge={@lnd_edge} />
+    <.liquidity channel={@channel} fee_structure={@fee_structure} />
   </div>
 
   <div x-cloak x-show="tab == 'about'">

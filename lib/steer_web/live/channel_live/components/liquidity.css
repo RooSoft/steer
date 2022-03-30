@@ -1,3 +1,27 @@
 .channel-liquidity-details {
   margin-bottom: 0.5em;
 }
+
+.channel-liquidity-fees-table {
+
+}
+
+.channel-liquidity-fees-label {
+}
+
+.channel-liquidity-fees-value-cell {
+  text-align: right;
+  padding-left: 0.5em;
+}
+
+.channel-liquidity-fees-value {
+  color: var(--accent1-color);
+}
+
+.channel-liquidity-fees-unit {
+  font-size: x-small;
+}
+
+.channel-liquidity-fees-header {
+  text-align: right;
+}

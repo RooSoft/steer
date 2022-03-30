@@ -4,30 +4,57 @@ defmodule SteerWeb.ChannelLive.Components.Liquidity do
   def liquidity(assigns) do
     ~H"""
     <div class="channel-liquidity-details">
+      <div class="section-header">Allocation</div>
       <div>
-        <%= @channel.formatted_capacity %>
+        <em><%= @channel.formatted_capacity %></em>
         <span class="text-xs">sats, </span>
-        <%= @channel.formatted_balance_percent %>%
+        <em><%= @channel.formatted_balance_percent %></em>%
         <span class="text-xs">local</span>
       </div>
       <div>
-        <%= @channel.formatted_local_balance %>
+        <em><%= @channel.formatted_local_balance %></em>
         <span class="text-xs">sats local</span>
       </div>
       <div>
-        <%= @channel.formatted_remote_balance %>
+        <em><%= @channel.formatted_remote_balance %></em>
         <span class="text-xs">sats remote</span>
       </div>
     </div>
 
     <div class="channel-liquidity-fees">
-      <div>pub key1: <%= @lnd_edge.node1_pub %></div>
-      <div>base1: <%= @lnd_edge.node1_policy.fee_base_msat / 1000 %> sats</div>
-      <div>rate1: <%= @lnd_edge.node1_policy.fee_rate_milli_msat %> PPM</div>
+      <div class="section-header">Fees</div>
 
-      <div>pub key2: <%= @lnd_edge.node2_pub %></div>
-      <div>base2: <%= @lnd_edge.node2_policy.fee_base_msat / 1000 %> sats</div>
-      <div>rate2: <%= @lnd_edge.node2_policy.fee_rate_milli_msat %> PPM</div>
+      <table class="channel-liquidity-fees-table">
+        <tbody>
+          <tr>
+            <th></th>
+            <th class="channel-liquidity-fees-header">base</th>
+            <th class="channel-liquidity-fees-header">rate</th>
+          </tr>
+          <tr>
+            <td class="channel-liquidity-fees-label">local</td>
+            <td class="channel-liquidity-fees-value-cell">
+              <span class="channel-liquidity-fees-value"><%= @fee_structure.local.base / 1000 %></span>
+              <span class="channel-liquidity-fees-unit">sats</span>
+            </td>
+            <td class="channel-liquidity-fees-value-cell">
+              <span class="channel-liquidity-fees-value"><%= @fee_structure.local.rate %></span>
+              <span class="channel-liquidity-fees-unit">PPM</span>
+            </td>
+          </tr>
+          <tr>
+            <td class="channel-liquidity-fees-label">remote</td>
+            <td class="channel-liquidity-fees-value-cell">
+              <span class="channel-liquidity-fees-value"><%= @fee_structure.remote.base / 1000 %></span>
+              <span class="channel-liquidity-fees-unit">sats</span>
+            </td>
+            <td class="channel-liquidity-fees-value-cell">
+              <span class="channel-liquidity-fees-value"><%= @fee_structure.remote.rate %></span>
+              <span class="channel-liquidity-fees-unit">PPM</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
     """
   end

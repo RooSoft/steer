@@ -108,4 +108,11 @@ button:active {
 
 em {
   color: var(--accent1-color);
+  font-style: normal;
+}
+
+.section-header {
+  margin: 1.5em 0 .5em 0;
+  font-size: larger;
+  font-weight: bold;
 }
