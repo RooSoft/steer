@@ -20,8 +20,8 @@ defmodule Steer.Application do
 
       Steer.GraphUpdater,
       Steer.Lightning,
-      Steer.GraphRepo,
-      Steer.LndSyncTimer
+      Steer.GraphRepo
+      # Steer.LndSyncTimer
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
