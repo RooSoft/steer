@@ -44,9 +44,9 @@ defmodule Steer.Lightning.Models.Forward do
   end
 
   def format_balances(forward) do
-    amount_in_in_sats = Models.Forward.amount_in_in_sats(forward)
-    amount_out_in_sats = Models.Forward.amount_out_in_sats(forward)
-    fee_in_sats = Models.Forward.fee_in_sats(forward)
+    amount_in_in_sats = amount_in_in_sats(forward)
+    amount_out_in_sats = amount_out_in_sats(forward)
+    fee_in_sats = fee_in_sats(forward)
 
     formatted_amount_in = Number.SI.number_to_si(amount_in_in_sats, unit: "", precision: 1)
     formatted_amount_out = Number.SI.number_to_si(amount_out_in_sats, unit: "", precision: 1)
