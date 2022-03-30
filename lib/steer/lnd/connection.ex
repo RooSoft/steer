@@ -1,4 +1,3 @@
-
 defmodule Steer.Lnd.Connection do
   require Logger
 
@@ -6,21 +5,27 @@ defmodule Steer.Lnd.Connection do
 
   def initiate(page_pid \\ nil) do
     spawn(fn ->
-      maybe_send page_pid, { :connecting, "Trying to connect to the node..." }
+      maybe_send(page_pid, {:connecting, "Trying to connect to the node..."})
 
       case connect() do
         :ok ->
-          maybe_send page_pid, { :connecting, "Connected, ready to sync..." }
+          maybe_send(page_pid, {:connecting, "Connected, ready to sync..."})
 
           Steer.Lightning.sync()
 
-          maybe_send page_pid, { :connecting, "Updating cache..." }
+          maybe_send(page_pid, {:connecting, "Updating cache..."})
 
           Steer.Lightning.update_cache()
 
-          maybe_send page_pid, { :connected, "In sync with node" }
+          maybe_send(page_pid, {:connected, "In sync with node"})
+
+          Subscriptions.Uptime.start()
+          Subscriptions.Channel.start()
+          Subscriptions.Htlc.start()
+          Subscriptions.Invoice.start()
+
         _ ->
-          maybe_send page_pid, { :disconnected, "Node connection failed" }
+          maybe_send(page_pid, {:disconnected, "Node connection failed"})
       end
     end)
   end
@@ -33,21 +38,13 @@ defmodule Steer.Lnd.Connection do
     macaroon_path = System.get_env("MACAROON") || "~/.lnd/readonly.macaroon"
 
     case LndClient.connect(node_uri, cert_path, macaroon_path) do
-      { :ok, _state } ->
-        { :ok, _ } = Steer.Sync.LocalNode.sync
-        Steer.Sync.Channel.sync
-        Steer.Sync.Forward.sync
-
-        Subscriptions.Uptime.start()
-        Subscriptions.Channel.start()
-        Subscriptions.Htlc.start()
-        Subscriptions.Invoice.start()
-
+      {:ok, _state} ->
+        {:ok, _} = Steer.Sync.LocalNode.sync()
         :ok
 
-      { :error, error } ->
-        Logger.warn "LndClient can't start"
-        IO.inspect error
+      {:error, error} ->
+        Logger.warn("LndClient can't start")
+        IO.inspect(error)
 
         :error
     end
@@ -57,6 +54,6 @@ defmodule Steer.Lnd.Connection do
   end
 
   defp maybe_send(pid, message) do
-    send(pid, { :node_connection, message })
+    send(pid, {:node_connection, message})
   end
 end
