@@ -7,8 +7,8 @@ defmodule SteerWeb.ChannelLive.Components.Forwards do
     ~H"""
     <.live_component module={ForwardsComponent}, id="forwards"
       content={%{
-        channel: assigns.channel,
-        forwards: assigns.forwards
+        channel: @channel,
+        forwards: @forwards
     }} />
     """
   end

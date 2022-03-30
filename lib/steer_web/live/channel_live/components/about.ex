@@ -7,21 +7,19 @@ defmodule SteerWeb.ChannelLive.Components.About do
   import SteerWeb.Components.ExternalLinks
 
   def about(assigns) do
-    channel = assigns.channel
-
     ~H"""
-    <div x-data={"{ active: #{channel.status == :active}, pubKey: '#{channel.node_pub_key}' }"}>
+    <div x-data={"{ active: #{@channel.status == :active}, pubKey: '#{@channel.node_pub_key}' }"}>
       <div class="channel-about-node-pub-key">
-        <.short_pub_key pub_key={channel.node_pub_key} />
+        <.short_pub_key pub_key={@channel.node_pub_key} />
       </div>
 
       <div class="channel-about-node-lnd-id">
-        Channel id: <%= channel.lnd_id %>
+        Channel id: <%= @channel.lnd_id %>
       </div>
     </div>
 
     <div class="channel-show-external-links">
-      <.external_links pub_key={channel.node_pub_key} />
+      <.external_links pub_key={@channel.node_pub_key} />
     </div>
     """
   end
