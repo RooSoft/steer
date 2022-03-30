@@ -17,12 +17,10 @@ defmodule SteerWeb.ChannelLive.Show do
   @channel_pubsub_inactive_message :inactive_message
 
   @impl true
-  def handle_params(%{"id" => channel_id_string}, _, socket) do
-    {channel_id, _} = Integer.parse(channel_id_string)
-
+  def handle_params(%{"lnd_id" => lnd_id}, _, socket) do
     {:noreply,
      socket
-     |> update_socket(channel_id)
+     |> update_socket(lnd_id)
      |> subscribe_to_events()}
   end
 
@@ -67,18 +65,18 @@ defmodule SteerWeb.ChannelLive.Show do
 
   defp update_socket(socket) do
     socket
-    |> update_socket(socket.assigns.channel.id)
+    |> update_socket(socket.assigns.channel.lnd_id)
   end
 
-  defp update_socket(socket, channel_id) do
-    channel = Steer.Lightning.get_channel(id: channel_id)
+  defp update_socket(socket, lnd_id) do
+    channel = Steer.Lightning.get_channel(lnd_id: lnd_id)
     {:ok, lnd_edge} = LndClient.get_channel(channel.lnd_id)
 
     IO.inspect(lnd_edge)
 
     socket
     |> assign(:channel, channel)
-    |> assign(:forwards, Steer.Lightning.get_channel_forwards(%{channel_id: channel_id}))
+    |> assign(:forwards, Steer.Lightning.get_channel_forwards(%{channel_id: channel.id}))
     |> assign(:lnd_edge, lnd_edge)
   end
 

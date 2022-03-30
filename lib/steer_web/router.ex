@@ -2,29 +2,29 @@ defmodule SteerWeb.Router do
   use SteerWeb, :router
 
   pipeline :browser do
-    plug :accepts, ["html"]
-    plug :fetch_session
-    plug :fetch_live_flash
-    plug :put_root_layout, {SteerWeb.LayoutView, :root}
-    plug :protect_from_forgery
-    plug :put_secure_browser_headers
+    plug(:accepts, ["html"])
+    plug(:fetch_session)
+    plug(:fetch_live_flash)
+    plug(:put_root_layout, {SteerWeb.LayoutView, :root})
+    plug(:protect_from_forgery)
+    plug(:put_secure_browser_headers)
   end
 
   pipeline :api do
-    plug :accepts, ["json"]
+    plug(:accepts, ["json"])
   end
 
   scope "/", SteerWeb do
-    pipe_through :browser
+    pipe_through(:browser)
 
-    live "/", HomeLive, :index
-    live "/diagnostics", DiagnosticsLive, :index
+    live("/", HomeLive, :index)
+    live("/diagnostics", DiagnosticsLive, :index)
 
-    live "/attempts", AttemptsLive, :index
-    live "/link_fails", LinkFailsLive, :index
-    live "/rebalancing", RebalancingLive, :index
+    live("/attempts", AttemptsLive, :index)
+    live("/link_fails", LinkFailsLive, :index)
+    live("/rebalancing", RebalancingLive, :index)
 
-    live "/channel/:id", ChannelLive.Show, :show
+    live("/channel/:lnd_id", ChannelLive.Show, :show)
   end
 
   # Other scopes may use custom stacks.
@@ -43,8 +43,8 @@ defmodule SteerWeb.Router do
     import Phoenix.LiveDashboard.Router
 
     scope "/" do
-      pipe_through :browser
-      live_dashboard "/dashboard", metrics: SteerWeb.Telemetry
+      pipe_through(:browser)
+      live_dashboard("/dashboard", metrics: SteerWeb.Telemetry)
     end
   end
 end

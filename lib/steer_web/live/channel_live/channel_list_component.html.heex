@@ -1,6 +1,6 @@
 <div>
   <%= for channel <- @channels do %>
-    <%= live_patch to: Routes.channel_show_path(@socket, :show, channel.id) do %>
+    <%= live_patch to: Routes.channel_show_path(@socket, :show, channel.lnd_id) do %>
 
       <.channel_item channel={channel} />
 
