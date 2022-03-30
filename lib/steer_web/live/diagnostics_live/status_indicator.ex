@@ -17,10 +17,9 @@ defmodule SteerWeb.DiagnosticsLive.StatusIndicator do
         :name="connecting ? 'working' : 'connect'"
         :style="connecting ? 'cursor: wait' : 'cursor: pointer'"
         :disabled="connecting">
-        <%= case assigns.connecting do true -> "connecting..."; false -> "connect" end  %>
+        <%= case @connecting do true -> "connecting..."; false -> "connect" end  %>
       </button>
     </div>
     """
   end
-
 end

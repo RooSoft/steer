@@ -8,12 +8,12 @@ defmodule SteerWeb.DiagnosticsLive.Lnd do
     ~H"""
     <div class="diagnostics-lnd-info">
       <div class="diagnostics-lnd-info-version">
-        Version <em><%= assigns.info.version %></em>
+        Version <em><%= @info.version %></em>
       </div>
     </div>
 
     <div class="diagnostics-status-and-logs">
-      <.status_indicator connecting={assigns.connecting} />
+      <.status_indicator connecting={@connecting} />
       <.logs messages={@messages} />
     </div>
     """

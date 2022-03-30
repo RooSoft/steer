@@ -3,10 +3,10 @@ defmodule SteerWeb.DiagnosticsLive.Logs do
 
   def logs(assigns) do
     ~H"""
-    <div class="mx-4 flex-1">
+    <div class="">
       <span class="diagnostics-log-title">Log</span>
       <div class="diagnostics-logs-details">
-        <%= for message <- Enum.reverse assigns.messages do %>
+        <%= for message <- Enum.reverse @messages do %>
           <div>
             <span class="diagnostics-logs-date">
               <%= message.date %>
