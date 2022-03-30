@@ -7,27 +7,25 @@ defmodule SteerWeb.ChannelLive.ChannelItemComponent do
   import SteerWeb.Components.ChannelId
 
   def channel_item(assigns) do
-    %{channel: channel} = assigns
-
     ~H"""
     <div>
 
-      <div x-data={"{ pubKey: '#{channel.node_pub_key}' }"}
+      <div x-data={"{ pubKey: '#{@channel.node_pub_key}' }"}
         class="channel-item"
-        style={"border-color:#{channel.color}"}>
+        style={"border-color:#{@channel.color}"}>
 
         <div class="channel-item-id">
-          <.channel_id channel={channel} />
-          <.short_pub_key pub_key={channel.node_pub_key} />
+          <.channel_id channel={@channel} />
+          <.short_pub_key pub_key={@channel.node_pub_key} />
 
           <div class="channel-item-node-forwards">
-            <span class="channel-item-node-forwards-count"><%= channel.forward_in_count + channel.forward_out_count %></span>
-            <%= if channel.latest_forward_time != nil do %>
+            <span class="channel-item-node-forwards-count"><%= @channel.forward_in_count + @channel.forward_out_count %></span>
+            <%= if @channel.latest_forward_time != nil do %>
               <span>
               forwards, latest
               </span>
               <span class="channel-item-node-last-forward-date">
-                <%= Timex.from_now(channel.latest_forward_time) %>
+                <%= Timex.from_now(@channel.latest_forward_time) %>
               </span>
             <% else %>
               forwards
@@ -39,11 +37,11 @@ defmodule SteerWeb.ChannelLive.ChannelItemComponent do
         <div>
 
           <div class="liquidity-metrics">
-            <div class="channel-item-capacity"><%= channel.formatted_capacity %></div>
-            <div class="channel-item-balance-percent"><%= channel.formatted_balance_percent %>%</div>
+            <div class="channel-item-capacity"><%= @channel.formatted_capacity %></div>
+            <div class="channel-item-balance-percent"><%= @channel.formatted_balance_percent %>%</div>
           </div>
 
-          <.liquidity_meeter balance={channel.formatted_balance_percent} status={channel.status} />
+          <.liquidity_meeter balance={@channel.formatted_balance_percent} status={@channel.status} />
 
         </div>
       </div>
