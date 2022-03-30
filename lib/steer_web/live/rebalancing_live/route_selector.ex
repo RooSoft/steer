@@ -17,7 +17,7 @@ defmodule SteerWeb.RebalancingLive.RouteSelector do
         <%= for route <- routes do %>
           <%= live_component SteerWeb.RebalancingLive.Route,
             id: "route_#{route.index}",
-            starting_channel_id: assigns.high_liquidity_channel.lnd_id,
+            starting_channel_id: @high_liquidity_channel.lnd_id,
             pub_keys: route.pub_keys %>
         <% end %>
       </div>

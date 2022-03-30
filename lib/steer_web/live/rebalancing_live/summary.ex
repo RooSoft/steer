@@ -7,10 +7,10 @@ defmodule SteerWeb.RebalancingLive.Summary do
     ~H"""
     <div class="rebalancing-summary-paragraph">
       <div>
-        from: <%= channel_stats assigns.high_liquidity_channel %>
+        from: <%= channel_stats @high_liquidity_channel %>
       </div>
       <div>
-        to: <%= channel_stats assigns.low_liquidity_channel %>
+        to: <%= channel_stats @low_liquidity_channel %>
       </div>
     </div>
     """
