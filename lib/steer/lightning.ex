@@ -57,6 +57,10 @@ defmodule Steer.Lightning do
     GenServer.call(__MODULE__, {:get_channel, %{channel_point: channel_point}})
   end
 
+  def get_channel_fee_structure(lnd_id) do
+    GenServer.call(__MODULE__, {:get_channel_fee_structure, lnd_id})
+  end
+
   def update_channel(channel, struct) do
     GenServer.call(
       __MODULE__,
@@ -162,6 +166,15 @@ defmodule Steer.Lightning do
     {:reply, channel, state}
   end
 
+  def handle_call({:get_channel_fee_structure, lnd_id}, _from, state) do
+    {:ok, lnd_edge} = LndClient.get_channel(lnd_id)
+    {:ok, info} = LndClient.get_info()
+
+    fee_structure = channel_fee_structure_from_edge(lnd_edge, info.identity_pubkey)
+
+    {:reply, fee_structure, state}
+  end
+
   def handle_call({:update_channel, %{channel: channel, struct: struct}}, _from, state) do
     Logger.info("Updating channel #{channel.id}")
 
@@ -254,5 +267,32 @@ defmodule Steer.Lightning do
   defp add_node_from_graph(channel) do
     channel
     |> Models.Channel.add_graph_node_info(GraphRepo.get_node_by_alias(channel.alias))
+  end
+
+  defp channel_fee_structure_from_edge(lnd_edge, local_node_pub_key)
+       when lnd_edge.node1_pub == local_node_pub_key do
+    %{
+      local: %{
+        base: lnd_edge.node1_policy.fee_base_msat,
+        rate: lnd_edge.node1_policy.fee_rate_milli_msat
+      },
+      remote: %{
+        base: lnd_edge.node2_policy.fee_base_msat,
+        rate: lnd_edge.node2_policy.fee_rate_milli_msat
+      }
+    }
+  end
+
+  defp channel_fee_structure_from_edge(lnd_edge, _) do
+    %{
+      local: %{
+        base: lnd_edge.node2_policy.fee_base_msat,
+        rate: lnd_edge.node2_policy.fee_rate_milli_msat
+      },
+      remote: %{
+        base: lnd_edge.node1_policy.fee_base_msat,
+        rate: lnd_edge.node1_policy.fee_rate_milli_msat
+      }
+    }
   end
 end

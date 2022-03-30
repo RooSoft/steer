@@ -87,41 +87,9 @@ defmodule SteerWeb.ChannelLive.Show do
   end
 
   defp assign_fees(socket, lnd_id) do
-    node_info = Steer.Lightning.get_info()
-    {:ok, lnd_edge} = LndClient.get_channel(lnd_id)
-
-    fee_structure = get_fee_structure(lnd_edge, node_info.identity_pubkey)
-
-    IO.inspect(fee_structure)
+    fee_structure = Steer.Lightning.get_channel_fee_structure(lnd_id)
 
     socket
     |> assign(:fee_structure, fee_structure)
-  end
-
-  defp get_fee_structure(lnd_edge, local_node_pub_key)
-       when lnd_edge.node1_pub == local_node_pub_key do
-    %{
-      local: %{
-        base: lnd_edge.node1_policy.fee_base_msat,
-        rate: lnd_edge.node1_policy.fee_rate_milli_msat
-      },
-      remote: %{
-        base: lnd_edge.node2_policy.fee_base_msat,
-        rate: lnd_edge.node2_policy.fee_rate_milli_msat
-      }
-    }
-  end
-
-  defp get_fee_structure(lnd_edge, _) do
-    %{
-      local: %{
-        base: lnd_edge.node2_policy.fee_base_msat,
-        rate: lnd_edge.node2_policy.fee_rate_milli_msat
-      },
-      remote: %{
-        base: lnd_edge.node1_policy.fee_base_msat,
-        rate: lnd_edge.node1_policy.fee_rate_milli_msat
-      }
-    }
   end
 end
