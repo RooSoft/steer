@@ -2,8 +2,6 @@ defmodule SteerWeb.Components.HamburgerButton do
   use Phoenix.Component
 
   def hamburger_button(assigns) do
-    IO.puts("hamburger")
-
     ~H"""
     <div id="hamburgerButton" @click.stop="isSidebarOpen = !isSidebarOpen">
       <span class="sr-only">Open main menu</span>

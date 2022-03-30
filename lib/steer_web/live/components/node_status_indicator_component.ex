@@ -3,7 +3,7 @@ defmodule SteerWeb.Components.NodeStatusIndicatorComponent do
 
   def node_status_indicator(assigns) do
     ~H"""
-    <div class={get_class(assigns.status)}></div>
+    <div class={get_class(@status)}></div>
     """
   end
 
