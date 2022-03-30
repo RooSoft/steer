@@ -8,12 +8,12 @@
 
 .forwards-component-list {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: 1fr 4em 4em; /*repeat(3, minmax(0, 1fr))*/;
 
   padding:0.25rem;
   margin-bottom: 0.25rem;
 
-  max-width: 640px;
+  max-width: 400px;
 
   border-radius: 0.75rem/* 12px */;
 }
