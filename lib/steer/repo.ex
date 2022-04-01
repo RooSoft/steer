@@ -137,12 +137,13 @@ defmodule Steer.Repo do
   def mark_date_forwards_as_consolidated(date) do
     int_date =
       date
+      |> Date.add(1)
       |> DateTime.new!(~T[00:00:00], "Etc/UTC")
       |> DateTime.to_unix(:nanosecond)
 
     query =
       from(f in Models.Forward,
-        where: f.timestamp_ns / 1000 == ^int_date / 1000
+        where: f.timestamp_ns / 1000 <= ^int_date / 1000
       )
 
     update_all(query,
