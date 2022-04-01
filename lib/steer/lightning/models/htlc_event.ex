@@ -46,6 +46,10 @@ defmodule Steer.Lightning.Models.HtlcEvent do
     |> Map.put(:remote_alias, get_remote_alias(htlc_event, channel))
   end
 
+  def time_from_now(htlc_event) do
+    Timex.from_now(DateTime.from_unix!(htlc_event.timestamp_ns, :nanosecond))
+  end
+
   defp get_direction(htlc_event, channel) do
     if htlc_event.channel_in_id == channel.id do
       "to"

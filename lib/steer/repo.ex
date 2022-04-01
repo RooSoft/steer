@@ -117,7 +117,6 @@ defmodule Steer.Repo do
           wire_failure: lf.wire_failure,
           failure_detail: lf.failure_detail,
           failure_string: lf.failure_string,
-          time: htlc.time,
           timestamp_ns: htlc.timestamp_ns
         }
       )
