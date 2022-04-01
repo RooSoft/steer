@@ -134,7 +134,6 @@ defmodule Steer.Lnd.Subscriptions.Htlc do
   defp extract_htlc_event_map(htlc_event, type) do
     in_channel_id = get_channel_id(htlc_event.incoming_channel_id)
     out_channel_id = get_channel_id(htlc_event.outgoing_channel_id)
-    time = DateTime.from_unix!(htlc_event.timestamp_ns, :nanosecond)
 
     %{
       type: type,
@@ -142,7 +141,6 @@ defmodule Steer.Lnd.Subscriptions.Htlc do
       channel_out_id: out_channel_id,
       htlc_in_id: htlc_event.incoming_htlc_id,
       htlc_out_id: htlc_event.outgoing_htlc_id,
-      time: DateTime.to_naive(time),
       timestamp_ns: htlc_event.timestamp_ns
     }
   end

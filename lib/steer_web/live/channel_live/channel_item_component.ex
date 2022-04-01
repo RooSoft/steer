@@ -1,6 +1,8 @@
 defmodule SteerWeb.ChannelLive.ChannelItemComponent do
   use Phoenix.Component
 
+  alias Steer.Lightning.Models.Channel
+
   import SteerWeb.Components.LiquidityMeeter
   import SteerWeb.Components.ShortPubKey
 
@@ -25,7 +27,7 @@ defmodule SteerWeb.ChannelLive.ChannelItemComponent do
               forwards, latest
               </span>
               <span class="channel-item-node-last-forward-date">
-                <%= Timex.from_now(@channel.latest_forward_time) %>
+                <%= Channel.time_from_now(@channel) %>
               </span>
             <% else %>
               forwards

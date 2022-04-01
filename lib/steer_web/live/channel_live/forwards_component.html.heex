@@ -8,7 +8,7 @@
       <div class="forwards-component-header-title">amount</div>
       <div class="forwards-component-header-title">fee</div>
       <%= for forward <- @content.forwards do %>
-          <div class="forwards-component-time"><%= Timex.from_now(forward.time) %></div>
+          <div class="forwards-component-time"><%= Forward.time_from_now(forward) %></div>
           <div class="forwards-component-data-cell"><%= forward.formatted_amount_in %></div>
           <div class="forwards-component-data-cell"><%= forward.formatted_fee %></div>
           <div class="forwards-component-identity">
