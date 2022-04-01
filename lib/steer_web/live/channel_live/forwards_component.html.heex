@@ -13,7 +13,7 @@
           <div class="forwards-component-data-cell"><%= forward.formatted_fee %></div>
           <div class="forwards-component-identity">
               <span class="forwards-component-direction"><%= forward.direction %></span>
-              <%= live_patch to: Routes.channel_show_path(@socket, :show, forward.remote_channel_id) do %>
+              <%= live_patch to: Routes.channel_show_path(@socket, :show, forward.remote_channel_lnd_id) do %>
                   <span class="forwards-component-alias"><%= forward.remote_alias %></span>
               <% end %>
           </div>
