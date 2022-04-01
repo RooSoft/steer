@@ -16,7 +16,7 @@
   <% end %>
   <div class="attempt">
     <div class="attempt-header">
-      <div class="attempt-time"><%= Timex.from_now(attempt.time) %></div>
+      <div class="attempt-time"><%= HtlcEvent.time_from_now(attempt) %></div>
       <div class={"attempt-status #{attempt.status_class}"}>
         <%= attempt.status %>
       </div>
