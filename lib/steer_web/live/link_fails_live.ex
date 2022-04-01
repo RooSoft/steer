@@ -3,6 +3,7 @@ defmodule SteerWeb.LinkFailsLive do
   require Logger
 
   alias Steer.Lnd.Subscriptions
+  alias Steer.Lightning.Models.HtlcEvent
 
   @htlc_pubsub_topic inspect(Subscriptions.Htlc)
   @htlc_pubsub_link_fail_message :link_fail

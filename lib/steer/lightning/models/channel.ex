@@ -89,4 +89,8 @@ defmodule Steer.Lightning.Models.Channel do
     channel
     |> Map.put(:node, graph_node_info)
   end
+
+  def time_from_now(channel) do
+    Timex.from_now(DateTime.from_unix!(channel.latest_forward_time, :nanosecond))
+  end
 end

@@ -3,6 +3,7 @@ defmodule SteerWeb.AttemptsLive do
   require Logger
 
   alias Steer.Lnd.Subscriptions
+  alias Steer.Lightning.Models.HtlcEvent
 
   @attempts_per_page 20
 

@@ -10,7 +10,7 @@ defmodule Steer.Repo.Migrations.CreateHtlcLinkFailTable do
 
       add :wire_failure, :string, null: false
       add :failure_detail, :string, null: false
-      add :failure_string, :string, null: false
+      add :failure_string, :text
 
       add :htlc_event_id, references(:htlc_event), null: false
 

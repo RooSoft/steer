@@ -10,7 +10,6 @@ defmodule Steer.Lightning.Models.Forward do
     belongs_to :channel_in, Models.Channel
     belongs_to :channel_out, Models.Channel
     field :consolidated, :boolean
-    field :time, :naive_datetime
     field :timestamp_ns, :integer
 
     timestamps()
@@ -24,7 +23,6 @@ defmodule Steer.Lightning.Models.Forward do
       :fee,
       :channel_in_id,
       :channel_out_id,
-      :time,
       :timestamp_ns
     ])
     |> validate_required([
@@ -33,7 +31,6 @@ defmodule Steer.Lightning.Models.Forward do
       :fee,
       :channel_in_id,
       :channel_out_id,
-      :time,
       :timestamp_ns
     ])
   end
@@ -83,6 +80,11 @@ defmodule Steer.Lightning.Models.Forward do
     |> Map.put(:direction, get_direction(forward, channel))
     |> Map.put(:remote_alias, get_remote_alias(forward, channel))
     |> Map.put(:remote_channel_id, get_remote_channel_id(forward, channel))
+    |> Map.put(:remote_channel_lnd_id, get_remote_channel_lnd_id(forward, channel))
+  end
+
+  def time_from_now(forward) do
+    Timex.from_now(DateTime.from_unix!(forward.timestamp_ns, :nanosecond))
   end
 
   defp get_direction(forward, channel) do
@@ -106,6 +108,14 @@ defmodule Steer.Lightning.Models.Forward do
       forward.channel_out.id
     else
       forward.channel_in.id
+    end
+  end
+
+  defp get_remote_channel_lnd_id(forward, channel) do
+    if forward.channel_in.id == channel.id do
+      forward.channel_out.lnd_id
+    else
+      forward.channel_in.lnd_id
     end
   end
 end

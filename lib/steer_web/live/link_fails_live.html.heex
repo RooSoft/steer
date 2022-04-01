@@ -1,7 +1,7 @@
 <%= for link_fail <- @link_fails do %>
   <div class="link_fail">
     <div class="link_fail_header">
-      <div class="link_fail_time"><%= Timex.from_now(link_fail.time) %></div>
+      <div class="link_fail_time"><%= HtlcEvent.time_from_now(link_fail) %></div>
       <div class="link_fail_detail">
         <%= link_fail.failure_detail %>
       </div>

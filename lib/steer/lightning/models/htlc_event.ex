@@ -9,7 +9,6 @@ defmodule Steer.Lightning.Models.HtlcEvent do
     belongs_to :channel_out, Models.Channel
     field :htlc_in_id, :integer
     field :htlc_out_id, :integer
-    field :time, :naive_datetime
     field :timestamp_ns, :integer
 
     timestamps()
@@ -17,8 +16,20 @@ defmodule Steer.Lightning.Models.HtlcEvent do
 
   def changeset(struct, params) do
     struct
-    |> cast(params, [:type, :channel_in_id, :channel_out_id, :htlc_in_id, :htlc_out_id, :time, :timestamp_ns])
-    |> validate_required([:type, :htlc_in_id, :htlc_out_id, :time, :timestamp_ns])
+    |> cast(params, [
+      :type,
+      :channel_in_id,
+      :channel_out_id,
+      :htlc_in_id,
+      :htlc_out_id,
+      :timestamp_ns
+    ])
+    |> validate_required([
+      :type,
+      :htlc_in_id,
+      :htlc_out_id,
+      :timestamp_ns
+    ])
   end
 
   def contextualize_htlc_events(htlc_events, channel) do
@@ -33,6 +44,10 @@ defmodule Steer.Lightning.Models.HtlcEvent do
     htlc_event
     |> Map.put(:direction, get_direction(htlc_event, channel))
     |> Map.put(:remote_alias, get_remote_alias(htlc_event, channel))
+  end
+
+  def time_from_now(htlc_event) do
+    Timex.from_now(DateTime.from_unix!(htlc_event.timestamp_ns, :nanosecond))
   end
 
   defp get_direction(htlc_event, channel) do

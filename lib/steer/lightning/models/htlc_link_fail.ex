@@ -19,7 +19,25 @@ defmodule Steer.Lightning.Models.HtlcLinkFail do
 
   def changeset(struct, params) do
     struct
-    |> cast(params, [:htlc_event_id, :amount_in, :amount_out, :timelock_in, :timelock_out, :wire_failure, :failure_detail, :failure_string])
-    |> validate_required([:htlc_event_id, :amount_in, :amount_out, :timelock_in, :timelock_out, :wire_failure, :failure_detail, :failure_string])
+    |> cast(params, [
+      :htlc_event_id,
+      :amount_in,
+      :amount_out,
+      :timelock_in,
+      :timelock_out,
+      :wire_failure,
+      :failure_detail,
+      :failure_string
+    ])
+    |> validate_required([
+      :htlc_event_id,
+      :amount_in,
+      :amount_out,
+      :timelock_in,
+      :timelock_out,
+      :wire_failure,
+      :failure_detail,
+      :failure_string
+    ])
   end
 end

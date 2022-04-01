@@ -28,7 +28,7 @@ defmodule Steer.Repo.Queries.GetAllChannels do
       order_by: [
         desc:
           fragment(
-            "SELECT coalesce(Max(v), '2000-01-01') FROM (VALUES (?), (?)) AS value(v)",
+            "SELECT coalesce(Max(?, ?), 0)",
             fi.latest_timestamp,
             fo.latest_timestamp
           )
@@ -48,7 +48,7 @@ defmodule Steer.Repo.Queries.GetAllChannels do
         latest_forward_out_time: fo.latest_timestamp,
         latest_forward_time:
           fragment(
-            "SELECT Max(v) FROM (VALUES (?), (?)) AS value(v)",
+            "SELECT Max(?, ?)",
             fi.latest_timestamp,
             fo.latest_timestamp
           ),
@@ -64,7 +64,7 @@ defmodule Steer.Repo.Queries.GetAllChannels do
       select: %{
         channel_id: c.id,
         forward_count: count(f.id),
-        latest_timestamp: max(f.time)
+        latest_timestamp: max(f.timestamp_ns)
       }
     )
   end
@@ -76,7 +76,7 @@ defmodule Steer.Repo.Queries.GetAllChannels do
       select: %{
         channel_id: c.id,
         forward_count: count(f.id),
-        latest_timestamp: max(f.time)
+        latest_timestamp: max(f.timestamp_ns)
       }
     )
   end
