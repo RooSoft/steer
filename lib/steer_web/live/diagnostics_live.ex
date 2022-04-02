@@ -2,9 +2,7 @@ defmodule SteerWeb.DiagnosticsLive do
   use SteerWeb, :live_view
   require Logger
 
-  import SteerWeb.DiagnosticsLive.About
-  import SteerWeb.DiagnosticsLive.Graph
-  import SteerWeb.DiagnosticsLive.Lnd
+  import SteerWeb.DiagnosticsLive.{Liquidity, Graph, Lnd, About}
 
   alias Steer.GraphUpdater
 
@@ -24,6 +22,7 @@ defmodule SteerWeb.DiagnosticsLive do
      |> assign(:messages, [])
      |> assign(:info, Steer.Lightning.get_info())
      |> assign(:node, Steer.Repo.get_local_node())
+     |> assign(:channels, Steer.Repo.get_all_channels())
      |> assign(:graph_status, GraphUpdater.get_status())
      |> set_connecting_flag(false)}
   end

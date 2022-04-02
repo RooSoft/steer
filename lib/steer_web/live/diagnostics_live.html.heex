@@ -1,15 +1,15 @@
 <div x-data={"{ 
   connecting: #{@connecting}, 
   pubKey: '#{@node.pubkey}',
-  tab: window.location.hash ? window.location.hash.substring(1) : 'about'
+  tab: window.location.hash ? window.location.hash.substring(1) : 'liquidity'
 }"}>
 
   <nav id="diagnostics-tabs">
     <a href="#"
       class="diagnostics-tab"
-      :class="tab == 'about' && 'selected'" 
-      @click.prevent="tab = 'about'; window.location.hash = 'about'" >
-      About
+      :class="tab == 'liquidity' && 'selected'" 
+      @click.prevent="tab = 'liquidity'; window.location.hash = 'liquidity'" >
+      Liquidity
     </a>
 
     <a href="#"
@@ -25,12 +25,19 @@
       @click.prevent="tab = 'graph'; window.location.hash = 'graph'" >
       Graph
     </a>
+
+    <a href="#"
+      class="diagnostics-tab"
+      :class="tab == 'about' && 'selected'" 
+      @click.prevent="tab = 'about'; window.location.hash = 'about'" >
+      About
+    </a>
   </nav>
 
-  <div x-cloak x-show="tab == 'about'">
-    <.about version={@version} node={@node} info={@info} />
+  <div x-cloak x-show="tab == 'liquidity'">
+    <.liquidity channels={@channels} />
   </div>
-  
+
   <div x-cloak x-show="tab == 'lnd'">
     <.lnd info={@info} connecting={@connecting} messages={@messages}/>
   </div>
@@ -39,4 +46,8 @@
     <.graph status={@graph_status} />
   </div>
 
+  <div x-cloak x-show="tab == 'about'">
+    <.about version={@version} node={@node} info={@info} />
+  </div>
+  
 </div>
