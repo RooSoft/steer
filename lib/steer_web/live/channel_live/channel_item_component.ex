@@ -26,7 +26,8 @@ defmodule SteerWeb.ChannelLive.ChannelItemComponent do
               <span>
               forwards, latest
               </span>
-              <span class="channel-item-node-last-forward-date">
+              <span class="channel-item-node-last-forward-date"
+                title={ @channel.latest_forward_time |> DateTime.from_unix!(:nanosecond) |> DateTime.to_string() }>
                 <%= Channel.time_from_now(@channel) %>
               </span>
             <% else %>
