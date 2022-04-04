@@ -16,7 +16,10 @@
   <% end %>
   <div class="attempt">
     <div class="attempt-header">
-      <div class="attempt-time"><%= HtlcEvent.time_from_now(attempt) %></div>
+      <div class="attempt-time"
+        title={ attempt.timestamp_ns |> DateTime.from_unix!(:nanosecond) |> DateTime.to_string() }>
+        <%= HtlcEvent.time_from_now(attempt) %>
+        </div>
       <div class={"attempt-status #{attempt.status_class}"}>
         <%= attempt.status %>
       </div>
