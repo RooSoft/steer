@@ -94,8 +94,7 @@ defmodule Steer.Lightning.Models.Channel do
     "Never"
   end
 
-  def time_from_now(channel) do
-    IO.inspect(channel)
-    Timex.from_now(DateTime.from_unix!(channel.latest_forward_time, :nanosecond))
+  def time_from_now(%{latest_forward_time: latest_forward_time}) do
+    Timex.from_now(DateTime.from_unix!(latest_forward_time, :nanosecond))
   end
 end
