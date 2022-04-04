@@ -63,6 +63,7 @@ defmodule Steer.Sync.Channel do
           set: [
             alias: map.alias,
             color: map.color,
+            is_private: map.is_private,
             local_balance: map.local_balance,
             remote_balance: map.remote_balance,
             status: map.status
@@ -87,6 +88,7 @@ defmodule Steer.Sync.Channel do
           status: get_channel_status(channel),
           alias: node.alias,
           color: node.color,
+          is_private: channel.private,
           capacity: channel.capacity * 1000,
           local_balance: channel.local_balance * 1000,
           remote_balance: channel.remote_balance * 1000
@@ -114,6 +116,7 @@ defmodule Steer.Sync.Channel do
       status: :closed,
       alias: node.alias,
       color: node.color,
+      is_private: false,
       capacity: channel.capacity * 1000,
       local_balance: 0,
       remote_balance: 0
