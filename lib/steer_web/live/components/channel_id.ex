@@ -14,6 +14,9 @@ defmodule SteerWeb.Components.ChannelId do
         <%= if @channel.is_private do %>
           <span title="private channel">🥷</span>
         <% end %>
+        <%= if @channel.is_initiator do %>
+          <span title="channel initiator">✨</span>
+        <% end %>
         <%= @channel.alias %>
       </div>
     </div>

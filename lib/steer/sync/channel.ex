@@ -90,7 +90,7 @@ defmodule Steer.Sync.Channel do
           alias: node.alias,
           color: node.color,
           is_private: channel.private,
-          is_initiator: channel.initiator,
+          is_initiator: !channel.initiator,
           capacity: channel.capacity * 1000,
           local_balance: channel.local_balance * 1000,
           remote_balance: channel.remote_balance * 1000
