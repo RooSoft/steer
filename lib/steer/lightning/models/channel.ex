@@ -12,6 +12,7 @@ defmodule Steer.Lightning.Models.Channel do
     field :alias, :string
     field :color, :string
     field :is_private, :boolean
+    field :is_initiator, :boolean
     field :capacity, :integer
     field :local_balance, :integer
     field :remote_balance, :integer
@@ -32,6 +33,7 @@ defmodule Steer.Lightning.Models.Channel do
       :alias,
       :color,
       :is_private,
+      :is_initiator,
       :capacity,
       :local_balance,
       :remote_balance

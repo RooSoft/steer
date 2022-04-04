@@ -31,6 +31,7 @@ defmodule Steer.Repo.Queries.GetAllChannels do
         alias: c.alias,
         color: c.color,
         is_private: c.is_private,
+        is_initiator: c.is_initiator,
         status: c.status,
         capacity: c.capacity,
         local_balance: c.local_balance,
