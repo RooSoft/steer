@@ -18,8 +18,7 @@
   justify-content: space-between;
 }
 
-.channel-item-id {
-}
+.channel-item-id {}
 
 .channel-item-node-forwards {
   margin-top: 0.2em;
@@ -39,7 +38,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
 
-  width: 3.5em;
+  width: 4.5em;
 }
 
 .channel-item-capacity {
