@@ -11,17 +11,6 @@ services:
     - $HOME/.lnd:/home/app/.lnd:ro
     depends_on:
     - db
-  db:
-    image: postgres:12.7
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      PGDATA: /var/lib/postgresql/data/pgdata
-    restart: always
-    ports:
-    - "5444:5432"
-    volumes:
-    - ${HOME}/postgres-steer:/var/lib/postgresql/data
 
   graphdb:
     image: neo4j:4.4.4-community

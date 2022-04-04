@@ -52,7 +52,6 @@ defmodule Steer.MixProject do
       {:phoenix_live_dashboard, "~> 0.4"},
       {:phoenix_live_view, "~> 0.17.5"},
       {:ecto_sqlite3, "~> 0.7.4"},
-      {:postgrex, ">= 0.0.0"},
       {:esbuild, "~> 0.3", runtime: Mix.env() == :dev},
       {:floki, ">= 0.30.0", only: :test},
       {:telemetry_metrics, "~> 0.6"},
