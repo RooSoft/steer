@@ -4,7 +4,7 @@ defmodule Steer.MixProject do
   def project do
     [
       app: :steer,
-      version: "0.2.4",
+      version: "0.3.0",
       elixir: "~> 1.7",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
@@ -32,7 +32,7 @@ defmodule Steer.MixProject do
   defp releases() do
     [
       steer: [
-        version: "0.2.4",
+        version: "0.3.0",
         applications: [
           steer: :permanent
         ]
@@ -61,7 +61,6 @@ defmodule Steer.MixProject do
       {:plug_cowboy, "~> 2.5"},
       {:number, "~>  1.0.3"},
       {:timex, "~> 3.0"},
-      {:ecto_enum, "~> 1.4"},
       {:observer_cli, "~> 1.7"},
       {:lnd_client, git: "https://github.com/RooSoft/lnd_client.git", tag: "0.1.2"},
       {:lightning_graph, git: "https://github.com/RooSoft/lightning_graph.git", tag: "0.2.8"}
