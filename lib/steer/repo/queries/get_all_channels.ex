@@ -30,6 +30,7 @@ defmodule Steer.Repo.Queries.GetAllChannels do
         lnd_id: c.lnd_id,
         alias: c.alias,
         color: c.color,
+        is_private: c.is_private,
         status: c.status,
         capacity: c.capacity,
         local_balance: c.local_balance,

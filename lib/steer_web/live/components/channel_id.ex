@@ -11,6 +11,9 @@ defmodule SteerWeb.Components.ChannelId do
       </div>
 
       <div phx-click="">
+        <%= if @channel.is_private do %>
+          <span title="private channel">🥷</span>
+        <% end %>
         <%= @channel.alias %>
       </div>
     </div>
