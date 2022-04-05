@@ -244,7 +244,8 @@ defmodule Steer.Lightning do
     channels =
       Repo.get_all_channels()
       |> Models.Channel.format_balances()
-      |> add_nodes_from_graph
+
+    #   |> add_nodes_from_graph
 
     state
     |> Map.put(:channels, channels)
@@ -259,15 +260,15 @@ defmodule Steer.Lightning do
     |> Models.Channel.format_balances()
   end
 
-  defp add_nodes_from_graph(channels) do
-    channels
-    |> Enum.map(&add_node_from_graph/1)
-  end
+  # defp add_nodes_from_graph(channels) do
+  #   channels
+  #   |> Enum.map(&add_node_from_graph/1)
+  # end
 
-  defp add_node_from_graph(channel) do
-    channel
-    |> Models.Channel.add_graph_node_info(GraphRepo.get_node_by_alias(channel.alias))
-  end
+  # defp add_node_from_graph(channel) do
+  #   channel
+  #   |> Models.Channel.add_graph_node_info(GraphRepo.get_node_by_alias(channel.alias))
+  # end
 
   defp channel_fee_structure_from_edge(lnd_edge, local_node_pub_key)
        when lnd_edge.node1_pub == local_node_pub_key do

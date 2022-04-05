@@ -21,13 +21,6 @@
 
     <a href="#"
       class="diagnostics-tab"
-      :class="tab == 'graph' && 'selected'" 
-      @click.prevent="tab = 'graph'; window.location.hash = 'graph'" >
-      Graph
-    </a>
-
-    <a href="#"
-      class="diagnostics-tab"
       :class="tab == 'about' && 'selected'" 
       @click.prevent="tab = 'about'; window.location.hash = 'about'" >
       About
@@ -40,10 +33,6 @@
 
   <div x-cloak x-show="tab == 'lnd'">
     <.lnd info={@info} connecting={@connecting} messages={@messages}/>
-  </div>
-
-  <div x-cloak x-show="tab == 'graph'">
-    <.graph status={@graph_status} />
   </div>
 
   <div x-cloak x-show="tab == 'about'">

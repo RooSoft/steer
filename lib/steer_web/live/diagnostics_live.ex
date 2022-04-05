@@ -4,15 +4,15 @@ defmodule SteerWeb.DiagnosticsLive do
 
   import SteerWeb.DiagnosticsLive.{Liquidity, Graph, Lnd, About}
 
-  alias Steer.GraphUpdater
+  # alias Steer.GraphUpdater
 
-  @graph_updater_pubsub_topic inspect(GraphUpdater)
-  @graph_updater_pubsub_ready :ready
+  # @graph_updater_pubsub_topic inspect(GraphUpdater)
+  # @graph_updater_pubsub_ready :ready
 
   @impl true
   @spec mount(any, any, Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   def mount(_params, _session, socket) do
-    GraphUpdater.subscribe()
+    #    GraphUpdater.subscribe()
 
     {:ok, vsn} = :application.get_key(:steer, :vsn)
 
@@ -23,7 +23,7 @@ defmodule SteerWeb.DiagnosticsLive do
      |> assign(:info, Steer.Lightning.get_info())
      |> assign(:node, Steer.Repo.get_local_node())
      |> assign(:channels, Steer.Repo.get_all_channels())
-     |> assign(:graph_status, GraphUpdater.get_status())
+  #   |> assign(:graph_status, GraphUpdater.get_status())
      |> set_connecting_flag(false)}
   end
 
@@ -41,23 +41,23 @@ defmodule SteerWeb.DiagnosticsLive do
     {:noreply, socket}
   end
 
-  @impl true
-  @spec handle_info({:node_connection, {any, any}} | {<<_::144>>, any, any}, map) ::
-          {:noreply, map}
-  def handle_info({@graph_updater_pubsub_topic, @graph_updater_pubsub_ready}, socket) do
-    {
-      :noreply,
-      socket
-      |> assign(:graph_status, @graph_updater_pubsub_ready)
-    }
-  end
+  # @impl true
+  # @spec handle_info({:node_connection, {any, any}} | {<<_::144>>, any, any}, map) ::
+  #         {:noreply, map}
+  # def handle_info({@graph_updater_pubsub_topic, @graph_updater_pubsub_ready}, socket) do
+  #   {
+  #     :noreply,
+  #     socket
+  #     |> assign(:graph_status, @graph_updater_pubsub_ready)
+  #   }
+  # end
 
-  @impl true
-  def handle_info({@graph_updater_pubsub_topic, message}, socket) do
-    IO.inspect(message)
+  # @impl true
+  # def handle_info({@graph_updater_pubsub_topic, message}, socket) do
+  #   IO.inspect(message)
 
-    {:noreply, socket |> assign(:graph_status, message)}
-  end
+  #   {:noreply, socket |> assign(:graph_status, message)}
+  # end
 
   @impl true
   def handle_info({:node_connection, {:connected, message}}, socket) do

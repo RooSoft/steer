@@ -1,130 +1,130 @@
-defmodule Steer.GraphUpdater.Manager do
-  use GenServer
+# defmodule Steer.GraphUpdater.Manager do
+#   use GenServer
 
-  require Logger
+#   require Logger
 
-  alias Steer.GraphUpdater.Runner
+#   alias Steer.GraphUpdater.Runner
 
-  @pubsub %{
-    topic: inspect(Steer.GraphUpdater),
-    status: :status
-  }
+#   @pubsub %{
+#     topic: inspect(Steer.GraphUpdater),
+#     status: :status
+#   }
 
-  @statuses %{
-    ready: :ready,
-    downloading: :downloading,
-    importing: :importing,
-    analyzing: :analyzing
-  }
+#   @statuses %{
+#     ready: :ready,
+#     downloading: :downloading,
+#     importing: :importing,
+#     analyzing: :analyzing
+#   }
 
-  def start_link(_opts) do
-    GenServer.start_link(
-      __MODULE__,
-      update_status(%{}, @statuses.ready),
-      name: __MODULE__
-    )
-  end
+#   def start_link(_opts) do
+#     GenServer.start_link(
+#       __MODULE__,
+#       update_status(%{}, @statuses.ready),
+#       name: __MODULE__
+#     )
+#   end
 
-  @impl true
-  def init(state) do
-    LightningGraph.Neo4j.Lnd.GraphUpdater.subscribe()
+#   @impl true
+#   def init(state) do
+#     LightningGraph.Neo4j.Lnd.GraphUpdater.subscribe()
 
-    {:ok, state}
-  end
+#     {:ok, state}
+#   end
 
-  def get_status do
-    GenServer.call(__MODULE__, {:get_status})
-  end
+#   def get_status do
+#     GenServer.call(__MODULE__, {:get_status})
+#   end
 
-  def refresh do
-    GenServer.cast(__MODULE__, {:refresh})
-  end
+#   def refresh do
+#     GenServer.cast(__MODULE__, {:refresh})
+#   end
 
-  @impl true
-  def handle_call({:get_status}, _from, state) do
-    {:reply, get_status(state), state}
-  end
+#   @impl true
+#   def handle_call({:get_status}, _from, state) do
+#     {:reply, get_status(state), state}
+#   end
 
-  @impl true
-  def handle_cast({:refresh}, state) do
-    Runner.download(self())
+#   @impl true
+#   def handle_cast({:refresh}, state) do
+#     Runner.download(self())
 
-    {
-      :noreply,
-      state
-      |> update_status(@statuses.downloading)
-    }
-  end
+#     {
+#       :noreply,
+#       state
+#       |> update_status(@statuses.downloading)
+#     }
+#   end
 
-  @impl true
-  def handle_info({:graph_updater, :channel_update, _payload}, state) do
-    #    Logger.info("CHANNEL UPDATE #{inspect(payload)}")
+#   @impl true
+#   def handle_info({:graph_updater, :channel_update, _payload}, state) do
+#     #    Logger.info("CHANNEL UPDATE #{inspect(payload)}")
 
-    {:noreply, state}
-  end
+#     {:noreply, state}
+#   end
 
-  @impl true
-  def handle_info({:graph_updater, :closed_channel, payload}, state) do
-    Logger.info("CHANNEL CLOSED #{inspect(payload)}")
+#   @impl true
+#   def handle_info({:graph_updater, :closed_channel, payload}, state) do
+#     Logger.info("CHANNEL CLOSED #{inspect(payload)}")
 
-    {:noreply, state}
-  end
+#     {:noreply, state}
+#   end
 
-  @impl true
-  def handle_info({:graph_updater, :node_update, payload}, state) do
-    Logger.info("NODE UPDATE #{inspect(payload)}")
+#   @impl true
+#   def handle_info({:graph_updater, :node_update, payload}, state) do
+#     Logger.info("NODE UPDATE #{inspect(payload)}")
 
-    {:noreply, state}
-  end
+#     {:noreply, state}
+#   end
 
-  @impl true
-  def handle_info({:graph_updater_runner_state, :downloaded}, state) do
-    Runner.import(self())
+#   @impl true
+#   def handle_info({:graph_updater_runner_state, :downloaded}, state) do
+#     Runner.import(self())
 
-    {
-      :noreply,
-      state
-      |> update_status(@statuses.importing)
-    }
-  end
+#     {
+#       :noreply,
+#       state
+#       |> update_status(@statuses.importing)
+#     }
+#   end
 
-  @impl true
-  def handle_info({:graph_updater_runner_state, :imported}, state) do
-    Runner.analyze(self())
+#   @impl true
+#   def handle_info({:graph_updater_runner_state, :imported}, state) do
+#     Runner.analyze(self())
 
-    {
-      :noreply,
-      state
-      |> update_status(@statuses.analyzing)
-    }
-  end
+#     {
+#       :noreply,
+#       state
+#       |> update_status(@statuses.analyzing)
+#     }
+#   end
 
-  @impl true
-  def handle_info({:graph_updater_runner_state, :analyzed}, state) do
-    {
-      :noreply,
-      state
-      |> update_status(:ready)
-    }
-  end
+#   @impl true
+#   def handle_info({:graph_updater_runner_state, :analyzed}, state) do
+#     {
+#       :noreply,
+#       state
+#       |> update_status(:ready)
+#     }
+#   end
 
-  def subscribe do
-    Phoenix.PubSub.subscribe(Steer.PubSub, @pubsub.topic)
-  end
+#   def subscribe do
+#     Phoenix.PubSub.subscribe(Steer.PubSub, @pubsub.topic)
+#   end
 
-  defp broadcast(message) do
-    Phoenix.PubSub.broadcast(Steer.PubSub, @pubsub.topic, {@pubsub.topic, message})
-  end
+#   defp broadcast(message) do
+#     Phoenix.PubSub.broadcast(Steer.PubSub, @pubsub.topic, {@pubsub.topic, message})
+#   end
 
-  defp get_status(state) do
-    state
-    |> Map.get(:status)
-  end
+#   defp get_status(state) do
+#     state
+#     |> Map.get(:status)
+#   end
 
-  defp update_status(state, status) do
-    broadcast(status)
+#   defp update_status(state, status) do
+#     broadcast(status)
 
-    state
-    |> Map.put(:status, status)
-  end
-end
+#     state
+#     |> Map.put(:status, status)
+#   end
+# end
