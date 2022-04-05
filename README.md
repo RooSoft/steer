@@ -16,7 +16,18 @@ Make sure you have a `~/.lnd` folder containing
 - A certificate `~/.lnd/tls.cert`
 - A readonly macaroon `~/.lnd/readonly.macaroon`
 
-## Execution
+## Execution from release
+
+```bash
+wget https://github.com/RooSoft/steer/releases/download/v0.3.0/steer-v0.3.0.tgz
+mkdir steer
+tar zxvf steer-v0.3.0.tgz -C steer
+cd steer
+NODE=localhost:10009 _build/prod/rel/steer/bin/migrate
+NODE=localhost:10009 _build/prod/rel/steer/bin/steer start
+```
+
+## Execution from sources
 
 From the project's root folder...
 
@@ -51,7 +62,7 @@ If attempting to reach it from the same machine, simply browse to:
 
 `http://localhost:4001`
 
-## Production build
+## Manual production build
 
 ### Build
 
