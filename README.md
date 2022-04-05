@@ -2,74 +2,73 @@
 
 Lightning Network routing node management tool
 
-## How to run using Docker
+## Prerequisites
 
-### Prerequisites
+- A LND node with gRPC port available
+- [Elixir](https://elixir-lang.org/install.html#gnulinux)
+- [npm](https://linuxconfig.org/install-npm-on-linux)
+- A clone of this repository
 
-- Check `.env` file and make sure the SERVER environment variable points to your node
-- Go to the root folder and run this command once every time this repo is pulled
+### Certificates
 
-```bash
-docker build -t steer:0.1.4 .
-```
+Make sure you have a `~/.lnd` folder containing
 
-### Run it
+- A certificate `~/.lnd/tls.cert`
+- A readonly macaroon `~/.lnd/readonly.macaroon`
 
-This starts both the database and the web server
+## Execution
 
-```bash
-docker-compose up
-```
+From the project's root folder...
 
-### Update steer if already running
-
-```
-docker-compose up -d --build steer
-```
-
-
-## How to run manually
-
-### Prerequisites
-
-- elixir
-- npm
-- postgresql database with connection string setup in `config/dev.exs` `Steer.Repo` section
-
-### Initial setup, needs to be done once
+### Prepare the app and the database
 
 ```bash
 mix deps.get
 mix ecto.create
-cd assets
-npm install
-cd ..
+mix ecto.migrate
 ```
 
-### Environment variables setup
+### Install assets
 
-Setup these according to the Lightning Network node Steer will connect with
+```bash
+npm i --prefix assets
+```
 
-- SERVER defaults to `localhost:10009`
-- CERT defaults to `~/.lnd/umbrel.cert`
-- MACAROON defaults to `~/.lnd/readonly.macaroon`
+### Start steer
 
-### Start the web server
+Usually LND's gRPC port is available from port 10009, so if running on
+`localhost`, do that command to start Steer
 
-mix phx.server
+```bash
+NODE=localhost:10009 mix phx.server
+```
 
+### Run from sources
 
-## Production deployment
+Browse port 4001 from the machine running Steer... can be accessed remotely.
+
+If attempting to reach it from the same machine, simply browse to:
+
+`http://localhost:4001`
+
+## Production build
 
 ### Build
 
+create a secret
+
+```bash
+mix phx.gen.secret
+```
+
 create a `.env` file in the root folder and make sure that those variables are configured
 
-* PORT
-* MIX_ENV
-* NODE
-* DATABASE_URL
-* SECRET_KEY_BASE
+```ini
+PORT=4000
+MIX_ENV=prod
+NODE=localhost:10009
+SECRET_KEY_BASE=*** the secret created in the previous step ***
+```
 
 then, run this command.
 
@@ -82,11 +81,11 @@ export $(cat .env | xargs) && mix release
 Copy file to the production server
 
 ```bash
-scp _build/prod/steer-0.x.0.tar.gz steer@prod-server:.
+scp _build/prod/steer-x.y.ztar.gz steer@prod-server:.
 ```
 
-Then unpack the tarball wherever you like, such as /opt/steer-0.x.0 and run this command
+Then unpack the tarball wherever you like, such as /opt/steer-x.y.z and run this command
 
 ```bash
-/opt/steer-0.x.0/bin/steer start
+/opt/steer-x.y.z/bin/steer start
 ```
