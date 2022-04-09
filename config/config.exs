@@ -32,8 +32,6 @@ config :esbuild,
     env: %{"NODE_PATH" => Path.expand("../deps", __DIR__)}
   ]
 
-  timeout: 300_000
-
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
