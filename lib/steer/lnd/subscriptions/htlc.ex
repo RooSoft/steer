@@ -45,7 +45,7 @@ defmodule Steer.Lnd.Subscriptions.Htlc do
   def handle_info(
         %Routerrpc.HtlcEvent{event: {:forward_event, lnd_forward_event}} = lnd_htlc_event,
         state
-      ) do¨
+      ) do
     htlc_event =
       lnd_htlc_event
       |> extract_htlc_event_map(:forward)
