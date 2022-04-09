@@ -3,7 +3,7 @@ defmodule Steer.Lightning do
   require Logger
 
   alias Steer.Repo
-  alias Steer.GraphRepo
+  #  alias Steer.GraphRepo
   alias Steer.Lightning.Models
 
   def start_link(_opts) do
