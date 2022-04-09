@@ -28,14 +28,14 @@ defmodule Steer.Lnd.Subscriptions.Htlc do
   end
 
   def handle_info(%Routerrpc.HtlcEvent{event: {:settle_event, _}} = lnd_htlc_event, state) do
+    Steer.Sync.Channel.sync()
+    Steer.Sync.Forward.sync()
+
     htlc_event =
       lnd_htlc_event
       |> extract_htlc_event_map(:settle)
       |> Steer.Lightning.insert_htlc_event()
       |> broadcast(@pubsub.settle_message)
-
-    Steer.Sync.Channel.sync()
-    Steer.Sync.Forward.sync()
 
     Logger.info("HTLC settle event \##{htlc_event.id}")
 
@@ -45,7 +45,7 @@ defmodule Steer.Lnd.Subscriptions.Htlc do
   def handle_info(
         %Routerrpc.HtlcEvent{event: {:forward_event, lnd_forward_event}} = lnd_htlc_event,
         state
-      ) do
+      ) do¨
     htlc_event =
       lnd_htlc_event
       |> extract_htlc_event_map(:forward)
