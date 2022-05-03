@@ -23,5 +23,17 @@ defmodule Steer.Formatting.ChannelTest do
 
       assert String.slice(short_version, 6, 2) == ".."
     end
+
+    # for i <- [1, 2, 3, 4] do
+    #   test "success: #{i} is below 5" do
+    #     assert i < 5
+    #   end
+    # end
+
+    for i <- [1, 2, 3, 4] do
+      test "success: recognizes #{i} as a rainy condition" do
+        assert unquote(i) < 5
+      end
+    end
   end
 end
