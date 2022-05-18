@@ -25,11 +25,13 @@ defmodule SteerWeb.RebalancingLive.RouteSelector do
     """
   end
 
-  defp get_routes(route_count, high_liquidity_channel, low_liquidity_channel) do
-    Steer.GraphRepo.get_cheapest_routes(
-      route_count,
-      high_liquidity_channel.node_pub_key,
-      low_liquidity_channel.node_pub_key
-    )
+  defp get_routes(_route_count, _high_liquidity_channel, _low_liquidity_channel) do
+    # Steer.GraphRepo.get_cheapest_routes(
+    #   route_count,
+    #   high_liquidity_channel.node_pub_key,
+    #   low_liquidity_channel.node_pub_key
+    # )
+
+    []
   end
 end
