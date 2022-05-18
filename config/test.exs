@@ -6,7 +6,7 @@ use Mix.Config
 # to provide built-in test partitioning in CI environment.
 # Run `mix help test` for more information.
 config :steer, Steer.Repo,
-  database: Path.expand("../yo_test.db", Path.dirname(__ENV__.file)),
+  database: Path.expand("../steer_test.db", Path.dirname(__ENV__.file)),
   show_sensitive_data_on_connection_error: true,
   pool_size: 5,
   pool: Ecto.Adapters.SQL.Sandbox
