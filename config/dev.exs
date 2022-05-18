@@ -3,6 +3,8 @@ use Mix.Config
 # Configure your database
 config :steer, Steer.Repo,
   database: "/tmp/steer.db",
+  pool_size: 5,
+  stacktrace: true,
   show_sensitive_data_on_connection_error: true
 
 # For development, we disable any cache and enable
