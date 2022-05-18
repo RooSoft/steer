@@ -2,7 +2,7 @@
 @import './rebalancing_live/route_selector.css';
 
 #summary {
-  margin-botom: 2em;
+  margin-bottom: 2em;
 }
 
 .rebalancing-header {
@@ -28,7 +28,7 @@
 
 .rebalancing-selected-channel {
   color: black;
-  background-color: var(--accent1-color); 
+  background-color: var(--accent1-color);
 
   width: 100%;
 }
@@ -39,9 +39,7 @@
   justify-self: end;
 }
 
-.selected {
-
-}
+.selected {}
 
 .rebalancing-button-zone {
   margin-top: 1em;
