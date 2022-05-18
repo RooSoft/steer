@@ -6,8 +6,9 @@ use Mix.Config
 # to provide built-in test partitioning in CI environment.
 # Run `mix help test` for more information.
 config :steer, Steer.Repo,
-  database: "/tmp/steer_test#{System.get_env("MIX_TEST_PARTITION")}.db",
+  database: Path.expand("../yo_test.db", Path.dirname(__ENV__.file)),
   show_sensitive_data_on_connection_error: true,
+  pool_size: 5,
   pool: Ecto.Adapters.SQL.Sandbox
 
 # We don't run a server during test. If one is required,
@@ -18,3 +19,6 @@ config :steer, SteerWeb.Endpoint,
 
 # Print only warnings and errors during test
 config :logger, level: :warn
+
+# Initialize plugs at runtime for faster test compilation
+config :phoenix, :plug_init_mode, :runtime
