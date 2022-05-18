@@ -37,4 +37,4 @@ npm-debug.log
 
 /rel
 
-steer_test.db*
+/test/db/steer_test.db*
