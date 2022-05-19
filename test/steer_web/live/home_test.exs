@@ -1,8 +1,10 @@
 defmodule SteerWeb.Live.HomeTest do
   use SteerWeb.ConnCase
 
+  import Phoenix.LiveViewTest
+
   test "GET /", %{conn: conn} do
-    conn = get(conn, "/")
-    assert html_response(conn, 200) =~ "Steer"
+    {:ok, _view, html} = live(conn, "/")
+    assert html =~ "Steer"
   end
 end
