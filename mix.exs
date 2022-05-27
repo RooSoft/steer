@@ -62,6 +62,7 @@ defmodule Steer.MixProject do
       {:number, "~>  1.0.3"},
       {:timex, "~> 3.0"},
       {:observer_cli, "~> 1.7"},
+      {:ex_machina, "~> 2.7.0", only: :test},
       {:lnd_client, git: "https://github.com/RooSoft/lnd_client.git", tag: "0.1.2"}
     ]
   end

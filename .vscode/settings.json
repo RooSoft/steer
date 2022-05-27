@@ -6,5 +6,6 @@
   "[elixir]": {
     "editor.formatOnSave": true,
     "editor.defaultFormatter": "JakeBecker.elixir-ls"
-  }
+  },
+  "editor.accessibilitySupport": "off"
 }
