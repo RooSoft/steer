@@ -10,13 +10,14 @@ use Mix.Config
 # which you should run after static files are built and
 # before starting your production server.
 config :steer, SteerWeb.Endpoint,
-  url: [host: "0.0.0.0", port: 4001],
+  url: [host: "0.0.0.0", port: 4000],
   check_origin: false,
   cache_static_manifest: "priv/static/cache_manifest.json",
   server: true
 
 # Do not print debug messages in production
 config :logger, :console,
+  level: :info,
   format: "[$level] $metadata$message\n",
   metadata: [:remote_ip, :request_id]
 
@@ -55,6 +56,8 @@ config :logger, :console,
 # Check `Plug.SSL` for all available options in `force_ssl`.
 
 config :logster, :allowed_headers, ["X-Forwarded-For"]
+
+config :phoenix, :logger, false
 
 # Finally import the config/prod.secret.exs which loads secrets
 # and configuration from environment variables.
