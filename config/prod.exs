@@ -16,7 +16,9 @@ config :steer, SteerWeb.Endpoint,
   server: true
 
 # Do not print debug messages in production
-config :logger, level: :info
+config :logger, :console,
+  format: "[$level] $metadata$message\n",
+  metadata: [:remote_ip, :request_id]
 
 # ## SSL Support
 #
@@ -51,6 +53,8 @@ config :logger, level: :info
 #       force_ssl: [hsts: true]
 #
 # Check `Plug.SSL` for all available options in `force_ssl`.
+
+config :logster, :allowed_headers, ["X-Forwarded-For"]
 
 # Finally import the config/prod.secret.exs which loads secrets
 # and configuration from environment variables.

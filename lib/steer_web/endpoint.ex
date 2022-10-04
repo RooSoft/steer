@@ -50,5 +50,8 @@ defmodule SteerWeb.Endpoint do
   plug Plug.MethodOverride
   plug Plug.Head
   plug Plug.Session, @session_options
+
+  plug Logster.Plugs.Logger
+  
   plug SteerWeb.Router
 end
