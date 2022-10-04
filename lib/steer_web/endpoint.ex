@@ -40,6 +40,7 @@ defmodule SteerWeb.Endpoint do
     cookie_key: "request_logger"
 
   plug Plug.RequestId
+  plug SteerWeb.Plugs.SetLoggerMetadata
   plug Plug.Telemetry, event_prefix: [:phoenix, :endpoint]
 
   plug Plug.Parsers,
@@ -52,6 +53,6 @@ defmodule SteerWeb.Endpoint do
   plug Plug.Session, @session_options
 
   plug Logster.Plugs.Logger
-  
+
   plug SteerWeb.Router
 end
