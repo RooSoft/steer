@@ -43,6 +43,7 @@ mix ecto.migrate
 
 ```bash
 npm i --prefix assets
+mix assets.deploy
 ```
 
 ### Start steer
