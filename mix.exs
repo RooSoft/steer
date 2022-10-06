@@ -51,21 +51,21 @@ defmodule Steer.MixProject do
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:phoenix_live_dashboard, "~> 0.4"},
       {:phoenix_live_view, "~> 0.17.7"},
-      {:ecto_sqlite3, "~> 0.7.4"},
-      {:esbuild, "~> 0.3", runtime: Mix.env() == :dev},
-      {:floki, ">= 0.30.0", only: :test},
+      {:ecto_sqlite3, "~> 0.8"},
+      {:esbuild, "~> 0.5", runtime: Mix.env() == :dev},
+      {:floki, "~> 0.33", only: :test},
       {:telemetry_metrics, "~> 0.6"},
       {:telemetry_poller, "~> 1.0"},
-      {:gettext, "~> 0.11"},
-      {:jason, "~> 1.2"},
+      {:jason, "~> 1.4"},
+      {:gettext, "~> 0.20"},
       {:plug_cowboy, "~> 2.5"},
-      {:number, "~>  1.0.3"},
-      {:timex, "~> 3.0"},
+      {:number, "~>  1.0"},
+      {:timex, "~> 3.7"},
       {:observer_cli, "~> 1.7"},
-      {:ex_machina, "~> 2.7.0", only: :test},
+      {:ex_machina, "~> 2.7", only: :test},
       {:logster, "~> 1.0"},
       {:dialyxir, "~> 1.2", only: [:dev], runtime: false},
-      {:lnd_client, git: "https://github.com/RooSoft/lnd_client.git", tag: "0.1.2"}
+      {:lnd_client, git: "https://github.com/RooSoft/lnd_client.git", tag: "0.1.6"}
     ]
   end
 
