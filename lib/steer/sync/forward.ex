@@ -215,8 +215,6 @@ defmodule Steer.Sync.Forward do
         map
       )
 
-    IO.inspect(changeset)
-
     {:ok, inserted} = Repo.insert(changeset)
 
     inserted.id
