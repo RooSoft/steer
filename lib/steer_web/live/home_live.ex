@@ -8,6 +8,7 @@ defmodule SteerWeb.HomeLive do
   @htlc_pubsub_settle_message :settle
   @htlc_pubsub_forward :forward
   @htlc_pubsub_forward_fail :forward_fail
+  @htlc_pubsub_link_fail :link_fail
 
   @invoice_pubsub_topic inspect(Subscriptions.Invoice)
   @invoice_pubsub_created_message :created_message
@@ -59,7 +60,6 @@ defmodule SteerWeb.HomeLive do
 
     {:noreply,
      socket
-     |> get_channels
      |> put_flash(
        :info,
        "Forward attempt..."
@@ -82,10 +82,21 @@ defmodule SteerWeb.HomeLive do
 
     {:noreply,
      socket
-     |> get_channels
      |> put_flash(
        :info,
        "Forward attempt failed from #{channel_in_alias} to #{channel_out_alias}"
+     )}
+  end
+
+  @impl true
+  def handle_info({@htlc_pubsub_topic, @htlc_pubsub_link_fail, _payload}, socket) do
+    write_in_blue("HTLC link fail")
+
+    {:noreply,
+     socket
+     |> put_flash(
+       :info,
+       "HTLC link fail"
      )}
   end
 
