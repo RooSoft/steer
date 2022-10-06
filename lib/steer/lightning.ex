@@ -127,7 +127,7 @@ defmodule Steer.Lightning do
   end
 
   def handle_call({:get_channel, %{id: id}}, _from, state) do
-    Logger.info("Getting channel #{id} from cache")
+    Logger.debug("Getting channel #{id} from cache")
 
     channel =
       Repo.get_channel(id)
@@ -137,7 +137,7 @@ defmodule Steer.Lightning do
   end
 
   def handle_call({:get_channel, %{lnd_id: lnd_id}}, _from, state) do
-    Logger.info("Getting channel #{lnd_id} from cache")
+    Logger.debug("Getting channel #{lnd_id} from cache")
 
     channel =
       Repo.get_channel_by_lnd_id(lnd_id)
@@ -147,7 +147,7 @@ defmodule Steer.Lightning do
   end
 
   def handle_call({:get_channel, %{alias: node_alias}}, _from, state) do
-    Logger.info("Getting channel #{node_alias} from cache")
+    Logger.debug("Getting channel #{node_alias} from cache")
 
     channel =
       Repo.get_channel_by_alias(node_alias)
