@@ -157,7 +157,7 @@ defmodule Steer.Lightning do
   end
 
   def handle_call({:get_channel, %{channel_point: channel_point}}, _from, state) do
-    Logger.info("Getting channel #{channel_point}")
+    Logger.debug("Getting channel #{channel_point}")
 
     channel =
       Repo.get_channel_by_channel_point(channel_point)
