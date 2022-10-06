@@ -29,7 +29,7 @@ defmodule SteerWeb.LndNodeStatusChannel do
   def handle_info({:uptime, @up_message}, socket) do
     socket |> broadcast("lnd_node_status:status", %{status: "UP"})
 
-    IO.puts("GOT A UP MESSAGE")
+    Logger.debug("GOT A UP MESSAGE")
 
     {:noreply, socket}
   end
@@ -38,7 +38,7 @@ defmodule SteerWeb.LndNodeStatusChannel do
   def handle_info({:uptime, @down_message}, socket) do
     socket |> broadcast("lnd_node_status:status", %{status: "DOWN"})
 
-    IO.puts("GOT A DOWN MESSAGE")
+    Logger.warning("GOT A DOWN MESSAGE")
 
     {:noreply, socket}
   end
