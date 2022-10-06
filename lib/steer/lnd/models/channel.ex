@@ -22,14 +22,15 @@ defmodule Steer.Lnd.Models.Channel do
   end
 
   def activate_by_channel_point(channels, channel_point_struct, is_active) do
-    { :funding_txid_bytes, funding_txid } = channel_point_struct.funding_txid
+    {:funding_txid_bytes, funding_txid} = channel_point_struct.funding_txid
 
-    txid = funding_txid
-    |> :binary.bin_to_list
-    |> Enum.reverse
-    |> :binary.list_to_bin
-    |> Base.encode16
-    |> String.downcase
+    txid =
+      funding_txid
+      |> :binary.bin_to_list()
+      |> Enum.reverse()
+      |> :binary.list_to_bin()
+      |> Base.encode16()
+      |> String.downcase()
 
     channel_point = "#{txid}:#{channel_point_struct.output_index}"
 
@@ -44,9 +45,8 @@ defmodule Steer.Lnd.Models.Channel do
   end
 
   defp sort_algo(channel1, channel2)
-    when length(channel1.forwards) > 0
-    and length(channel2.forwards) > 0 do
-
+       when length(channel1.forwards) > 0 and
+              length(channel2.forwards) > 0 do
     [channel1_forward | _] = channel1.forwards
     [channel2_forward | _] = channel2.forwards
 
@@ -54,16 +54,14 @@ defmodule Steer.Lnd.Models.Channel do
   end
 
   defp sort_algo(channel1, channel2)
-    when length(channel1.forwards) == 0
-    and length(channel2.forwards) > 0 do
-
+       when length(channel1.forwards) == 0 and
+              length(channel2.forwards) > 0 do
     false
   end
 
   defp sort_algo(channel1, channel2)
-    when length(channel1.forwards) > 0
-    and length(channel2.forwards) == 0 do
-
+       when length(channel1.forwards) > 0 and
+              length(channel2.forwards) == 0 do
     true
   end
 
@@ -93,10 +91,16 @@ defmodule Steer.Lnd.Models.Channel do
   defp format_balances(channels) do
     channels
     |> Enum.map(fn channel ->
-      formatted_local_balance = Number.SI.number_to_si(channel.local_balance, unit: "", precision: 1)
-      formatted_remote_balance = Number.SI.number_to_si(channel.remote_balance, unit: "", precision: 1)
+      formatted_local_balance =
+        Number.SI.number_to_si(channel.local_balance, unit: "", precision: 1)
+
+      formatted_remote_balance =
+        Number.SI.number_to_si(channel.remote_balance, unit: "", precision: 1)
+
       formatted_capacity = Number.SI.number_to_si(channel.capacity, unit: "", precision: 1)
-      formatted_balance_percent = Number.SI.number_to_si(channel.balance_percent, unit: "", precision: 1)
+
+      formatted_balance_percent =
+        Number.SI.number_to_si(channel.balance_percent, unit: "", precision: 1)
 
       channel
       |> Map.put(:formatted_local_balance, formatted_local_balance)

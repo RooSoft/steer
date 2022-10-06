@@ -6,7 +6,7 @@ defmodule Steer.Lnd do
     |> Channel.convert_list()
     |> add_node_info()
     |> include_forwards()
-    |> Channel.sort_by_latest_forward_descending
+    |> Channel.sort_by_latest_forward_descending()
   end
 
   def get_channel(id) do
@@ -22,20 +22,21 @@ defmodule Steer.Lnd do
   end
 
   defp get_lnd_channels() do
-    { :ok, channels } = LndClient.get_channels()
+    {:ok, channels} = LndClient.get_channels()
 
     channels.channels
   end
 
   defp get_lnd_forwards() do
-    { :ok, forwarding_events } = LndClient.get_forwarding_history(%{max_events: 1000})
+    {:ok, forwarding_events} = LndClient.get_forwarding_history(%{max_events: 1000})
 
     forwarding_events.forwarding_events
   end
 
   defp include_forwards(channels) do
-    forwards = get_lnd_forwards()
-    |> Forward.convert()
+    forwards =
+      get_lnd_forwards()
+      |> Forward.convert()
 
     channels
     |> Steer.Mashups.ChannelForwards.combine(forwards)
@@ -47,7 +48,7 @@ defmodule Steer.Lnd do
   end
 
   defp add_node_info(channel) do
-    { :ok, node_info } = LndClient.get_node_info(channel.node_pubkey)
+    {:ok, node_info} = LndClient.get_node_info(channel.node_pubkey)
 
     channel
     |> Channel.add_node_info(node_info.node)

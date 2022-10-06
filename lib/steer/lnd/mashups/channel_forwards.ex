@@ -18,9 +18,10 @@ defmodule Steer.Mashups.ChannelForwards do
       channel_in = Map.get(channel_map, forward.chan_id_in)
       channel_out = Map.get(channel_map, forward.chan_id_out)
 
-      forward = forward
-      |> Map.put(:channel_in, channel_in)
-      |> Map.put(:channel_out, channel_out)
+      forward =
+        forward
+        |> Map.put(:channel_in, channel_in)
+        |> Map.put(:channel_out, channel_out)
 
       channel_map
       |> update_channel_with_forward(channel_in, forward)
@@ -57,12 +58,14 @@ defmodule Steer.Mashups.ChannelForwards do
   end
 
   defp update_channel_with_forward(channel_map, channel, forward) do
-    forward = forward
-    |> Map.put(:direction, get_direction(channel, forward))
-    |> Map.put(:remote_alias, get_remote_alias(channel, forward))
+    forward =
+      forward
+      |> Map.put(:direction, get_direction(channel, forward))
+      |> Map.put(:remote_alias, get_remote_alias(channel, forward))
 
-    channel = channel
-    |> Map.put(:forwards, [forward | channel.forwards])
+    channel =
+      channel
+      |> Map.put(:forwards, [forward | channel.forwards])
 
     channel_map |> Map.put(channel.id, channel)
   end
@@ -100,8 +103,9 @@ defmodule Steer.Mashups.ChannelForwards do
   end
 
   defp maybe_add_raw_forward_to_map(channel_map, channel, forward) do
-    new_channel = channel
-    |> Map.put(:raw_forwards, [forward | channel.forwards])
+    new_channel =
+      channel
+      |> Map.put(:raw_forwards, [forward | channel.forwards])
 
     channel_map
     |> Map.put(channel.id, new_channel)
@@ -144,8 +148,9 @@ defmodule Steer.Mashups.ChannelForwards do
   defp sort_forwards(channels) do
     channels
     |> Enum.map(fn channel ->
-      sorted_forwards = channel.forwards
-      |> Enum.sort(&(&1.timestamp_ns >= &2.timestamp_ns))
+      sorted_forwards =
+        channel.forwards
+        |> Enum.sort(&(&1.timestamp_ns >= &2.timestamp_ns))
 
       channel
       |> Map.put(:forwards, sorted_forwards)
@@ -157,8 +162,9 @@ defmodule Steer.Mashups.ChannelForwards do
     |> Enum.map(fn channel ->
       case Enum.any?(channel.forwards) do
         true ->
-          [ latest_forward | _ ] = channel.forwards
+          [latest_forward | _] = channel.forwards
           channel |> Map.put(:latest_forward, latest_forward)
+
         false ->
           channel
       end

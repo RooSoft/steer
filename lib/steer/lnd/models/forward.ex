@@ -23,9 +23,13 @@ defmodule Steer.Lnd.Models.Forward do
   defp format_amounts(forwards) do
     forwards
     |> Enum.map(fn forward ->
-      formatted_amount_in = Number.SI.number_to_si(forward.amount_in/1000, unit: "", precision: 1)
-      formatted_amount_out = Number.SI.number_to_si(forward.amount_out/1000, unit: "", precision: 1)
-      formatted_fee = Number.SI.number_to_si(forward.fee/1000, unit: "", precision: 1)
+      formatted_amount_in =
+        Number.SI.number_to_si(forward.amount_in / 1000, unit: "", precision: 1)
+
+      formatted_amount_out =
+        Number.SI.number_to_si(forward.amount_out / 1000, unit: "", precision: 1)
+
+      formatted_fee = Number.SI.number_to_si(forward.fee / 1000, unit: "", precision: 1)
 
       forward
       |> Map.put(:formatted_amount_in, formatted_amount_in)
