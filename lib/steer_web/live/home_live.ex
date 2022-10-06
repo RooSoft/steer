@@ -56,8 +56,6 @@ defmodule SteerWeb.HomeLive do
 
   @impl true
   def handle_info({@htlc_pubsub_topic, @htlc_pubsub_forward, _payload}, socket) do
-    write_in_blue("HTLC forward attempt")
-
     {:noreply,
      socket
      |> put_flash(
@@ -68,8 +66,6 @@ defmodule SteerWeb.HomeLive do
 
   @impl true
   def handle_info({@htlc_pubsub_topic, @htlc_pubsub_forward_fail, payload}, socket) do
-    write_in_blue("HTLC forward fail received")
-
     channel_in_alias =
       payload.channel_in_id
       |> Steer.Repo.get_channel()
