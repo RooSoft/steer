@@ -34,7 +34,8 @@ defmodule SteerWeb.ChannelLive.Show do
 
   @impl true
   def handle_info({@htlc_pubsub_topic, _message, _htlc_event}, socket) do
-    IO.puts("-----------GOT A HTLC-------")
+    # Nothing to do
+
     {:noreply, socket}
   end
 
