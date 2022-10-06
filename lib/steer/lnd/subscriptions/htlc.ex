@@ -21,7 +21,7 @@ defmodule Steer.Lnd.Subscriptions.Htlc do
   end
 
   def init(_) do
-    IO.puts("++++++++++++++++++subscribing to HTLCs+++++++++++++++")
+    Logger.debug("subscribing to HTLCs")
     LndClient.subscribe_htlc_events(%{pid: self()})
 
     {:ok, nil}
