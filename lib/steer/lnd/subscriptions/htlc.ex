@@ -60,7 +60,7 @@ defmodule Steer.Lnd.Subscriptions.Htlc do
       |> Steer.Lightning.insert_htlc_forward()
       |> broadcast(@pubsub.forward_message)
 
-    Logger.info("HTLC forward event \##{forward_event.id}")
+    Logger.debug("HTLC forward event \##{forward_event.id}")
 
     {:noreply, state}
   end
