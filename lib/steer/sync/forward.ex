@@ -64,8 +64,8 @@ defmodule Steer.Sync.Forward do
   defp add_repo_forwarding_events(context) do
     repo_forwards =
       %{
-        start_time: context.start_time,
-        end_time: context.end_time
+        start_time: context |> Map.get(:start_time),
+        end_time: context |> Map.get(:end_time)
       }
       |> Repo.get_forwards_in_date_range()
 
