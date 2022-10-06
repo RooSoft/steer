@@ -6,6 +6,7 @@ defmodule SteerWeb.HomeLive do
 
   @htlc_pubsub_topic inspect(Subscriptions.Htlc)
   @htlc_pubsub_settle_message :settle
+  @htlc_pubsub_forward :forward
   @htlc_pubsub_forward_fail :forward_fail
 
   @invoice_pubsub_topic inspect(Subscriptions.Invoice)
@@ -50,6 +51,19 @@ defmodule SteerWeb.HomeLive do
      socket
      |> get_channels
      |> put_flash(:info, "Some HTLC settle event happened")}
+  end
+
+  @impl true
+  def handle_info({@htlc_pubsub_topic, @htlc_pubsub_forward, _payload}, socket) do
+    write_in_blue("HTLC forward attempt")
+
+    {:noreply,
+     socket
+     |> get_channels
+     |> put_flash(
+       :info,
+       "Forward attempt..."
+     )}
   end
 
   @impl true
@@ -180,7 +194,7 @@ defmodule SteerWeb.HomeLive do
   end
 
   defp write_in_blue(message) do
-    Logger.debug(IO.ANSI.blue_background() <> IO.ANSI.black() <> message <> IO.ANSI.reset())
+    Logger.info(IO.ANSI.blue_background() <> IO.ANSI.black() <> message <> IO.ANSI.reset())
   end
 
   defp write_in_yellow(message) do
