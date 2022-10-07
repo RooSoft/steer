@@ -25,6 +25,7 @@ defmodule SteerWeb.HomeLive do
   def mount(_params, _session, socket) do
     {:ok,
      socket
+     |> assign(page_title: "RooSoft")
      |> get_channels()
      |> subscribe_to_events()}
   end
