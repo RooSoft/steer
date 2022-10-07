@@ -23,9 +23,11 @@ defmodule SteerWeb.HomeLive do
   @impl true
   @spec mount(any, any, Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   def mount(_params, _session, socket) do
+    node = Steer.Repo.get_local_node()
+
     {:ok,
      socket
-     |> assign(page_title: "RooSoft")
+     |> assign(page_title: node.alias || "")
      |> get_channels()
      |> subscribe_to_events()}
   end
