@@ -79,6 +79,7 @@ create a `.env` file in the root folder and make sure that those variables are c
 PORT=4000
 MIX_ENV=prod
 NODE=localhost:10009
+DATABASE_FILE=/opt/steer/steer.db
 SECRET_KEY_BASE=*** the secret created in the previous step ***
 ```
 

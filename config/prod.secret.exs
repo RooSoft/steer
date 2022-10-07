@@ -5,7 +5,7 @@
 import Config
 
 config :steer, Steer.Repo,
-  database: "/tmp/steer.db",
+  database: System.get_env("DATABASE_FILE") || "/tmp/steer.db",
   pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10")
 
 secret_key_base =
