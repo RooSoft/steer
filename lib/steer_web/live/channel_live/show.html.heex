@@ -9,21 +9,21 @@
   <nav id="channel-tabs">
     <a href="#"
       class="channel-tab"
-      :class="tab == 'forwards' && 'selected'" 
+      x-bind:class="tab == 'forwards' && 'selected'" 
       @click.prevent="tab = 'forwards'; window.location.hash = 'forwards'" >
       Forwards
     </a>
 
     <a href="#"
       class="channel-tab"
-      :class="tab == 'liquidity' && 'selected'" 
+      x-bind:class="tab == 'liquidity' && 'selected'" 
       @click.prevent="tab = 'liquidity'; window.location.hash = 'liquidity'" >
       Liquidity
     </a>
 
     <a href="#"
       class="channel-tab"
-      :class="tab == 'about' && 'selected'" 
+      x-bind:class="tab == 'about' && 'selected'" 
       @click.prevent="tab = 'about'; window.location.hash = 'about'" >
       About
     </a>

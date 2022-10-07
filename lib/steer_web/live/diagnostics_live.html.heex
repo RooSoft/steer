@@ -7,21 +7,21 @@
   <nav id="diagnostics-tabs">
     <a href="#"
       class="diagnostics-tab"
-      :class="tab == 'liquidity' && 'selected'" 
+      x-bind:class="tab == 'liquidity' && 'selected'" 
       @click.prevent="tab = 'liquidity'; window.location.hash = 'liquidity'" >
       Liquidity
     </a>
 
     <a href="#"
       class="diagnostics-tab"
-      :class="tab == 'lnd' && 'selected'" 
+      x-bind:class="tab == 'lnd' && 'selected'" 
       @click.prevent="tab = 'lnd'; window.location.hash = 'lnd'" >
       LND
     </a>
 
     <a href="#"
       class="diagnostics-tab"
-      :class="tab == 'about' && 'selected'" 
+      x-bind:class="tab == 'about' && 'selected'" 
       @click.prevent="tab = 'about'; window.location.hash = 'about'" >
       About
     </a>
