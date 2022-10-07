@@ -5,7 +5,7 @@ defmodule Steer.MixProject do
     [
       app: :steer,
       version: "0.3.0",
-      elixir: "~> 1.7",
+      elixir: "~> 1.14",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
@@ -49,7 +49,7 @@ defmodule Steer.MixProject do
       {:phoenix_ecto, "~> 4.4"},
       {:phoenix_html, "~> 3.0"},
       {:phoenix_live_reload, "~> 1.3", only: :dev},
-      {:phoenix_live_dashboard, "~> 0.4"},
+      {:phoenix_live_dashboard, "~> 0.6"},
       {:phoenix_live_view, "~> 0.17.7"},
       {:ecto_sqlite3, "~> 0.8"},
       {:esbuild, "~> 0.5", runtime: Mix.env() == :dev},
