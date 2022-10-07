@@ -46,7 +46,7 @@ defmodule Steer.MixProject do
   defp deps do
     [
       {:phoenix, "~> 1.6.9"},
-      {:phoenix_ecto, "~> 4.1"},
+      {:phoenix_ecto, "~> 4.4"},
       {:phoenix_html, "~> 3.0"},
       {:phoenix_live_reload, "~> 1.3", only: :dev},
       {:phoenix_live_dashboard, "~> 0.4"},
