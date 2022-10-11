@@ -176,7 +176,7 @@ defmodule Steer.Lightning do
   end
 
   def handle_call({:update_channel, %{channel: channel, struct: struct}}, _from, state) do
-    Logger.info("Updating channel #{channel.id}")
+    Logger.debug("Updating channel #{channel.id}")
 
     channel =
       channel
