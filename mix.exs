@@ -4,7 +4,7 @@ defmodule Steer.MixProject do
   def project do
     [
       app: :steer,
-      version: "0.3.0",
+      version: "0.3.1-pre1",
       elixir: "~> 1.14",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix] ++ Mix.compilers(),
@@ -29,13 +29,12 @@ defmodule Steer.MixProject do
   defp elixirc_paths(:test), do: ["lib", "test/support"]
   defp elixirc_paths(_), do: ["lib"]
 
-  defp releases() do
+  defp releases do
     [
       steer: [
-        version: "0.3.0",
-        applications: [
-          steer: :permanent
-        ]
+        steps: [:assemble, :tar],
+        include_executables_for: [:unix],
+        applications: [runtime_tools: :permanent]
       ]
     ]
   end
