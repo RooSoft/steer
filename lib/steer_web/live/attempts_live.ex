@@ -21,7 +21,7 @@ defmodule SteerWeb.AttemptsLive do
 
   @impl true
   def handle_event("load-more", %{"htlc-id" => htlc_id}, socket) do
-    Logger.info("load more... from #{htlc_id}")
+    Logger.debug("load more... from #{htlc_id}")
 
     {:noreply,
      socket
