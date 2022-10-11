@@ -4,7 +4,7 @@ defmodule Steer.MixProject do
   def project do
     [
       app: :steer,
-      version: "0.3.1-pre1",
+      version: "0.3.1-pre2",
       elixir: "~> 1.14",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix] ++ Mix.compilers(),
