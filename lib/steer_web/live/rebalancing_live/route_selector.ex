@@ -4,6 +4,10 @@ defmodule SteerWeb.RebalancingLive.RouteSelector do
   def render(assigns) do
     routes = get_routes(10, assigns.high_liquidity_channel, assigns.low_liquidity_channel)
 
+    assigns =
+      assigns
+      |> assign(:routes, routes)
+
     ~H"""
     <div>
       <div class="rebalancing-route-selector-header">
@@ -11,10 +15,10 @@ defmodule SteerWeb.RebalancingLive.RouteSelector do
       </div>
 
       <div>
-        <%= if Enum.count(routes) == 0 do %>
+        <%= if Enum.count(@routes) == 0 do %>
           <em>no routes</em>
         <% end %>
-        <%= for route <- routes do %>
+        <%= for route <- @routes do %>
           <%= live_component SteerWeb.RebalancingLive.Route,
             id: "route_#{route.index}",
             starting_channel_id: @high_liquidity_channel.lnd_id,
