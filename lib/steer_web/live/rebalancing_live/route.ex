@@ -5,17 +5,22 @@ defmodule SteerWeb.RebalancingLive.Route do
     igniter_config = get_igniter_config(assigns.starting_channel_id, assigns.pub_keys)
     nodes = get_nodes(assigns.pub_keys)
 
+    assigns =
+      assigns
+      |> assign(:igniter_config, igniter_config)
+      |> assign(:nodes, nodes)
+
     ~H"""
     <div>
       <div class='route-details'>
-        <%= for node <- nodes do %>
+        <%= for node <- @nodes do %>
           <div>
             <%= node %>
           </div>
         <% end %>
       </div>
       <pre>
-    <%= igniter_config %>
+    <%= @igniter_config %>
       ----------------
       </pre>
     </div>
