@@ -115,7 +115,7 @@ defmodule Steer.Lightning do
   end
 
   def handle_call(:get_all_channels, _from, %{channels: channels} = state) do
-    Logger.info("Getting channels from cache")
+    Logger.debug("Getting channels from cache")
 
     {:reply, channels, state}
   end
