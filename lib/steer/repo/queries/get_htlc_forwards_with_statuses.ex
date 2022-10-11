@@ -9,7 +9,7 @@ defmodule Steer.Repo.Queries.GetHtlcForwardsWithStatuses do
     defaults = %{from_forward_htlc_id: nil, limit: 10, offset: 0}
     options = Enum.into(options, defaults)
 
-    Logger.info(
+    Logger.debug(
       "GetHtlcForwardsWithStatuses - from forward HTLC id #{options.from_forward_htlc_id} limit #{options.limit} "
     )
 
