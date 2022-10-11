@@ -2,11 +2,13 @@ defmodule SteerWeb.Components.ShortPubKey do
   use Phoenix.Component
 
   def short_pub_key(assigns) do
-    formatted_pub_key = format_pub_key(assigns.pub_key)
+    assigns =
+      assigns
+      |> assign(:formatted_pub_key, format_pub_key(assigns.pub_key))
 
     ~H"""
     <div class="short-pub-key" x-data={"{ pubKey: '#{@pub_key}' }"}>
-      <%= formatted_pub_key %>
+      <%= @formatted_pub_key %>
       <template x-if="window.location.protocol === 'https:'">
         <div class="short-pub-key-clipboard-icon" @click.stop="event.preventDefault();$clipboard(pubKey);">
           <img src="/images/clipboard.svg">
