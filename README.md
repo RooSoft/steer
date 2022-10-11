@@ -97,7 +97,13 @@ Copy file to the production server
 scp _build/prod/steer-x.y.ztar.gz steer@prod-server:.
 ```
 
-Then unpack the tarball wherever you like, such as /opt/steer-x.y.z and run this command
+Then unpack the tarball wherever you like, such as /opt/steer-x.y.z, cd in the folder and then migrate
+
+```bash
+bin/steer eval "Steer.Release.migrate"
+```
+
+And start the app
 
 ```bash
 /opt/steer-x.y.z/bin/steer start
