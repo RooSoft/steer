@@ -172,7 +172,11 @@ defmodule Steer.Lnd.Subscriptions.Channel do
   end
 
   defp wait_for_node(remote_pubkey, attempt_number) do
-    case LndClient.get_node_info(remote_pubkey) do
+    response =
+      %Lnrpc.NodeInfoRequest{pub_key: remote_pubkey}
+      |> LndClient.get_node_info()
+
+    case response do
       {:ok,
        %Lnrpc.NodeInfo{
          node: %Lnrpc.LightningNode{

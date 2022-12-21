@@ -75,7 +75,11 @@ defmodule Steer.Sync.Channel do
   end
 
   defp convert_channel_to_map(channel) do
-    case LndClient.get_node_info(channel.remote_pubkey) do
+    response =
+      %Lnrpc.NodeInfoRequest{pub_key: channel.remote_pubkey}
+      |> LndClient.get_node_info()
+
+    case response do
       {:error, %GRPC.RPCError{status: @unable_to_find_node_code}} ->
         nil
 
@@ -99,8 +103,12 @@ defmodule Steer.Sync.Channel do
   end
 
   defp convert_closed_channel_to_map(channel) do
+    response =
+      %Lnrpc.NodeInfoRequest{pub_key: channel.remote_pubkey}
+      |> LndClient.get_node_info()
+
     node =
-      case LndClient.get_node_info(channel.remote_pubkey) do
+      case response do
         {:ok, node_info} ->
           node_info.node
 

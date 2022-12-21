@@ -48,7 +48,9 @@ defmodule Steer.Lnd do
   end
 
   defp add_node_info(channel) do
-    {:ok, node_info} = LndClient.get_node_info(channel.node_pubkey)
+    {:ok, node_info} =
+      %Lnrpc.NodeInfoRequest{pub_key: channel.node_pubkey}
+      |> LndClient.get_node_info()
 
     channel
     |> Channel.add_node_info(node_info.node)
