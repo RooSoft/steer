@@ -1,6 +1,5 @@
 defmodule Steer.Repo.Migrations.CreateChannelTable do
   use Ecto.Migration
-  alias Steer.Lightning.Enums.ChannelStatus
 
   def change do
     create table(:channel) do
