@@ -63,7 +63,7 @@ defmodule Steer.MixProject do
       {:ex_machina, "~> 2.7", only: :test},
       {:logster, "~> 1.0"},
       {:dialyxir, "~> 1.2", only: [:dev], runtime: false},
-      {:lnd_client, git: "https://github.com/RooSoft/lnd_client.git", tag: "0.1.6"}
+      {:lnd_client, git: "https://github.com/ramontayag/lnd_client.git", ref: "00f07ed"}
     ]
   end
 

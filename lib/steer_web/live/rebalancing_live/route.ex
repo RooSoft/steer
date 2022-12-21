@@ -30,7 +30,11 @@ defmodule SteerWeb.RebalancingLive.Route do
   defp get_nodes(pub_keys) do
     pub_keys
     |> Enum.map(fn pub_key ->
-      case LndClient.get_node_info(pub_key) do
+      response =
+        %Lnrpc.NodeInfoRequest{pub_key: pub_key}
+        |> LndClient.get_node_info()
+
+      case response do
         {:ok, node} -> node.node.alias
         {_, _} -> "--UNKNOWN--"
       end
