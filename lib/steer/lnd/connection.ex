@@ -31,14 +31,14 @@ defmodule Steer.Lnd.Connection do
   end
 
   defp connect() do
-    LndClient.start()
+    conn_config = %LndClient.ConnConfig{
+      node_uri: System.get_env("NODE") || "localhost:10009",
+      cert_path: System.get_env("CERT") || "~/.lnd/tls.cert",
+      macaroon_path: System.get_env("MACAROON") || "~/.lnd/readonly.macaroon"
+    }
 
-    node_uri = System.get_env("NODE") || "localhost:10009"
-    cert_path = System.get_env("CERT") || "~/.lnd/tls.cert"
-    macaroon_path = System.get_env("MACAROON") || "~/.lnd/readonly.macaroon"
-
-    case LndClient.connect(node_uri, cert_path, macaroon_path) do
-      {:ok, _state} ->
+    case LndClient.start(conn_config) do
+      {:ok, _pid} ->
         {:ok, _} = Steer.Sync.LocalNode.sync()
         :ok
 
