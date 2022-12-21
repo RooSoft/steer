@@ -37,7 +37,7 @@ defmodule Steer.Lnd.Connection do
       macaroon_path: System.get_env("MACAROON") || "~/.lnd/readonly.macaroon"
     }
 
-    case LndClient.start(conn_config) do
+    case LndClient.start(%{conn_config: conn_config}) do
       {:ok, _pid} ->
         {:ok, _} = Steer.Sync.LocalNode.sync()
         :ok
